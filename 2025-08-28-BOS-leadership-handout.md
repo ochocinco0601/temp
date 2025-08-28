@@ -64,3 +64,45 @@
 5. **Set cadence.** A 30-minute weekly review until roll-out; then fold into the normal ops rhythm.
 
 **What you get in 2–4 weeks:** A visible, testable link between work and outcomes; faster time-to-clarity in incidents; a repeatable pattern we can scale across flows without adding tool sprawl.
+
+---
+---
+# Nate source - One-Page Leadership Handout — Instruments over Documents (Problem → Model → Minimal Start → Example → Ask)
+
+**Problem (what’s slowing us down)**
+
+* Decisions take too long because proof lives in static artifacts (slides, docs, sheets). Chats then get retrofitted into those artifacts, preserving latency. We need a surface where decisions are executed, evidenced, and auditable on the spot.&#x20;
+
+**Model (how we run faster, with governance)**
+
+* **Unit of work shift:** From static deliverables to **instruments of work**—front-end, single-surface artifacts with inputs, logic, UI, tests, and audit that you **run** in the meeting. Value accrues at **runtime**, not author time. &#x20;
+* **Evidence on the surface:** Approvals, tests, and run summaries live in the instrument; capture screenshots or code snippets for an immutable record until mini-apps mature. &#x20;
+* **Policy-as-code posture:** Business rules encoded, with opinionated schemas and reusable building blocks to prevent sprawl and raise trust. &#x20;
+* **Operating cadence:** Link instruments in invites, chats, and issues so decisions are visible and repeatable across ceremonies.&#x20;
+
+**Minimal Start (this week)**
+
+* **Replace one deck with one instrument.** Treat it as a reversible change: run the meeting inside the instrument, gate decisions with on-surface checks, and export a screenshot at close. **Metric:** `% of meetings run in an instrument vs. flat artifacts`. &#x20;
+* **Bar-raiser + studio:** Name a bar-raiser to review prompts/schemas and an “instrument studio” to version inputs, tests, exports.&#x20;
+
+**Example (single surface, concrete)**
+
+* **Start-of-Day Readiness Instrument (Home Lending):**
+
+  * `Inputs:` yesterday’s incident roll-up, critical flow SLIs, exception queue counts.
+  * `Logic:` threshold rules for pass/fail per flow; derived “ready/not-ready” score.
+  * `UI:` scoreboard with drill-downs; toggles for “expected spike” annotations.
+  * `Tests & Audit:` pre-run data sanity checks; auto-append run summary and a screenshot to the record.
+  * **Outcome:** In <10 minutes, we know whether the software is doing what the business needs it to do—no slide chase. Portfolio of instruments replaces the portfolio of decks. &#x20;
+
+**The Ask (decision and support)**
+
+* **Decision:** Approve an **instrument-first operating surface** for specific cadences (SoD, incident review, launch gates).
+* **Support:**
+
+  * Assign an **Instrument Studio** (schema/tests/exports), a **Bar-Raiser**, and instrument **Owners** mapped to ceremonies.&#x20;
+  * Set the adoption metric now: **target ≥60% of applicable meetings run inside instruments in 60 days**; review deltas in decision latency and rework.&#x20;
+
+`Suggested next step:` Pick one ceremony (SoD) and run it instrument-first next week; we’ll bring the artifact, gate the decisions on-surface, and ship the record at meeting end.
+
+---
