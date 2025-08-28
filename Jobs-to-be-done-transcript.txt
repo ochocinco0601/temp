@@ -1,0 +1,127 @@
+“I want to have a discussion about how the Jobs-to-be-Done framework can be related to business observability because I think the Jobs-to-be-Done framework, how it's articulated, could be a useful”
+00:16
+ChatGPT said:
+
+Absolutely, we can dive
+
+You said:
+Transcript Unavailable
+00:00
+ChatGPT said:
+
+Sure, let's explore that. So, in a semi-formal nutshell, the Jobs-to-Be-Done framework is all about understanding the core 'job' a user or a business process is trying to accomplish. When we apply that to business observability, we're basically linking the idea that each piece of observability should help us see whether the business is actually fulfilling that 'job' that needs to get done.
+
+In other words, we can creatively ask: what are the business outcomes or jobs that our observability efforts are meant to ensure? Then we align our signals and monitoring to validate that those business 'jobs' are indeed getting done right. If you need more detail or have a specific angle in mind, just let me know!
+
+You said:
+“Does the Jobs-to-be-Done framework offer any sort of hierarchical organization?”
+00:08
+ChatGPT said:
+
+Yes, it does have a bit of a hierarchical flavor. In a semi-formal sense, you can think of it as having layers. At the top level, you have the big, overarching job that a user or a business process needs to accomplish. Underneath that, you can break it down into smaller sub-jobs or tasks that contribute to that main goal.
+
+So when we apply that to business observability, you might say: at the top, we have the key business objective we're observing for. Then we have layers of smaller 'jobs'—like ensuring a particular service is available, a transaction is logged correctly, or a customer journey is being tracked. Each of these smaller jobs sits under that main hierarchy.
+
+If you need more details or have other questions, just let me know!
+
+You said:
+“So, I like what you said, but I'm thinking of adjusting it a little bit. So, I think the perspective of the business is around these business functions or business capabilities. So, for example, at a high level, the home lending loan origination process starts off with customer acquisition, and then it goes to application intake phase, and then it goes to an underwriting and processing phase, and then finally it has a closing and funding phase. Each of these could be high-level representations of jobs to be done with sub-jobs and underneath them.”
+00:52
+ChatGPT said:
+
+Absolutely, that adjustment makes perfect sense. So let’s frame it this way:
+
+Absolutely, that makes perfect sense. So we can definitely pivot and think of it this way: from a business perspective, those big phases you just laid out—like customer acquisition, application intake, underwriting and processing, and closing and funding—are essentially these top-level jobs to be done. Each of them is like a major business capability or function.
+
+Then underneath each of those phases, you have these sub-jobs or more granular tasks that support that phase. For example, within the application intake phase, you might have sub-jobs around document collection, initial eligibility checks, or preliminary risk assessments.
+
+So yes, we can definitely structure it in that hierarchical way and say that these business capabilities are essentially the top-level jobs. Then each sub-job nests underneath and aligns with that main business function. If you want to dive deeper into any of those layers or discuss how to instrument that observability, just let me know!
+
+You said:
+“So contrast what we were just talking about with what I understand as the industry perspective from a technology view of labeling everything as services, high-level services which can have sub-services.”
+00:16
+ChatGPT said:
+
+Certainly. So let's draw that contrast. In the broader tech industry, it's really common to just call everything a "service." You have high-level services, and then each service can have sub-services nested underneath it. It's a very technology-centric way of organizing things. You're basically saying, "This application is a service," and then inside that application, you have smaller microservices or components that are also services.
+
+Now, the angle we've been discussing with the Jobs-to-Be-Done and business observability is more about viewing it from the business function side of things. Instead of just calling everything a service, we're saying, "Okay, this is a business capability or a phase in a business process." And within that capability, we have these sub-jobs or tasks that we need to observe.
+
+So the contrast is really that the "everything is a service" view is a more tech-driven, infrastructure-focused way of looking at it. Our business capability approach is more about aligning observability with what the business actually cares about—making sure each business function is doing its job, rather than just making sure each technical service is running.
+
+If you want to go deeper into either perspective or have any other questions, just let me know!
+
+You said:
+Today I'm going to have a meeting where I'm leading a overview on business. Observability. Somewhere in the discussion I want to articulate the point that big value from business observability requires engagement involvement, intention from the business and product teams. I need help finding the better words to communicate how the development teams and the platform operation teams can't or shouldn't define the business observability requirements. I'm not sure the right way to say something like the business and the product teams have to want this intelligence or analysis outcome. They have to see its value and be fully engaged in defining the customers goals to be measured and the business goals to be measured. Because development and platform operations teams won't have the right perspective even though they could make some guesses.  For your information, the audience of the meeting will be the senior business and product leaders and the senior application development team leaders and at least two of the line of business architects. Let me know if you understand what I'm asking and trying to communicate. 
+ChatGPT said:
+
+I understand exactly what you’re asking and the context of your meeting. You want to land a point that business observability only works if the business and product side are intentional about defining it, because neither development nor platform operations has the authority or perspective to substitute for them. You also want to say it in a way that is clear, direct, and resonates with senior leaders.
+
+Here are some sharpened ways you might phrase it, depending on how strong you want to be:
+
+Core Message (plain and direct)
+
+“Business observability only delivers value if the business and product teams define what success means. Development and operations can instrument and measure, but they can’t decide which customer goals or business outcomes matter. If those aren’t made explicit, the system can’t validate whether we’re succeeding.”
+
+Alternative framings you can use in the discussion
+
+Responsibility framing
+“The responsibility for defining what should be observed rests with business and product. Development and platform operations can build the machinery, but without your direction, all we can do is guess at what’s important.”
+
+Perspective framing
+“Development and operations teams see the systems. Only the business and product teams see the customer journey and the outcomes that matter. Without your involvement, observability risks measuring system noise instead of business truth.”
+
+Engagement framing
+“This isn’t a technical exercise we can deliver to you. The real value comes when business and product leaders actively define the customer goals and business outcomes that must be validated. Without that engagement, we’ll only ever see partial signals.”
+
+Value framing
+“For observability to help us answer ‘Is the software doing what the business needs it to do?’—the business side has to want that clarity and define what it looks like. Otherwise, we’ll spend time measuring things that don’t reflect actual success.”
+
+Would you like me to help script a single tight paragraph you can use in your meeting (something polished but still plainspoken), or a set of bullet-style talking points so you can flex depending on the discussion flow?
+
+You said:
+I think those responses are all generally good. It's also important to land real life context. The point of having the business observability data is so the same as any valuable data. I think it's to enable decisions about where, time and people and resources are allocated. If the business sees value in this approach, this will enable them to make business decisions. Should this new feature be prioritized or are we as a business underperforming in this area so we should instead improve that?. Let me know if you understand. Think hard
+ChatGPT said:
+Thought for 33s
+
+I understand. You want language that lands the real-world point: business observability is only valuable if it enables decisions about where to put time, people, and money—and that requires business/product ownership of the outcomes to be validated.
+
+One-paragraph script (boardroom-tight):
+“Business observability pays off when it powers decisions—what to fund, where to shift capacity, what to ship next, what to stop. That only happens if business and product define the customer and business goals up front. Development and platform can instrument and prove whether we’re meeting those goals, but we can’t choose them. If outcomes aren’t explicit, we’ll measure system health instead of business performance, and leaders won’t get the decision hooks they need.”
+
+Premise + justification (use as bullets):
+
+Decisions require observable outcomes. You can’t reallocate capacity or reprioritize work without seeing where value is landing or slipping.
+
+Only business/product can define those outcomes. They own customers, revenue/risk, and strategic trade-offs.
+
+Dev/Platform implement and validate, not decide. We can instrument signals and prove attainment, but we can’t declare what “good” is.
+
+Therefore: make outcomes a requirement. If goals aren’t requirements, they won’t be built, tested, or monitored—and no decisions improve.
+
+Decision patterns BOS should enable (concrete):
+
+Prioritization: “Ship feature X” vs “Fix Step Y” based on observed drop-offs/abandonment in intake.
+
+Capacity shift: Move squads to underwriting when clear-to-close cycle time misses the 8:00 AM target.
+
+Quality gate: Hold a release when funding success rate falls below the agreed threshold.
+
+Stop/continue: Pause initiatives with no outcome signal; continue those proving value.
+
+Investment call: Increase vendor/API capacity when observed latency threatens a key stage.
+
+Ownership boundary (crisp):
+
+Business/Product: define what must be true (customer goals, business goals, thresholds, “good/bad” states).
+
+Development: implement outcome signals in code and flows; wire acceptance to those signals.
+
+Platform/SRE: ensure reliability, collection, and visibility; validate “is the software doing what the business needs it to do?”
+
+Two cut-through lines for the room:
+
+“If you don’t define the outcomes, we can’t give you the decisions.”
+
+“We can measure anything; only you can decide what matters to measure.”
+
+Want me to tailor the examples to your loan-origination phases (acquisition → intake → underwriting → closing/funding) so you can point to one decision per phase?
