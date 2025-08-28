@@ -1,0 +1,904 @@
+0:00
+We are moving to a new operating surface
+0:02
+at work. It is not just a function of
+0:05
+chat GPT5. I know I've talked a lot
+0:08
+about chat GPT5 the last few days.
+0:11
+That's because 700 million 800 million
+0:13
+people have it and we all use it. Now I
+0:15
+want to go beyond that. I want to talk
+0:16
+about the idea that we have a new
+0:18
+operating surface at work that yes is
+0:20
+exemplified by chat GPT5 but is also
+0:24
+going to be exemplified by Claude, by
+0:26
+Gemini and others over the next few
+0:28
+months. The stakes are really high. The
+0:31
+real drag in modern companies is not
+0:33
+creativity where AI has been attacking
+0:36
+over the last two years. It is so easy
+0:38
+now to get a hundred ideas, a thousand
+0:40
+ideas. The real bottleneck is the cost
+0:44
+of proving a decision. We do that in
+0:47
+docs. We do that in spreadsheets. We do
+0:50
+that in slides. And you know what's
+0:52
+happening over and over now? Chats
+0:53
+become docs. Chats become spreadsheets.
+0:56
+Chats become slides. And the challenge
+0:58
+is that we are still bolting on our old
+1:02
+decisionmaking to this new way of
+1:05
+working. I want to suggest to you that
+1:07
+with chat GPT5, we crossed a Rubicon. We
+1:11
+now have for the first time an
+1:13
+incredibly easy way for anyone who is
+1:15
+not a coder to create interactive
+1:18
+artifacts that collapse that chain.
+1:21
+Interactive artifacts that make
+1:23
+decisions executable, auditable, and
+1:26
+fast. My thesis is very simple. The unit
+1:29
+of work is shifting from static
+1:32
+deliverables to instruments of work.
+1:34
+Front-end artifacts that you can open
+1:36
+and tweak and run. An instrument will
+1:38
+couple some small typed inputs, a little
+1:41
+UI, maybe some tests or an audit in very
+1:45
+clean ways to look at the results. A
+1:47
+good instrument will replace several
+1:49
+meetings and a deck with one surface and
+1:52
+a very quick decision. Why is this
+1:54
+happening now? What makes this possible
+1:56
+today? Number one, distribution. It is
+1:59
+easy now to have single file canvases
+2:02
+that can travel as easily as slides
+2:04
+across internal tools. You can share
+2:06
+that chat GPT5 canvas so easily. Claude
+2:09
+does this too. You can share the cloud
+2:10
+canvas really easily. There's no
+2:12
+infrastructure to run that. Cost is also
+2:15
+so cheap. If you have all of your
+2:17
+employees on a chat plan anyway, and the
+2:19
+canvas comes with it, it's essentially
+2:21
+free. Governance is also easy because
+2:24
+tests and approvals live in the
+2:26
+instrument. You can actually capture
+2:28
+what you did and then if you really want
+2:30
+to lock it, just stick a screenshot of
+2:32
+that UI and stick it somewhere. It's
+2:35
+easy to log your decisions. The nice
+2:37
+thing is you can also compound and
+2:38
+remix. So these artifacts are not dead,
+2:40
+they're living. You can remix a weekly
+2:42
+business review artifact and make it
+2:44
+better next time. You can reuse it. Now,
+2:46
+I will add a caveat here. As someone who
+2:49
+worked on weekly business reviews at
+2:51
+Amazon, I am not trying to pretend that
+2:54
+one artifact produced by one person in
+2:57
+chat GPT replaces a weekly business
+3:00
+review instrument that has been honed by
+3:02
+business analysts over years for a team
+3:06
+at Amazon scale. What I am saying is
+3:08
+that most teams don't operate at that
+3:10
+scale and most decisionmaking doesn't
+3:13
+require that formula review process.
+3:15
+There's a whole class of practical work
+3:18
+done decisions that are right now being
+3:20
+made very slowly with documents with
+3:22
+artifacts. They don't need to be and
+3:25
+that is the new class of work that I'm
+3:28
+talking about when I talk about this
+3:29
+motion from static deliverables to
+3:32
+instruments. So what is an instrument?
+3:33
+It has an input, a very explicit schema
+3:36
+and sample fixtures. It has logic
+3:38
+functions that you can read and test.
+3:40
+The code is visible. Edge cases are
+3:42
+declared. It has a UI, a display first
+3:45
+scoreboard that has a few knobs you can
+3:48
+touch and dial. It has tests, so gates
+3:51
+are at the top and if it doesn't work,
+3:53
+it doesn't run. It has an audit encoded
+3:55
+in it and ideally it will have an
+3:57
+export. The key is making sure that you
+4:00
+take those instrument components
+4:02
+seriously. For example, if you have
+4:04
+inputs, logic, and UI, but you have no
+4:06
+audit trail, you can't really see what
+4:07
+changed when people started to mess with
+4:09
+your dashboard. And in the course of a
+4:11
+meeting there can be a lot of changes
+4:12
+and adjustments. So I want to suggest to
+4:14
+you that the strategic impact of getting
+4:17
+this this work done is really
+4:20
+understated because we haven't really
+4:22
+lived it yet. The real challenge here is
+4:25
+actually moving from a world where we
+4:27
+have high latency and high friction and
+4:30
+low trust for a lot of work even among
+4:33
+good functioning teams because people
+4:35
+can't remember the slack and they've
+4:37
+been trained over and over again not to
+4:38
+just trust the meeting but to get stuff
+4:40
+into a doc. get to a world where you
+4:43
+have more leverage, where trust
+4:45
+increases because you can actually see
+4:47
+it in the interactive artifact, where
+4:50
+you can just generate free evidence by
+4:52
+just running the artifact again with new
+4:54
+data points. You want to get to a point
+4:57
+where you have a portfolio of artifacts
+4:59
+that replaces your portfolio of
+5:01
+PowerPoint decks, something that lets
+5:03
+you run the business with artifacts.
+5:06
+Now, this is not going to work for
+5:07
+everybody. Again, I've said it before.
+5:10
+This doesn't replace BAS at scale. This
+5:12
+doesn't replace excellent SAS tools for
+5:14
+scaled up companies, but it does allow
+5:17
+you get a lot of practical work done.
+5:19
+I've created a dozen instruments to get
+5:21
+you started. And they're designed to
+5:23
+work together as a coherent operating
+5:25
+system for smallcale teams and something
+5:27
+that gives large- scale teams ideas
+5:29
+about how to run fast for those in
+5:31
+between the cracks where the real work
+5:33
+gets done stuff. Let me lay them out for
+5:36
+you briefly and then you'll get like
+5:38
+full prompts for them in the substack.
+5:40
+Run the business. You get a WBR
+5:42
+scorecard and you get a data quality
+5:44
+sentinel. Something that like helps you
+5:46
+obsess over your data quality and check
+5:48
+your data quality where it matters. For
+5:50
+shipping decisions, I've got an
+5:51
+experiment decision pad and I've got a
+5:53
+launch gate for you. For reliability,
+5:55
+I've got an incident commander dash and
+5:57
+I've got so radar. Again, these are very
+6:00
+configurable, right? You can adjust the
+6:02
+prompts the way you want. You don't like
+6:03
+my WBR? Don't use my WBR. Use the prompt
+6:06
+and make it yours. That's the whole
+6:07
+point. Revenue and risk. You have deals.
+6:10
+You have contract risk triage. These are
+6:12
+things you can actually put into on the
+6:14
+sales side. Customers, you have customer
+6:16
+health triage. You have a pricing and
+6:18
+mix simulator for your people side. You
+6:20
+can get a hiring and funnel health one.
+6:22
+You can get an access review runner. And
+6:23
+this is just the beginning. These are
+6:25
+designed to form an ops operating system
+6:28
+from the get-go and a loop you can put
+6:30
+in anywhere. But this is just the
+6:32
+beginning of getting your head around
+6:34
+the idea that you have instruments now
+6:35
+and not static artifacts. I want to
+6:38
+suggest to you that there are real
+6:41
+challenges with rolling this out that
+6:43
+are not technical. In fact, the
+6:45
+technical piece is mostly done. It is
+6:46
+relatively easy to get these to start to
+6:49
+work. Instead, the risks show up in
+6:51
+culture terms. People overtrust these,
+6:54
+right? Like sometimes they will have
+6:55
+shallow data in here and they will not
+6:58
+show their thresholds and they will not
+7:00
+pay too much attention to the artifact
+7:02
+because they're not used to it and they
+7:04
+will allow a lot of sprawl. They'll
+7:06
+remix the artifacts in 50 different
+7:08
+versions. This requires discipline just
+7:10
+like having a document standard requires
+7:12
+discipline. It's not like it's a free
+7:14
+ticket and you don't have to
+7:16
+administrate the artifact. The power
+7:18
+lies in the fact that it collapses a
+7:20
+bunch of other work into one clean
+7:22
+interactive artifact that makes
+7:23
+decisionmaking faster. So the work
+7:25
+really changes as a result and you have
+7:27
+to be ready to impose that on the
+7:29
+culture as a leader. So meetings can run
+7:32
+inside the artifact. You can record
+7:34
+them, use granola, use otter, use
+7:36
+whatever your recording uh AI is of
+7:38
+choice and then you have the record of
+7:40
+the meeting. You have the artifact
+7:42
+itself and you're done. That's the whole
+7:44
+thing. You need to get to a point where
+7:45
+you are encouraging people to test
+7:47
+artifacts, version them, and make sure
+7:50
+that people are using artifacts
+7:53
+appropriately in appropriate context and
+7:55
+not just overusing them in ways that
+7:57
+aren't helpful. You don't want 16
+7:59
+different versions of the same meetings
+8:00
+artifact running around because then
+8:02
+people will not trust it. And so there's
+8:04
+a certain level of experimentation you
+8:06
+want to encourage when you're trying to
+8:08
+get an artifact to gel. And then you
+8:10
+need to converge and actually pick the
+8:12
+winner and anoint that and standardize
+8:13
+it and discourage further
+8:15
+experimentation while you focus on other
+8:17
+parts of the workflow you want to align
+8:18
+out. Part of how you do that is by
+8:20
+challenging the operators, the runners
+8:23
+of the business to own the outcomes
+8:25
+associated with these artifacts. If you
+8:26
+have someone in sales who is running the
+8:29
+meeting that the artifact is associated
+8:32
+with, they own the artifact. If you have
+8:34
+someone in legal, they own the artifact
+8:36
+for the legal review. You get the idea.
+8:38
+The key here is that you have artifacts
+8:41
+that tie to consistent organizational
+8:44
+patterns, to product launches, to
+8:45
+incidents, to pricing, to access to
+8:47
+hiring, to weekly business reviews. And
+8:50
+you keep them as consistent and
+8:51
+versioned as possible. And yes, for
+8:53
+bigger teams, for bigger orgs, of
+8:55
+course, you're going to have like, you
+8:56
+know, the weekly business review version
+8:59
+for this team versus that team because
+9:01
+they're like 50 person teams and they
+9:03
+have different business units and they
+9:04
+have different metrics. I get that.
+9:06
+That's why prompts are easy to mix
+9:08
+together. The point though is that you
+9:10
+want to manage that cadence of
+9:11
+evolution. You want to manage who owns
+9:13
+it. You want to assign ownership just
+9:15
+like you do with other good culture
+9:16
+changes. And you want to map the
+9:18
+instruments to the meeting cadence in a
+9:20
+way that gives everyone predictability.
+9:22
+That's what builds trust. That's what
+9:24
+builds trust. I would suggest if you
+9:26
+want to move this way that you stand up
+9:29
+an instrument studio, a place to
+9:31
+maintain schemas, tests, export
+9:34
+standards, what counts as good that you
+9:36
+assign a bar raiser to review the
+9:40
+prompts that are used for any new
+9:41
+version so that people maintain those
+9:44
+standards and you get better over time.
+9:46
+And I want you to challenge people and
+9:48
+change the incentive to reward
+9:50
+decisioning that ships through gates,
+9:52
+not through decks or through docks. You
+9:55
+want people to start to think in terms
+9:57
+of how they can accelerate decisioning
+9:59
+and how they can leverage instruments
+10:01
+instead of flat docks to do so. So
+10:04
+change your incentives. Maybe change how
+10:06
+you do performance reviews. This could
+10:07
+get as far as looking at promotion
+10:09
+readiness is looking at whether someone
+10:10
+can articulate and define a new artifact
+10:15
+in a way that's useful for their team.
+10:17
+Just giving you an example there. I want
+10:19
+to close with one other piece. We've
+10:22
+talked a lot about how this changes
+10:23
+things for business runners, right?
+10:25
+People who run the business, operators.
+10:27
+What happens for tool builders, people
+10:29
+who build Word, Docs, Notion, Sheets,
+10:32
+people who are essentially building the
+10:33
+static docs of the past. I want to
+10:35
+suggest to you that Notion's already
+10:37
+aware of this and others are too because
+10:39
+they know the product is no longer a
+10:41
+document editor. It's an execution
+10:43
+surface. That's why Notion's homepage is
+10:45
+what do you want to make today? There's
+10:47
+going to be a ton of competition for
+10:49
+this space. And as a builder of a
+10:51
+business, you are going to be spoiled
+10:53
+for riches in how you actually convert
+10:56
+your team over to instruments. If you're
+10:59
+in the tool building business and you're
+11:01
+used to static docs, one of the really
+11:03
+interesting ways you can involve here is
+11:05
+choose to ship primitives for
+11:07
+instruments. Shipped inputs as blocks,
+11:09
+logic blocks, tests and gates, stable
+11:12
+exports, things that people need to
+11:15
+compose instruments for various
+11:17
+workflows. I think that's a really
+11:19
+interesting opportunity I haven't seen
+11:20
+anybody fully grasp yet. You want to be
+11:22
+in a place where you can have somewhat
+11:25
+opinionated building blocks if you're in
+11:27
+the document creation space because if
+11:30
+you just have free text, people will
+11:32
+abuse that. Whereas if you have inputs
+11:34
+with regular schemas and people can
+11:36
+choose those, you're going to get much
+11:37
+more useful downstream blocks. Give
+11:40
+people helpful limitations to help them
+11:43
+build composable instruments. And so
+11:45
+part of what I'm doing when I suggest
+11:47
+the prompts down in the substack is I'm
+11:49
+trying to hold to and key to an
+11:52
+opinionated schema, a schema you can
+11:54
+stick with over time because you need
+11:57
+that consistency to build useful
+11:59
+artifacts. One of the interesting
+12:01
+implications of all of this is that we
+12:03
+are moving to a world where policy is
+12:05
+code. So a business rule is literally
+12:08
+encoded in Typescript somewhere or a
+12:10
+business rule is encoded in an artifact
+12:12
+somewhere. approvals happen on the
+12:15
+surface. We don't really have this yet,
+12:18
+but we want to get to a world where we
+12:20
+have lightweight e signatures and not
+12:22
+just a buttonclick go no-go. Right now,
+12:25
+it's just going to be a buttonclick go
+12:26
+no-go that's encoded in the artifact and
+12:28
+you screenshot it. That's fine for
+12:30
+getting started, getting into the
+12:32
+instrument world. I want to see a world
+12:34
+where we actually have artifacts that
+12:35
+start to evolve into those mini
+12:38
+applications. And I expect to see that
+12:40
+over the next 6 months to a year. One of
+12:42
+the keys is making sure that these are
+12:44
+everywhere. You can link them if it's
+12:47
+Claude Claude and and the artifacts or
+12:49
+if it's chat GPT and the canvas, you can
+12:52
+link them anywhere. They're public
+12:53
+facing links. So, link them in the
+12:55
+invites. Link them in the chat. Link
+12:57
+them in the issue. Make sure that these
+13:00
+are interoperable and everyone sees
+13:02
+them. And make sure, and I'm just going
+13:04
+to advise this because I've seen this
+13:05
+happen. Make sure that you do have those
+13:07
+screenshots because people can go in,
+13:09
+click on them, and change things
+13:11
+afterward. right now and remix the
+13:12
+artifacts, which is great if you're chat
+13:14
+GPT and you're trying to encourage
+13:16
+innovation, but it's perfect hell if you
+13:18
+want to make sure you have a steady
+13:19
+state. And so until these artifacts
+13:21
+evolve with a little bit more miniapp
+13:24
+internal checkpoints, you be the one
+13:26
+that takes those screenshots and encodes
+13:28
+this is what we talked about, this is
+13:29
+what we decided. So you can always go
+13:31
+back to that state relatively easily. In
+13:34
+fact, at this point, honestly, you
+13:35
+cannot just encode the screenshot. You
+13:37
+can frankly grab a code snippet and it
+13:39
+becomes an even more immutable record of
+13:41
+what happened. I want to suggest to you
+13:43
+that there are some business model
+13:44
+shifts here. First, we are moving to a
+13:46
+world where AI needs to be visible and
+13:48
+governed from AI being in the shadows.
+13:50
+That means models need to have authors
+13:52
+for these artifacts. They need to have
+13:54
+run summaries and audits. You need to be
+13:56
+able to generate tests from the code
+13:58
+that show what you did. We are at the
+14:00
+beginning of this. you can use some
+14:01
+fancy prompt work and you can get
+14:03
+something like this going in GPT5 with
+14:05
+canvas. There's going to be more. I also
+14:07
+want to suggest to you that value is
+14:09
+starting to acrue at runtime, not author
+14:12
+time. That's a very profound shift. So
+14:13
+think about it for a second. It's not
+14:15
+the authoring of the artifact that
+14:16
+matters the way authoring the PRD
+14:18
+mattered when I came up as a product
+14:20
+person. It is it is the way value occurs
+14:23
+at the time you run the artifact and
+14:25
+have the conversation. And so the value
+14:27
+is in the active instrument itself. And
+14:29
+there's sort of a profound implication
+14:31
+there if you're building in the product
+14:32
+space. One of the things that I want to
+14:34
+suggest is that you lean into adoption
+14:37
+of these instruments if you're doubtful
+14:38
+but want to try and be willing to make
+14:42
+the first step trivial and imperfect.
+14:45
+Hey, let's replace the deck this week.
+14:47
+It might not be perfect, but let's see
+14:49
+how it goes and have the conversation.
+14:51
+That's a two-way door. We can do that.
+14:53
+See if you can start to measure the
+14:54
+share of meetings that run on an
+14:56
+instrument versus the share of meetings
+14:58
+that run on something flat. See if you
+15:00
+can start to optimize to support
+15:03
+instruments being used more and more as
+15:05
+you have internal AI teams that want to
+15:07
+support you. This is so much more
+15:09
+interesting work than just building the
+15:12
+chatbot to talk with the HR policy
+15:14
+manual, which for whatever reason seems
+15:16
+to be the default thing that people who
+15:19
+greenlight AI teams internally always do
+15:22
+first. No, do something interesting like
+15:25
+this that actually accelerates the
+15:26
+business. Think about AI as a outcome
+15:30
+driver directly, not just a chatbot.
+15:33
+Move the center of gravity from defining
+15:35
+a narrative into execution. That's what
+15:38
+these instruments do. Instruments don't
+15:40
+actually kill documents. They just they
+15:43
+demote them, right? Docs will capture
+15:45
+the narrative, the context, the story.
+15:46
+You're going to turn the meeting minutes
+15:48
+automatically into a document and a
+15:50
+story. Instruments are what give you the
+15:53
+decision and capture the record and then
+15:56
+you can move on. Instruments are what
+15:57
+let you go faster. And we've never
+15:59
+really had that before. So my challenge
+16:01
+to you is figure out how you can ship
+16:03
+higher quality decisions and prove that
+16:06
+they're better quality. And that's
+16:08
+exactly what I focused on with these 12
+16:10
+prompts to build these 12 instruments.
+16:12
+Better quality decisioning, fewer slide
+16:14
+decks. Welcome to a world where we have
+16:16
+a new way of working. We're all going to
+16:18
+learn about it
