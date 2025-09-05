@@ -1,61 +1,101 @@
-  # LLM Prompt for Wire Transfer SQL Timeseries Conversion
+# LLM Prompt for Fed Wire SLI Timeseries Query (Grafana POC)
 
   ## Context
-  I need to transform raw wire transfer status data into timeseries metrics for Business Observability System (BOS) monitoring.
+  I need to create a Fed Wire SLI query for proof-of-concept visualization in enterprise Grafana. This query will transform wire
+   transfer status lifecycle data into timeseries metrics for immediate dashboard deployment.
 
-  **Background:**
-  - I have a table with wire transfer records containing timestamp pairs
-  - Each row shows when a transfer entered 'pending' status and when it exited
-  - Orders have a `funds_to_arrive_date` which determines Fed Wire processing schedule
-  - **SUCCESS CRITERIA:** A transfer is "good" if effective pending duration < 120 minutes
-  - **OBJECTIVE:** Create hourly timeseries data showing success rate and average duration
+  **Objective:** Generate timeseries data showing Fed Wire processing performance with complex business logic embedded.
 
   ## Input Data Structure
-  My table contains rows with these key elements:
-  - A timestamp when the transfer entered 'pending' status
-  - A timestamp when the transfer exited 'pending' status (can be NULL for in-flight orders)
-  - A `funds_to_arrive_date` field
-  - [I will provide my actual table schema after this prompt]
+  My query produces rows with these key elements:
+  - Order identifier
+  - Status value (inprogress, submitted, pending, complete)
+  - Timestamp of the status update
+  - `funds_to_arrive_date` field for Fed Wire business day calculations
+  - [I will provide my actual query output schema after this prompt]
 
-  ## Required Output Columns
-  - `timestamp` (hourly buckets)
-  - `total_orders` (count of transfers in that hour)
-  - `good_orders` (count with effective pending duration < 120 minutes)
-  - `success_rate` (good_orders/total_orders * 100)
-  - `avg_duration_minutes` (average effective pending duration for that hour)
+  ## Critical Fed Wire Business Logic
 
-  ## Critical Business Logic
-  **Fed Wire System:** Opens at 11:30 AM UTC each business day for processing that day's `funds_to_arrive_date` orders.
+  ### Status Lifecycle
+  **Progression:** inprogress → submitted → pending → complete
 
-  **Effective Pending Start Time:** Use the **most recent** time between:
-  1. Actual pending start timestamp
+  ### Fed Wire System Rules
+  - **Fed Wire opens:** 11:30 AM UTC each business day
+  - **Processing day:** Determined by `funds_to_arrive_date`
+  - **Pre-processing:** Orders can reach 'pending' before Fed Wire opens
+
+  ### Effective Pending Start Time
+  Use the **most recent** time between:
+  1. Actual pending status timestamp
   2. Fed Wire system start time (funds_to_arrive_date + 11:30 AM UTC)
 
   ```sql
-  -- Effective pending start calculation
+  -- Core logic pattern:
   GREATEST(
     pending_start_timestamp,
     funds_to_arrive_date + TIME '11:30:00' AT TIME ZONE 'UTC'
   ) as effective_pending_start
+  ```
 
-  Requirements
+  ### Duration Calculation
+  ```sql
+  -- For in-flight orders, use current time
+  COALESCE(complete_timestamp, NOW()) - effective_pending_start
+  ```
 
-  1. Use DATE_TRUNC('hour', ...) for hourly bucketing
-  2. Calculate effective pending duration using the GREATEST logic above
-  3. Duration calculation: COALESCE(end_timestamp, NOW()) - effective_pending_start
-  4. Include both completed and in-flight transfers
-  5. Order results by timestamp
-  6. Round success_rate to 2 decimal places, duration to 1 decimal
+  ### Success Criteria
+  - **Good:** Effective pending duration < 120 minutes
+  - **Total:** All orders that reached 'pending' status
 
-  Sample Output Format
+  ## Required SQL Query Structure
 
-  | timestamp           | total_orders | good_orders | success_rate | avg_duration_minutes |
-  |---------------------|--------------|-------------|--------------|----------------------|
-  | 2024-01-15 09:00:00 | 23           | 21          | 91.30        | 95.4                 |
-  | 2024-01-15 10:00:00 | 31           | 29          | 93.55        | 87.2                 |
+  ### Step 1: Pivot Status Lifecycle
+  Transform status rows into pending start/end timestamps per order:
+  - Extract timestamp where status = 'pending' 
+  - Extract timestamp where status = 'complete' (NULL if missing)
 
-  Your Task
+  ### Step 2: Apply Fed Wire Logic
+  - Calculate effective_pending_start using GREATEST()
+  - Calculate duration using COALESCE() for in-flight orders
+  - Determine good/bad based on 120-minute threshold
 
-  Please generate the SQL query using my actual table schema below:
+  ### Step 3: Create Timeseries Aggregation
+  - Use `DATE_TRUNC('hour', effective_pending_start)` for bucketing
+  - Group by hourly buckets
+  - Calculate success metrics per bucket
 
-  [PASTE YOUR ACTUAL TABLE SCHEMA AND COLUMN NAMES HERE]
+  ## Required Output Columns (Grafana-Ready)
+  | Column | Purpose | Format |
+  |--------|---------|--------|
+  | `timestamp` | X-axis for time charts | YYYY-MM-DD HH:00:00 |
+  | `success_rate` | Primary SLI metric | Decimal (91.30) |
+  | `total_orders` | Volume context | Integer |
+  | `good_orders` | Success count | Integer |
+  | `avg_duration_minutes` | Operational trending | Decimal (95.4) |
+
+  ## SQL Requirements
+  1. **Handle NULL complete status** - Use NOW() for in-flight orders
+  2. **Exclude orders without 'pending'** - Only measure orders that entered pending
+  3. **Time zone consistency** - All timestamps in UTC
+  4. **Hourly bucketing** - Use DATE_TRUNC('hour', ...)
+  5. **Precision** - success_rate to 2 decimals, duration to 1 decimal
+  6. **Order results** - BY timestamp ASC
+
+  ## Sample Expected Output
+  ```
+  timestamp           | success_rate | total_orders | good_orders | avg_duration_minutes
+  2024-09-05 09:00:00 | 91.30       | 23          | 21          | 95.4
+  2024-09-05 10:00:00 | 93.55       | 31          | 29          | 87.2
+  2024-09-05 11:00:00 | 96.43       | 28          | 27          | 76.8
+  ```
+
+  ## Your Task
+  Generate a complete SQL query that:
+  1. Pivots my status lifecycle data into pending start/end timestamps
+  2. Applies all Fed Wire business logic (GREATEST, COALESCE, 11:30 AM UTC)
+  3. Creates hourly timeseries output ready for Grafana visualization
+  4. Handles all edge cases (in-flight orders, pre-processed orders, same-day orders)
+
+  **My actual query output schema:**
+
+  **[PASTE YOUR ACTUAL QUERY OUTPUT SCHEMA AND COLUMN NAMES HERE]**
