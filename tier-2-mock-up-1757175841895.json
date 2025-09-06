@@ -1,0 +1,137 @@
+{
+  "__inputs": [],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "12.2.0-17245430286.patch2"
+    },
+    {
+      "type": "panel",
+      "id": "text",
+      "name": "Text",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "links": [],
+  "panels": [
+    {
+      "gridPos": {
+        "h": 2,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<div style=\"\n  background: #1f1f23;\n  border: 1px solid #2e2e34;\n  border-radius: 4px;\n  padding: 10px;\n  margin: 0px;\n\">\n  <div>\n    <span style=\"color: #9fa0a1; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;\">\n      TIME RANGE:\n    </span>\n    <span style=\"color: #5794f2; font-size: 14px; font-weight: 500; margin-left: 10px;\">\n      ${__from:date:MMM DD, YYYY} \n    </span>\n  </div>\n\n</div>\n\n",
+        "mode": "html"
+      },
+      "pluginVersion": "12.2.0-17245430286.patch2",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 2
+      },
+      "id": 3,
+      "panels": [
+        {
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 21,
+            "x": 0,
+            "y": 3
+          },
+          "id": 2,
+          "options": {
+            "code": {
+              "language": "plaintext",
+              "showLineNumbers": false,
+              "showMiniMap": false
+            },
+            "content": "<div style=\"\n\n  border-radius: 4px;\n  padding: 20px;\n  margin: 0px;\n\">\n \n  \n  <!-- Three Column Grid -->\n  <div style=\"display: flex; gap: 40px;\">\n    \n    <!-- Column 1: Impact Categories -->\n    <div style=\"flex: 1;\">\n      <h3 style=\"\n        color: #5794f2;\n        font-size: 11px;\n        text-transform: uppercase;\n        letter-spacing: 1px;\n        margin-bottom: 15px;\n        font-weight: 600;\n      \">\n        Impact Category Definitions\n      </h3>\n      <div style=\"font-size: 12px; line-height: 1.8;\">\n        <div style=\"margin-bottom: 10px;\">\n          <div style=\"color: #fff; font-weight: 500;\">Customer Experience:</div>\n          <div style=\"color: #9fa0a1; margin-top: 2px; margin-left: 10px;\">Orders delayed >60 minutes</div>\n        </div>\n        <div style=\"margin-bottom: 10px;\">\n          <div style=\"color: #fff; font-weight: 500;\">Financial:</div>\n          <div style=\"color: #9fa0a1; margin-top: 2px; margin-left: 10px;\">Dollar amount at risk for delayed orders</div>\n        </div>\n        <div style=\"margin-bottom: 10px;\">\n          <div style=\"color: #fff; font-weight: 500;\">Legal/Risk:</div>\n          <div style=\"color: #9fa0a1; margin-top: 2px; margin-left: 10px;\">Not defined - Compliance handled upstream</div>\n        </div>\n        <div style=\"margin-bottom: 10px;\">\n          <div style=\"color: #fff; font-weight: 500;\">Operational:</div>\n          <div style=\"color: #9fa0a1; margin-top: 2px; margin-left: 10px;\">Not defined - Highly automated process</div>\n        </div>\n      </div>\n    </div>\n    \n    <!-- Column 2: Status Rules -->\n    <div style=\"flex: 1;\">\n      <h3 style=\"\n        color: #5794f2;\n        font-size: 11px;\n        text-transform: uppercase;\n        letter-spacing: 1px;\n        margin-bottom: 15px;\n        font-weight: 600;\n      \">\n        Service Status Rules\n      </h3>\n      <div style=\"font-size: 12px; line-height: 1.8;\">\n        <div style=\"margin-bottom: 10px;\">\n          <div style=\"color: #73bf69; font-weight: 500;\">NORMAL:</div>\n          <div style=\"color: #9fa0a1; margin-top: 2px; margin-left: 10px;\">All metrics within thresholds</div>\n        </div>\n        <div style=\"margin-bottom: 10px;\">\n          <div style=\"color: #ff9830; font-weight: 500;\">DEGRADED:</div>\n          <div style=\"color: #9fa0a1; margin-top: 2px; margin-left: 10px;\">Customer >5 delays OR Financial >$1M</div>\n        </div>\n        <div style=\"margin-bottom: 10px;\">\n          <div style=\"color: #f2495c; font-weight: 500;\">CRITICAL:</div>\n          <div style=\"color: #9fa0a1; margin-top: 2px; margin-left: 10px;\">Financial >$10M OR approaching Fed Wire close</div>\n        </div>\n      </div>\n    </div>\n    \n    <!-- Column 3: Processing Targets -->\n    <div style=\"flex: 1;\">\n      <h3 style=\"\n        color: #5794f2;\n        font-size: 11px;\n        text-transform: uppercase;\n        letter-spacing: 1px;\n        margin-bottom: 15px;\n        font-weight: 600;\n      \">\n        Processing Targets\n      </h3>\n      <div style=\"font-size: 12px; line-height: 1.8;\">\n        <div style=\"margin-bottom: 10px;\">\n          <div style=\"color: #fff; font-weight: 500;\">Happy Path:</div>\n          <div style=\"color: #9fa0a1; margin-top: 2px; margin-left: 10px;\">&lt;5 minutes (normal operations)</div>\n        </div>\n        <div style=\"margin-bottom: 10px;\">\n          <div style=\"color: #fff; font-weight: 500;\">SLO Threshold:</div>\n          <div style=\"color: #9fa0a1; margin-top: 2px; margin-left: 10px;\">60 minutes (investigate if exceeded)</div>\n        </div>\n        <div style=\"margin-bottom: 10px;\">\n          <div style=\"color: #fff; font-weight: 500;\">Fed Wire Hours:</div>\n          <div style=\"color: #9fa0a1; margin-top: 2px; margin-left: 10px;\">6:30 AM - 4:00 PM Central Time</div>\n        </div>\n      </div>\n    </div>\n    \n  </div>\n</div>",
+            "mode": "html"
+          },
+          "pluginVersion": "12.2.0-17245430286.patch2",
+          "title": "",
+          "type": "text"
+        }
+      ],
+      "title": "📋Dashboard Guide - Funding Service - Status Rules & Thresholds",
+      "type": "row"
+    },
+    {
+      "gridPos": {
+        "h": 4,
+        "w": 24,
+        "x": 0,
+        "y": 3
+      },
+      "id": 4,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<div style=\"\n  background: #1f1f23;\n  border: 1px solid #2e2e34;\n  border-radius: 4px;\n  padding: 10px;\n  margin: 0px;\n\">\n  <h1 style=\"\n    font-size: 20px;\n    font-weight: 500;\n    color: #fff;\n    margin: 0 0 8px 0;\n  \">\n    Funding Service - Business Performance\n  </h1>\n  <p style=\"\n    font-size: 13px;\n    color: #9fa0a1;\n    margin: 0 0 4px 0;\n  \">\n    Execute treasury orders (wire transfers) to complete home lending closings\n  </p>\n  <p style=\"\n    font-size: 11px;\n    color: #6b6b70;\n    margin: 0;\n  \">\n    Last Updated: ${__to:date:MMM DD, YYYY HH:mm:ss} | Auto-refresh: ${__refresh}\n  </p>\n</div>",
+        "mode": "html"
+      },
+      "pluginVersion": "12.2.0-17245430286.patch2",
+      "transparent": true,
+      "type": "text"
+    }
+  ],
+  "schemaVersion": 41,
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-1d/d",
+    "to": "now-1d/d"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "tier-2-mock-up",
+  "uid": "ct9pb6g",
+  "version": 9,
+  "weekStart": "",
+  "id": null
+}
