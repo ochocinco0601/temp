@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Stitch Design - Home Lending</title>
+    <link href="data:image/x-icon;base64," rel="icon" type="image/x-icon"/>
+    
+    <style>
+        /* Base reset and system font stack */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        /* Color scheme */
+        :root {
+            --primary: #1173d4;
+            --bg-light: #f6f7f8;
+            --bg-dark: #101922;
+            --bg-dark-20: rgba(16, 25, 34, 0.2);
+            --bg-white-5: rgba(255, 255, 255, 0.05);
+            --bg-black-20: rgba(0, 0, 0, 0.2);
+            --text-dark: #000000;
+            --text-light: #ffffff;
+            --text-muted: rgba(0, 0, 0, 0.6);
+            --text-muted-80: rgba(0, 0, 0, 0.8);
+            --text-muted-dark: rgba(255, 255, 255, 0.6);
+            --text-muted-dark-80: rgba(255, 255, 255, 0.8);
+            --border-primary-20: rgba(17, 115, 212, 0.2);
+            --border-primary-30: rgba(17, 115, 212, 0.3);
+        }
+        
+        /* Dark mode */
+        .dark {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+        }
+        
+        /* Layout utilities */
+        .flex {
+            display: flex;
+        }
+        
+        .flex-col {
+            flex-direction: column;
+        }
+        
+        .flex-1 {
+            flex: 1;
+        }
+        
+        .items-center {
+            align-items: center;
+        }
+        
+        .justify-between {
+            justify-content: space-between;
+        }
+        
+        .gap-3 { gap: 0.75rem; }
+        .gap-4 { gap: 1rem; }
+        .gap-6 { gap: 1.5rem; }
+        .gap-8 { gap: 2rem; }
+        
+        /* Grid */
+        .grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+        
+        @media (min-width: 640px) {
+            .sm-grid-cols-2 {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .lg-grid-cols-3 {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+        
+        /* Components */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-primary-30);
+            padding: 0.75rem 2.5rem;
+            white-space: nowrap;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text-light);
+        }
+        
+        .logo-icon {
+            width: 1.5rem;
+            height: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .site-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+        }
+        
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        .nav-link {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary);
+        }
+        
+        .search-container {
+            position: relative;
+            width: 16rem;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 1.25rem;
+            height: 1.25rem;
+            color: rgba(255, 255, 255, 0.5);
+            pointer-events: none;
+        }
+        
+        .search-input {
+            width: 100%;
+            background: var(--bg-black-20);
+            border: 1px solid var(--border-primary-30);
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            color: var(--text-light);
+            font-size: 0.875rem;
+        }
+        
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+        
+        .avatar {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 500;
+        }
+        
+        .main-content {
+            flex: 1;
+            padding: 2rem 1rem;
+        }
+        
+        @media (min-width: 640px) {
+            .main-content {
+                padding: 2rem 1.5rem;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .main-content {
+                padding: 2rem 2rem;
+            }
+        }
+        
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+        
+        .page-header {
+            margin-bottom: 2rem;
+        }
+        
+        .page-title {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--text-light);
+        }
+        
+        .page-subtitle {
+            margin-top: 0.25rem;
+            font-size: 0.875rem;
+            color: var(--text-muted-dark);
+        }
+        
+        .stat-card {
+            background: var(--bg-black-20);
+            border: 1px solid var(--border-primary-30);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+        }
+        
+        .stat-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-muted-dark-80);
+        }
+        
+        .stat-value {
+            margin-top: 0.5rem;
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--text-light);
+        }
+        
+        .data-table-container {
+            margin-top: 2rem;
+            overflow: hidden;
+            border: 1px solid var(--border-primary-30);
+            border-radius: 0.75rem;
+        }
+        
+        .data-table {
+            width: 100%;
+            min-width: 100%;
+        }
+        
+        .data-table thead {
+            background: var(--bg-black-20);
+        }
+        
+        .data-table th {
+            text-align: left;
+            padding: 0.75rem 1.5rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted-dark);
+        }
+        
+        .data-table tbody {
+            background: var(--bg-dark);
+        }
+        
+        .data-table td {
+            padding: 1rem 1.5rem;
+            font-size: 0.875rem;
+            white-space: nowrap;
+            border-top: 1px solid var(--border-primary-30);
+        }
+        
+        .data-table tbody tr:first-child td {
+            border-top: none;
+        }
+        
+        .data-table .app-id {
+            font-weight: 500;
+            color: var(--text-light);
+        }
+        
+        .data-table .metric {
+            color: var(--text-muted-dark-80);
+        }
+        
+        .action-links {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .action-link {
+            font-weight: 500;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .action-link:hover {
+            text-decoration: underline;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .nav {
+                display: none;
+            }
+            
+            .search-container {
+                display: none;
+            }
+            
+            .data-table-container {
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body class="dark">
+    <div class="flex flex-col" style="min-height: 100vh;">
+        <header class="header">
+            <div class="flex items-center gap-8">
+                <div class="logo-container">
+                    <svg class="logo-icon" fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                        <path clip-rule="evenodd" d="M39.475 21.6262C40.358 21.4363 40.6863 21.5589 40.7581 21.5934C40.7876 21.655 40.8547 21.857 40.8082 22.3336C40.7408 23.0255 40.4502 24.0046 39.8572 25.2301C38.6799 27.6631 36.5085 30.6631 33.5858 33.5858C30.6631 36.5085 27.6632 38.6799 25.2301 39.8572C24.0046 40.4502 23.0255 40.7407 22.3336 40.8082C21.8571 40.8547 21.6551 40.7875 21.5934 40.7581C21.5589 40.6863 21.4363 40.358 21.6262 39.475C21.8562 38.4054 22.4689 36.9657 23.5038 35.2817C24.7575 33.2417 26.5497 30.9744 28.7621 28.762C30.9744 26.5497 33.2417 24.7574 35.2817 23.5037C36.9657 22.4689 38.4054 21.8562 39.475 21.6262ZM4.41189 29.2403L18.7597 43.5881C19.8813 44.7097 21.4027 44.9179 22.7217 44.7893C24.0585 44.659 25.5148 44.1631 26.9723 43.4579C29.9052 42.0387 33.2618 39.5667 36.4142 36.4142C39.5667 33.2618 42.0387 29.9052 43.4579 26.9723C44.1631 25.5148 44.659 24.0585 44.7893 22.7217C44.9179 21.4027 44.7097 19.8813 43.5881 18.7597L29.2403 4.41187C27.8527 3.02428 25.8765 3.02573 24.2861 3.36776C22.6081 3.72863 20.7334 4.58419 18.8396 5.74801C16.4978 7.18716 13.9881 9.18353 11.5858 11.5858C9.18354 13.988 7.18717 16.4978 5.74802 18.8396C4.58421 20.7334 3.72865 22.6081 3.36778 24.2861C3.02574 25.8765 3.02429 27.8527 4.41189 29.2403Z" fill="currentColor" fill-rule="evenodd"></path>
+                    </svg>
+                    <h2 class="site-title">Tech Observability</h2>
+                </div>
+                <nav class="nav">
+                    <a class="nav-link" href="#">Dashboards</a>
+                    <a class="nav-link" href="#">Incidents</a>
+                    <a class="nav-link" href="#">Alerts</a>
+                    <a class="nav-link" href="#">Reports</a>
+                    <a class="nav-link" href="#">Docs</a>
+                </nav>
+            </div>
+            <div class="flex items-center gap-6">
+                <div class="search-container">
+                    <svg class="search-icon" fill="currentColor" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"></path>
+                    </svg>
+                    <input class="search-input" placeholder="Search" type="text"/>
+                </div>
+                <div class="avatar">U</div>
+            </div>
+        </header>
+        
+        <main class="main-content">
+            <div class="container">
+                <div class="page-header">
+                    <h1 class="page-title">Home Lending</h1>
+                    <p class="page-subtitle">Overview of Home Lending application health and incidents</p>
+                </div>
+                
+                <div class="grid sm-grid-cols-2 lg-grid-cols-3">
+                    <div class="stat-card">
+                        <p class="stat-label">Signal Coverage</p>
+                        <p class="stat-value">92%</p>
+                    </div>
+                    <div class="stat-card">
+                        <p class="stat-label">Signal Health</p>
+                        <p class="stat-value">95%</p>
+                    </div>
+                    <div class="stat-card">
+                        <p class="stat-label">Open Incidents</p>
+                        <p class="stat-value">1 Sev1 / 2 Sev2</p>
+                    </div>
+                </div>
+                
+                <div class="data-table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">App ID</th>
+                                <th scope="col">Coverage</th>
+                                <th scope="col">Health</th>
+                                <th scope="col">Open Incidents</th>
+                                <th scope="col">Artifacts</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="app-id">HL-CreditCheck</td>
+                                <td class="metric">100%</td>
+                                <td class="metric">97%</td>
+                                <td class="metric">0/0</td>
+                                <td>
+                                    <div class="action-links">
+                                        <a class="action-link" href="#">Dashboard</a>
+                                        <a class="action-link" href="#">Playbook</a>
+                                        <a class="action-link" href="#">Owner</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="app-id">HL-AddressValidate</td>
+                                <td class="metric">85%</td>
+                                <td class="metric">88%</td>
+                                <td class="metric">0/1</td>
+                                <td>
+                                    <div class="action-links">
+                                        <a class="action-link" href="#">Dashboard</a>
+                                        <a class="action-link" href="#">Playbook</a>
+                                        <a class="action-link" href="#">Owner</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="app-id">HL-DocUpload</td>
+                                <td class="metric">90%</td>
+                                <td class="metric">92%</td>
+                                <td class="metric">1/1</td>
+                                <td>
+                                    <div class="action-links">
+                                        <a class="action-link" href="#">Dashboard</a>
+                                        <a class="action-link" href="#">Playbook</a>
+                                        <a class="action-link" href="#">Owner</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="app-id">HL-FundingPipeline</td>
+                                <td class="metric">95%</td>
+                                <td class="metric">94%</td>
+                                <td class="metric">0/0</td>
+                                <td>
+                                    <div class="action-links">
+                                        <a class="action-link" href="#">Dashboard</a>
+                                        <a class="action-link" href="#">Playbook</a>
+                                        <a class="action-link" href="#">Owner</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
