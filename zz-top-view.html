@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Observability Platform Dashboard</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#1173d4",
+              "background-light": "#f6f7f8",
+              "background-dark": "#101922",
+            },
+            fontFamily: {
+              display: ["Inter"],
+            },
+            borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
+          },
+        },
+      };
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+      }
+    </style>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-black dark:text-white">
+<div class="flex min-h-screen w-full flex-col">
+<header class="sticky top-0 z-10 flex h-16 items-center justify-between border-b border-background-dark/10 bg-background-light bg-opacity-80 px-4 backdrop-blur-sm dark:border-background-light/10 dark:bg-background-dark/80 sm:px-6 lg:px-8">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<svg class="h-8 w-8 text-primary" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"></path>
+</svg>
+<h1 class="text-lg font-bold">Observability Platform</h1>
+</div>
+<nav class="hidden items-center gap-6 md:flex">
+<a class="text-sm font-medium text-black/60 transition-colors hover:text-primary dark:text-white/60 dark:hover:text-primary" href="#">Dashboards</a>
+<a class="text-sm font-medium text-black/60 transition-colors hover:text-primary dark:text-white/60 dark:hover:text-primary" href="#">Alerts</a>
+<a class="text-sm font-medium text-black/60 transition-colors hover:text-primary dark:text-white/60 dark:hover:text-primary" href="#">Incidents</a>
+<a class="text-sm font-medium text-black/60 transition-colors hover:text-primary dark:text-white/60 dark:hover:text-primary" href="#">Reports</a>
+<a class="text-sm font-medium text-black/60 transition-colors hover:text-primary dark:text-white/60 dark:hover:text-primary" href="#">Infrastructure</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-black/50 dark:text-white/50"> search </span>
+<input class="w-full rounded-lg border-background-dark/10 bg-background-light/80 py-2 pl-10 pr-4 text-sm focus:border-primary focus:ring-primary dark:border-background-light/10 dark:bg-background-dark/80" placeholder="Search..." type="text"/>
+</div>
+<button class="relative rounded-full p-2 text-black/60 transition-colors hover:bg-black/10 hover:text-primary dark:text-white/60 dark:hover:bg-white/10 dark:hover:text-primary sm:hidden">
+<span class="material-symbols-outlined">search</span>
+</button>
+<img alt="User avatar" class="h-9 w-9 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWFk_Rh5jPJF9_LB-XtHWfWoJv7yuEpwQoHzxDZeNQRI03JUXnDVkdjqnoLp6cbug9xoezUDvtEmSDW4Fpbjh2CbB8htYWJIGzQUJ-N2LtI7OXdXAWF3QbxKyfkE1DSzvs8wxhxH2hHU6yCz6PdQr5Q9phlhniRGouvNICWItJ2ui3SSp1LWLMXDeEhSOkySjWNVfeBTv8ZeFXBTz3PZoVm9AFxI3RFxdZeQr72DYwrQHK82utOaA5UumLtVqg-utxhucSOfLhIjE"/>
+</div>
+</header>
+<main class="flex-1 px-4 py-8 sm:px-6 lg:px-8">
+<div class="mx-auto max-w-7xl">
+<div class="mb-8">
+<h2 class="text-3xl font-bold tracking-tight">Consumer Technology Observability</h2>
+</div>
+<div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+<div class="overflow-hidden rounded-lg bg-white shadow dark:bg-background-dark/50">
+<div class="p-5">
+<div class="flex items-center">
+<div class="flex-shrink-0">
+<span class="material-symbols-outlined text-3xl text-primary"> radar </span>
+</div>
+<div class="ml-5 w-0 flex-1">
+<dl>
+<dt class="truncate text-sm font-medium text-black/60 dark:text-white/60">Signal Coverage</dt>
+<dd>
+<div class="text-2xl font-bold">91%</div>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+</div>
+<div class="overflow-hidden rounded-lg bg-white shadow dark:bg-background-dark/50">
+<div class="p-5">
+<div class="flex items-center">
+<div class="flex-shrink-0">
+<span class="material-symbols-outlined text-3xl text-primary"> favorite </span>
+</div>
+<div class="ml-5 w-0 flex-1">
+<dl>
+<dt class="truncate text-sm font-medium text-black/60 dark:text-white/60">Signal Health</dt>
+<dd>
+<div class="text-2xl font-bold">96%</div>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+</div>
+<div class="overflow-hidden rounded-lg bg-white shadow dark:bg-background-dark/50">
+<div class="p-5">
+<div class="flex items-center">
+<div class="flex-shrink-0">
+<span class="material-symbols-outlined text-3xl text-primary"> report </span>
+</div>
+<div class="ml-5 w-0 flex-1">
+<dl>
+<dt class="truncate text-sm font-medium text-black/60 dark:text-white/60">Open Incidents</dt>
+<dd>
+<div class="text-xl font-bold"><span class="text-red-500">3</span> Sev1 / <span class="text-yellow-500">5</span> Sev2</div>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-8">
+<h3 class="mb-4 text-xl font-bold">L4 (Sub-LOB) Status</h3>
+<div class="overflow-hidden rounded-lg bg-white shadow dark:bg-background-dark/50">
+<div class="overflow-x-auto">
+<table class="min-w-full divide-y divide-background-dark/10 dark:divide-background-light/10">
+<thead class="bg-background-light dark:bg-background-dark/30">
+<tr>
+<th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-black/60 dark:text-white/60" scope="col">L4 Entity</th>
+<th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-black/60 dark:text-white/60" scope="col">Signal Coverage</th>
+<th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-black/60 dark:text-white/60" scope="col">Signal Health</th>
+<th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-black/60 dark:text-white/60" scope="col">Open Incidents</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-background-dark/10 bg-white dark:divide-background-light/10 dark:bg-background-dark/50">
+<tr>
+<td class="whitespace-nowrap px-6 py-4 text-sm font-medium">Home Lending</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-black/80 dark:text-white/80">92%</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-black/80 dark:text-white/80">95%</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-black/80 dark:text-white/80"><span class="text-red-500">1</span> Sev1 / <span class="text-yellow-500">2</span> Sev2</td>
+</tr>
+<tr>
+<td class="whitespace-nowrap px-6 py-4 text-sm font-medium">Consumer Banking</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-black/80 dark:text-white/80">89%</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-black/80 dark:text-white/80">97%</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-black/80 dark:text-white/80"><span class="text-green-500">0</span> Sev1 / <span class="text-yellow-500">1</span> Sev2</td>
+</tr>
+<tr>
+<td class="whitespace-nowrap px-6 py-4 text-sm font-medium">Wealth Management</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-black/80 dark:text-white/80">94%</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-black/80 dark:text-white/80">96%</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-black/80 dark:text-white/80"><span class="text-red-500">1</span> Sev1 / <span class="text-yellow-500">1</span> Sev2</td>
+</tr>
+<tr>
+<td class="whitespace-nowrap px-6 py-4 text-sm font-medium">Cards &amp; Payments</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-black/80 dark:text-white/80">88%</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-black/80 dark:text-white/80">94%</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-black/80 dark:text-white/80"><span class="text-red-500">1</span> Sev1 / <span class="text-yellow-500">1</span> Sev2</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+
+</body></html>
