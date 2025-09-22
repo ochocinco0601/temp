@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Stitch Design</title>
+<link href="data:image/x-icon;base64," rel="icon" type="image/x-icon"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#1173d4",
+              "background-light": "#f6f7f8",
+              "background-dark": "#101922",
+              "neutral-100": "#f3f4f6",
+              "neutral-200": "#e5e7eb",
+              "neutral-300": "#d1d5db",
+              "neutral-400": "#9ca3af",
+              "neutral-500": "#6b7280",
+              "neutral-600": "#4b5563",
+              "neutral-700": "#374151",
+              "neutral-800": "#1f2937",
+              "neutral-900": "#111827",
+              "success-500": "#22c55e",
+              "warning-500": "#f59e0b",
+              "danger-500": "#ef4444",
+            },
+            fontFamily: {
+              display: ["Inter", "sans-serif"],
+            },
+            borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
+          },
+        },
+      };
+    </script>
+<style>
+      .badge {
+        @apply inline-flex items-center gap-x-1.5 rounded-full px-2.5 py-1 text-xs font-medium;
+      }
+      .badge-green {
+        @apply bg-success-500/10 text-success-500;
+      }
+      .badge-amber {
+        @apply bg-warning-500/10 text-warning-500;
+      }
+      .badge-red {
+        @apply bg-danger-500/10 text-danger-500;
+      }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col">
+<div class="flex h-full grow flex-col">
+<header class="flex-shrink-0 border-b border-neutral-200 dark:border-neutral-800">
+<div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3 text-neutral-900 dark:text-neutral-100">
+<div class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-white">
+<svg fill="currentColor" height="20" viewBox="0 0 256 256" width="20" xmlns="http://www.w3.org/2000/svg">
+<path d="M136.44,200.23a8,8,0,0,1-13.44,6.72l-80-136a8,8,0,0,1,13.44-6.72l55,93.28,78.29-91.07a8,8,0,0,1,13.39,6.79l-49.21,114.8-13.33-22.56-4.14,7Z"></path>
+</svg>
+</div>
+<h2 class="text-lg font-bold">Tech Observability</h2>
+</div>
+<nav class="hidden items-center gap-6 md:flex">
+<a class="text-sm font-medium text-neutral-600 hover:text-primary dark:text-neutral-300 dark:hover:text-primary" href="#">Dashboards</a>
+<a class="text-sm font-medium text-neutral-600 hover:text-primary dark:text-neutral-300 dark:hover:text-primary" href="#">Alerts</a>
+<a class="text-sm font-medium text-neutral-600 hover:text-primary dark:text-neutral-300 dark:hover:text-primary" href="#">Incidents</a>
+<a class="text-sm font-medium text-neutral-600 hover:text-primary dark:text-neutral-300 dark:hover:text-primary" href="#">Services</a>
+<a class="text-sm font-medium text-neutral-600 hover:text-primary dark:text-neutral-300 dark:hover:text-primary" href="#">Reports</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden md:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400"> search </span>
+<input class="w-64 rounded-lg border-neutral-300 bg-neutral-100 py-2 pl-10 pr-4 text-sm text-neutral-900 focus:border-primary focus:ring-primary dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-100" placeholder="Search" type="text"/>
+</div>
+<div class="h-10 w-10 rounded-full bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBWu6RjNTGOuPDUZy7Z17rtj6pgHEu2_qtOP9x7t2OVXpiv3PdxzXUMOOhcbf48OYfNzAkgEEEBozaz5yLvCbUZVhyfRYGWESNp2KvIe8d85SdBXXL4d0CBDK_F4oMg8nll-CL4I7tgpdayQOMXMmL_prhT_Xif4IZkOLEquRvHAXHak79pCFUwA8fYroQ4gfcwCIzhdZ7hQR-qV3so2sQCs1XTLShsNmHrNGKncEepZQREKXdp_h2EJEnR6JGjwISybJo-lhmvcuU");'></div>
+</div>
+</div>
+</header>
+<main class="flex-1">
+<div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+<div class="mb-6 flex flex-wrap items-center justify-between gap-4">
+<div>
+<h1 class="text-3xl font-bold text-neutral-900 dark:text-neutral-100">App ID: HL-DocUpload</h1>
+<p class="mt-1 text-sm text-neutral-500 dark:text-neutral-400">Owner: Home Lending Platform SRE – Alex Bennett</p>
+</div>
+<div class="flex items-center gap-2">
+<a class="inline-flex items-center justify-center rounded-lg border border-neutral-300 bg-background-light px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-100 dark:border-neutral-700 dark:bg-background-dark dark:text-neutral-300 dark:hover:bg-neutral-800" href="#">
+                  Dashboard
+                </a>
+<a class="inline-flex items-center justify-center rounded-lg border border-transparent bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary/90" href="#">
+                  Playbook
+                </a>
+</div>
+</div>
+<div class="space-y-8">
+<section>
+<h2 class="mb-4 text-xl font-bold text-neutral-900 dark:text-neutral-100">Signals</h2>
+<div class="overflow-x-auto rounded-lg border border-neutral-200 bg-background-light dark:border-neutral-800 dark:bg-background-dark">
+<table class="min-w-full divide-y divide-neutral-200 dark:divide-neutral-800">
+<thead class="bg-neutral-100/50 dark:bg-neutral-900/50">
+<tr>
+<th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500 dark:text-neutral-400" scope="col">
+                          Business Signals
+                        </th>
+<th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500 dark:text-neutral-400" scope="col">
+                          State
+                        </th>
+</tr>
+</thead>
+<tbody class="divide-y divide-neutral-200 dark:divide-neutral-800">
+<tr>
+<td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-neutral-900 dark:text-neutral-100">Document Upload Success %</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-warning-500">Amber</td>
+</tr>
+<tr>
+<td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-neutral-900 dark:text-neutral-100">Borrower Document Match %</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-success-500">Green</td>
+</tr>
+</tbody>
+<thead class="bg-neutral-100/50 dark:bg-neutral-900/50">
+<tr>
+<th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500 dark:text-neutral-400" scope="col">
+                          Performance Reliability – Process Signals
+                        </th>
+<th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500 dark:text-neutral-400" scope="col">
+                          State
+                        </th>
+</tr>
+</thead>
+<tbody class="divide-y divide-neutral-200 dark:divide-neutral-800">
+<tr>
+<td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-neutral-900 dark:text-neutral-100">Batch Ingestion On-Time %</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-danger-500">Red</td>
+</tr>
+<tr>
+<td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-neutral-900 dark:text-neutral-100">Validation Throughput Rate</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-warning-500">Amber</td>
+</tr>
+</tbody>
+<thead class="bg-neutral-100/50 dark:bg-neutral-900/50">
+<tr>
+<th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500 dark:text-neutral-400" scope="col">
+                          Performance Reliability – System Signals
+                        </th>
+<th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500 dark:text-neutral-400" scope="col">
+                          State
+                        </th>
+</tr>
+</thead>
+<tbody class="divide-y divide-neutral-200 dark:divide-neutral-800">
+<tr>
+<td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-neutral-900 dark:text-neutral-100">API Response Time (p95)</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-warning-500">Amber</td>
+</tr>
+<tr>
+<td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-neutral-900 dark:text-neutral-100">Database Latency</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-warning-500">Amber</td>
+</tr>
+<tr>
+<td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-neutral-900 dark:text-neutral-100">Memory Usage</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-success-500">Green</td>
+</tr>
+<tr>
+<td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-neutral-900 dark:text-neutral-100">CPU Utilization</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-success-500">Green</td>
+</tr>
+<tr>
+<td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-neutral-900 dark:text-neutral-100">Queue Depth</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-success-500">Green</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section>
+<h2 class="mb-4 text-xl font-bold text-neutral-900 dark:text-neutral-100">Incidents</h2>
+<div class="overflow-x-auto rounded-lg border border-neutral-200 bg-background-light dark:border-neutral-800 dark:bg-background-dark">
+<table class="min-w-full divide-y divide-neutral-200 dark:divide-neutral-800">
+<thead class="bg-neutral-100/50 dark:bg-neutral-900/50">
+<tr>
+<th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500 dark:text-neutral-400" scope="col">
+                          Severity
+                        </th>
+<th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500 dark:text-neutral-400" scope="col">
+                          Status
+                        </th>
+<th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500 dark:text-neutral-400" scope="col">
+                          Started
+                        </th>
+<th class="w-1/2 px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500 dark:text-neutral-400" scope="col">
+                          Summary
+                        </th>
+</tr>
+</thead>
+<tbody class="divide-y divide-neutral-200 dark:divide-neutral-800">
+<tr>
+<td class="whitespace-nowrap px-6 py-4">
+<span class="inline-flex items-center rounded-md bg-danger-500/10 px-2 py-1 text-xs font-medium text-danger-500 ring-1 ring-inset ring-danger-500/20">
+                            Sev1
+                          </span>
+</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-neutral-900 dark:text-neutral-100">
+<div class="flex items-center gap-2">
+<span class="relative flex h-2 w-2">
+<span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-danger-400 opacity-75"></span>
+<span class="relative inline-flex h-2 w-2 rounded-full bg-danger-500"></span>
+</span>
+                            Open
+                          </div>
+</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-neutral-500 dark:text-neutral-400">2h ago</td>
+<td class="px-6 py-4 text-sm text-neutral-500 dark:text-neutral-400">Document upload batch stuck</td>
+</tr>
+<tr>
+<td class="whitespace-nowrap px-6 py-4">
+<span class="inline-flex items-center rounded-md bg-warning-500/10 px-2 py-1 text-xs font-medium text-warning-500 ring-1 ring-inset ring-warning-500/20">
+                            Sev2
+                          </span>
+</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-neutral-900 dark:text-neutral-100">
+<div class="flex items-center gap-2">
+<span class="relative flex h-2 w-2">
+<span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-warning-400 opacity-75"></span>
+<span class="relative inline-flex h-2 w-2 rounded-full bg-warning-500"></span>
+</span>
+                            Open
+                          </div>
+</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-neutral-500 dark:text-neutral-400">30m ago</td>
+<td class="px-6 py-4 text-sm text-neutral-500 dark:text-neutral-400">Elevated latency on validation service</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+</div>
+</main>
+</div>
+</div>
+</body></html>
