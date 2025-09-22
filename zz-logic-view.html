@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Dashboard Logic — Business Rules &amp; Definitions</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style type="text/tailwindcss">
+        :root {
+            --bg-dark: #111217;
+            --panel-dark: #1A1C22;
+            --border-dark: #2F323B;
+            --text-primary: #E0E0E0;
+            --text-secondary: #8E929E;
+            --primary-accent: #5794F2;
+        }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+        }
+        .grafana-panel {
+            background-color: var(--panel-dark);
+            border: 1px solid var(--border-dark);
+            border-radius: 0.25rem;
+        }
+        .grafana-panel-header {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border-dark);
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        .grafana-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .grafana-table th, .grafana-table td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-dark);
+            vertical-align: top;
+        }
+        .grafana-table th {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+        }
+        .grafana-table td {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        .grafana-table tr:last-child td {
+            border-bottom: none;
+        }
+        .formula {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #262933;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.25rem;
+            color: #C1C8D7;
+            border: 1px solid var(--border-dark);
+        }
+        .info-card {
+            background-color: var(--panel-dark);
+            border: 1px solid var(--border-dark);
+            border-radius: 0.25rem;
+            padding: 1.5rem;
+        }
+    </style>
+</head>
+<body class="bg-[var(--bg-dark)] text-[var(--text-primary)]">
+<div class="p-8">
+<header class="mb-8">
+<h1 class="text-3xl font-bold text-white">Dashboard Logic — Business Rules &amp; Definitions</h1>
+<p class="text-[var(--text-secondary)] mt-2">Explains the business rules used in Business Observability dashboards.</p>
+</header>
+<main class="space-y-8">
+<section class="grafana-panel">
+<h2 class="grafana-panel-header">Current Definitions</h2>
+<div class="overflow-x-auto">
+<table class="grafana-table">
+<thead>
+<tr>
+<th>Metric</th>
+<th>Definition</th>
+<th class="text-center">Coverage (App ID)</th>
+<th class="text-center">Coverage (Node)</th>
+<th class="text-center">Health (App ID)</th>
+<th class="text-center">Health (Node)</th>
+<th class="text-center">Incidents (Node)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="font-semibold text-[var(--text-primary)]">Coverage</td>
+<td class="max-w-sm">Percentage of applications from a defined population that have signals being received by the platform.</td>
+<td class="text-center font-mono text-sm text-[var(--primary-accent)]"># Apps with signals / # Apps in population</td>
+<td class="text-center font-mono text-sm text-[var(--primary-accent)]"># Nodes with signals / # Nodes in population</td>
+<td class="text-center text-[var(--text-secondary)]">-</td>
+<td class="text-center text-[var(--text-secondary)]">-</td>
+<td class="text-center text-[var(--text-secondary)]">-</td>
+</tr>
+<tr>
+<td class="font-semibold text-[var(--text-primary)]">Health</td>
+<td class="max-w-sm">Percentage of signals from an application that are ‘Green’ (i.e. meet defined success criteria).</td>
+<td class="text-center text-[var(--text-secondary)]">-</td>
+<td class="text-center text-[var(--text-secondary)]">-</td>
+<td class="text-center font-mono text-sm text-[var(--primary-accent)]"># Green signals / # Total signals</td>
+<td class="text-center font-mono text-sm text-[var(--primary-accent)]"># Healthy nodes / # Total nodes with signals</td>
+<td class="text-center text-[var(--text-secondary)]">-</td>
+</tr>
+<tr>
+<td class="font-semibold text-[var(--text-primary)]">Incidents</td>
+<td class="max-w-sm">Count of incidents associated with an application.</td>
+<td class="text-center text-[var(--text-secondary)]">-</td>
+<td class="text-center text-[var(--text-secondary)]">-</td>
+<td class="text-center text-[var(--text-secondary)]">-</td>
+<td class="text-center text-[var(--text-secondary)]">-</td>
+<td class="text-center font-mono text-sm text-[var(--primary-accent)]">Sum of incidents for nodes in App</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section class="grafana-panel">
+<h2 class="grafana-panel-header">Worked Example</h2>
+<div class="p-6">
+<p class="text-[var(--text-secondary)] mb-4">Example: Home Lending Sub-LOB with sample data.</p>
+<div class="overflow-x-auto mb-6">
+<table class="grafana-table">
+<thead>
+<tr>
+<th>App ID</th>
+<th>Total Signals</th>
+<th>Green Signals</th>
+<th>App Health %</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="font-semibold text-[var(--text-primary)]">App-HL-01</td>
+<td>5000</td>
+<td>4950</td>
+<td class="text-green-400 font-semibold">99.00%</td>
+</tr>
+<tr>
+<td class="font-semibold text-[var(--text-primary)]">App-HL-02</td>
+<td>12000</td>
+<td>11880</td>
+<td class="text-green-400 font-semibold">99.00%</td>
+</tr>
+<tr>
+<td class="font-semibold text-[var(--text-primary)]">App-HL-03 (New)</td>
+<td>800</td>
+<td>720</td>
+<td class="text-yellow-400 font-semibold">90.00%</td>
+</tr>
+<tr>
+<td class="font-semibold text-[var(--text-primary)]">App-HL-04</td>
+<td>25000</td>
+<td>23750</td>
+<td class="text-orange-400 font-semibold">95.00%</td>
+</tr>
+<tr>
+<td class="font-semibold text-[var(--text-primary)]">App-HL-05 (Legacy)</td>
+<td>1200</td>
+<td>960</td>
+<td class="text-red-500 font-semibold">80.00%</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="grid md:grid-cols-3 gap-6">
+<div class="space-y-2">
+<h3 class="font-semibold text-[var(--text-primary)]">Node Coverage (Current Rule)</h3>
+<div class="formula">
+                                (5 apps with signals / 6 apps total) = <span class="font-bold text-lg text-[var(--primary-accent)]">83.33%</span>
+</div>
+</div>
+<div class="space-y-2">
+<h3 class="font-semibold text-[var(--text-primary)]">Node Health (Current Rule, App-Weighted)</h3>
+<div class="formula">
+                                ((99%+99%+90%+95%+80%) / 5) = <span class="font-bold text-lg text-[var(--primary-accent)]">92.60%</span>
+</div>
+</div>
+<div class="space-y-2">
+<h3 class="font-semibold text-[var(--text-primary)]">Optional Future Rule (Signal-Weighted)</h3>
+<div class="formula">
+                                (42260 / 44000) = <span class="font-bold text-lg text-[var(--primary-accent)]">96.05%</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="grafana-panel">
+<h2 class="grafana-panel-header">Current Stage &amp; Roadmap</h2>
+<div class="overflow-x-auto">
+<table class="grafana-table">
+<thead>
+<tr>
+<th>Metric</th>
+<th>Current Logic</th>
+<th>Next Step (Future Maturity)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="font-semibold text-[var(--text-primary)]">Coverage</td>
+<td>Based on manually maintained list of App IDs in Confluence.</td>
+<td>Automate App ID population from CMDB based on Sub-LOB.</td>
+</tr>
+<tr>
+<td class="font-semibold text-[var(--text-primary)]">Health</td>
+<td>Simple average of App Health % (App-Weighted).</td>
+<td>Signal-weighted health calculation. Introduce business criticality weighting.</td>
+</tr>
+<tr>
+<td class="font-semibold text-[var(--text-primary)]">Incidents</td>
+<td>Manual association of incidents to Apps.</td>
+<td>Automated incident association via tags from ServiceNow.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section>
+<h2 class="text-xl font-bold text-white mb-4">Governance &amp; Transparency</h2>
+<div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="info-card">
+<h3 class="font-bold text-lg text-[var(--text-primary)] mb-2">Source of Truth</h3>
+<p class="text-[var(--text-secondary)] text-sm">App Population: ServiceNow CMDB. Business Rules: Confluence. Live Data: Prometheus/Grafana Loki.</p>
+</div>
+<div class="info-card">
+<h3 class="font-bold text-lg text-[var(--text-primary)] mb-2">Review Cadence</h3>
+<p class="text-[var(--text-secondary)] text-sm">Business rules are reviewed quarterly by the Consumer Technology Architecture Guild.</p>
+</div>
+<div class="info-card">
+<h3 class="font-bold text-lg text-[var(--text-primary)] mb-2">Transparency</h3>
+<p class="text-[var(--text-secondary)] text-sm">This dashboard and its underlying logic are open to all technology staff.</p>
+</div>
+<div class="info-card">
+<h3 class="font-bold text-lg text-[var(--text-primary)] mb-2">Contacts</h3>
+<p class="text-[var(--text-secondary)] text-sm">For questions, please reach out to the #consumer-tech-obs Slack channel.</p>
+</div>
+</div>
+</section>
+</main>
+</div>
+
+</body></html>
