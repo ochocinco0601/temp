@@ -1,0 +1,1666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Observability System (BOS) Documentation v1.3.1</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        /* Layout */
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Navigation */
+        #sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: #2c3e50;
+            color: white;
+            overflow-y: auto;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+
+        .nav-header {
+            padding: 20px;
+            background: #1a252f;
+            font-size: 18px;
+            font-weight: bold;
+            border-bottom: 1px solid #34495e;
+        }
+
+        .nav-list {
+            list-style: none;
+            padding: 10px 0;
+        }
+
+        .nav-section {
+            margin-bottom: 5px;
+        }
+
+        .nav-link, .nav-sublink {
+            display: block;
+            padding: 12px 20px;
+            color: #ecf0f1;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .nav-link:hover {
+            background: #34495e;
+        }
+
+        .nav-subsections {
+            list-style: none;
+            background: #1a252f;
+        }
+
+        .nav-sublink {
+            padding-left: 40px;
+            font-size: 14px;
+        }
+
+        .nav-sublink:hover {
+            background: #243342;
+        }
+
+        /* Main Content */
+        #content {
+            margin-left: 280px;
+            flex: 1;
+            padding: 40px;
+            max-width: 1200px;
+        }
+
+        .section {
+            background: white;
+            margin-bottom: 30px;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #3498db;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #34495e;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        h3 {
+            font-size: 1.5em;
+            color: #34495e;
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+
+        h4 {
+            font-size: 1.2em;
+            color: #34495e;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 5px;
+        }
+
+        /* Code blocks */
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background: #f4f4f4;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin-bottom: 15px;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+        }
+
+        /* Tables */
+        .data-table, .csv-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+
+        .data-table th, .csv-table th {
+            background: #3498db;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .data-table td, .csv-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .data-table tbody tr:nth-child(even),
+        .csv-table tbody tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .data-table tbody tr:hover,
+        .csv-table tbody tr:hover {
+            background: #e3f2fd;
+        }
+
+        /* Links */
+        a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Back to top button */
+        #back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #3498db;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+
+        #back-to-top:hover {
+            background: #2980b9;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            #sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+
+            #sidebar.open {
+                transform: translateX(0);
+            }
+
+            #content {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+                position: fixed;
+                top: 20px;
+                left: 20px;
+                z-index: 1001;
+                background: #3498db;
+                color: white;
+                padding: 10px;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .mobile-menu-toggle {
+                display: none;
+            }
+        }
+
+        /* Utility classes */
+        .no-data {
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
+        strong {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        em {
+            color: #555;
+        }
+
+        /* CSV Template Section Specific */
+        .csv-section {
+            margin-top: 30px;
+        }
+
+        .csv-section h4 {
+            background: #ecf0f1;
+            padding: 10px;
+            border-left: 4px solid #3498db;
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-menu-toggle" onclick="toggleSidebar()">☰ Menu</div>
+
+    <div class="container">
+<nav id="sidebar">
+<div class="nav-header">BOS Documentation v1.3.1</div>
+<ul class="nav-list">
+<li class="nav-section">
+<a href="#overview" class="nav-link">BOS Overview</a>
+</li>
+<li class="nav-section">
+<a href="#sre-platform" class="nav-link">SRE Platform</a>
+<ul class="nav-subsections">
+<li><a href="#schema-overview" class="nav-sublink">Schema Overview</a></li>
+<li><a href="#known-gaps" class="nav-sublink">Known Gaps</a></li>
+</ul>
+</li>
+<li class="nav-section">
+<a href="#product-owners" class="nav-link">Product Owners</a>
+<ul class="nav-subsections">
+<li><a href="#quick-start" class="nav-sublink">Quick Start</a></li>
+<li><a href="#example-walkthrough" class="nav-sublink">Example Walkthrough</a></li>
+</ul>
+</li>
+<li class="nav-section">
+<a href="#data-model" class="nav-link">Data Model</a>
+<ul class="nav-subsections">
+<li><a href="#data-model-overview" class="nav-sublink">Overview</a></li>
+<li><a href="#csv-templates" class="nav-sublink">CSV Templates</a></li>
+</ul>
+</li>
+<li class="nav-section">
+<a href="#platform-ops" class="nav-link">Platform Operations</a>
+</li>
+</ul>
+</nav><main id="content"><section id="overview" class="section"><h1>Business Observability Data Model</h1>
+<h2>Core Principle</h2>
+<p>Business observability begins with defining success in terms of business health—customer outcomes, financial impact, compliance, and operational efficiency. Technical observability (signals, instrumentation, dashboards) exists only to support that framing, ensuring every metric and indicator ties back to whether the service is delivering its business value.</p>
+<h2>What This Is</h2>
+<p>The Business Observability System (BOS) data model is a standardized way to document services that connects business context with technical reality. It captures how services deliver business value and what happens when they fail.</p>
+<strong>Key Innovation</strong>: Instead of just monitoring technical metrics, BOS tracks business outcomes - whether customers can complete transactions, revenue is flowing, and compliance requirements are met.
+<h2>The 5-Table Structure</h2>
+<p>The model uses 52 fields across 5 normalized CSV tables:</p>
+<h3>1. Services (10 fields)</h3>
+Core service information including business purpose, criticality tier, and the key performance question.
+<strong>Example</strong>: "Treasury Order Funding Service - Executes wire transfers to complete home purchase transactions"
+<h3>2. SLI Definitions (16 fields)</h3>
+Defines what to measure and how. Includes both business language (Product Owner) and technical implementation (Developer).
+<strong>Two Types of Metrics</strong>:
+<ul><li><strong>Ratio Metrics</strong>: "What percentage of X succeeded?" (e.g., wire transfer success rate)</li>
+<li><strong>Threshold Metrics</strong>: "Is X fast/small/recent enough?" (e.g., response time < 2 seconds)</li>
+</ul>
+<h3>3. SLO Configurations (10 fields)</h3>
+Sets targets, thresholds, and measurement windows.
+<strong>Example</strong>: "99.5% success rate measured over rolling 7-day window"
+<h3>4. Impact Assessments (12 fields)</h3>
+Quantifies business consequences across four categories:
+<ul><li><strong>Customer Experience</strong>: Who is affected and how</li>
+<li><strong>Financial</strong>: Revenue or cost impact</li>
+<li><strong>Legal/Risk</strong>: Compliance and regulatory implications</li>
+<li><strong>Operational</strong>: Internal efficiency impact</li>
+</ul>
+<h3>5. Operational Metadata (14 fields)</h3>
+Tracks dashboards, runbooks, alert configurations, and lifecycle management.
+<h2>What It Produces</h2>
+<p>From these CSV files, organizations can automatically generate:</p>
+<ul><li><strong>Business dashboards</strong> showing service health in business terms</li>
+<li><strong>Impact assessments</strong> when services degrade or fail</li>
+<li><strong>SLO tracking</strong> with clear business context</li>
+<li><strong>Standardized alerting</strong> tied to business outcomes</li>
+</ul>
+<h3>Example Dashboard Outputs</h3>
+<strong>Example 1: Wire Transfer Service</strong>
+<pre><code class="">┌─────────────────────────────────────────────┐
+│ Treasury Order Funding Service              │
+│ Question: Funded by 8 AM deadline?         │
+│                                             │
+│ Current: 100%  Target: 100%  ✓ HEALTHY     │
+│                                             │
+│ Business Impact When Service Fails:        │
+│ • Customer: 850 homebuyers can't close     │
+│ • Financial: $323M daily wire volume       │
+│ • Legal/Risk: [Not Applicable]             │
+│ • Operational: 10 ops staff escalations    │
+└─────────────────────────────────────────────┘
+</code></pre>
+<strong>Example 2: Payment Accuracy Service</strong>
+<pre><code class="">┌─────────────────────────────────────────────┐
+│ Payment Application Monitor                 │
+│ Question: Exception queue below 5%?        │
+│                                             │
+│ Current: 3.2%  Target: <5%  ✓ HEALTHY      │
+│                                             │
+│ Business Impact When Service Fails:        │
+│ • Customer: 100K accounts show wrong balance│
+│ • Financial: $500K remediation cost        │
+│ • Legal/Risk: [Not Applicable]             │
+│ • Operational: 15 analysts for corrections │
+└─────────────────────────────────────────────┘
+</code></pre>
+<h2>Getting Started</h2>
+<li><strong>Choose a critical service</strong> - Start with something important but well-understood</li>
+<li><strong>Fill out the templates</strong> - Begin with services.csv, then work through the others</li>
+<li><strong>Partner across roles</strong> - Product Owners, Developers, and Operations each own different fields</li>
+<li><strong>Iterate and refine</strong> - The first version won't be perfect</li>
+<h2>Why This Matters</h2>
+<p>Traditional monitoring tells you a service is down. Business Observability tells you:
+<ul><li>Which customers can't complete their transactions</li>
+<li>How much revenue is at risk</li>
+<li>Whether you're meeting regulatory requirements</li>
+<li>Which business processes are impacted</li>
+</ul></p>
+<p>This shifts the conversation from "the server is at 90% CPU" to "home purchases are being delayed."</p>
+<h2>Design Principles</h2>
+<li><strong>Business First</strong>: Every technical metric ties to a business outcome</li>
+<li><strong>Role-Based</strong>: Different personas own different parts of the data</li>
+<li><strong>Walking Skeleton</strong>: Start simple, iterate toward completeness</li>
+<li><strong>Enterprise Scale</strong>: Designed to handle 1000+ services</li>
+<h2>Current Limitations</h2>
+<p>This is v1.0 with intentional simplifications:
+<ul><li>One SLI per service (multi-SLI support coming)</li>
+<li>No service dependency tracking (v1.2)</li>
+<li>No organizational hierarchy (v2.0)</li>
+<li>Limited to basic impact categories</li>
+</ul></p>
+<p>These limitations are by design - proving the core model before adding complexity.</p></section><section id="sre-platform" class="section"><h1>SRE Platform</h1><div id="schema-overview" class="subsection"><h2>Technical Schema Overview</h2>
+<h3>Semantic Flow Architecture</h3>
+<p>The BOS data model implements this semantic flow:</p>
+<pre><code class="">[Stakeholder] → has an → [Expectation]
+     ↓                        ↓
+[services.csv]        [slo_configurations.csv]
+     ↓
+...which, if broken, causes an → [Impact]
+     ↓
+[impact_assessments.csv]
+     ↓
+...which is detected by → [Telemetry]
+     ↓
+[sli_definitions.csv]
+     ↓
+...which creates an actionable → [Signal]
+     ↓
+[operational_metadata.csv]
+     ↓
+...which informs both a → [Playbook] and a [Dashboard]
+</code></pre>
+<p>This flow drives why we have 5 connected tables, each capturing a stage in this chain.</p>
+<h3>Data Model Structure</h3>
+<p>The BOS data model consists of 5 normalized tables with foreign key relationships:</p>
+<pre><code class="">                     services (10 fields)
+<table class="data-table">
+<thead><tr>
+</tr></thead><tbody>
+</tbody></table>
+                     [service_id]
+<table class="data-table">
+<thead><tr>
+</tr></thead><tbody>
+</tbody></table>
+        +-----------------+------------------+------------------+
+<table class="data-table">
+<thead><tr>
+</tr></thead><tbody>
+</tbody></table>
+sli_definitions    slo_configurations  impact_assessments  operational_metadata
+  (16 fields)         (10 fields)         (12 fields)         (14 fields)
+</code></pre>
+<h3>Table Relationships</h3>
+<h4>Primary Table: services</h4>
+<ul><li><strong>Key</strong>: service_id (unique identifier)</li>
+<li><strong>Purpose</strong>: Core service definition and business context</li>
+<li><strong>Cardinality</strong>: One row per service</li>
+</ul>
+<h4>Dependent Tables (all link via service_id)</h4>
+<ul><li><strong>sli_definitions</strong>: One row per service (1:1)</li>
+<li><strong>slo_configurations</strong>: One row per service (1:1)</li>
+<li><strong>impact_assessments</strong>: 1-4 rows per service (1:many)</li>
+</ul>
+  - One row per impact category (customer, financial, legal, operational)
+<ul><li><strong>operational_metadata</strong>: One row per service (1:1)</li>
+</ul>
+<h3>Field Types and Validation</h3>
+<p>All CSV fields are stored as TEXT. Your platform implementation should validate:</p>
+<table class="data-table">
+<thead><tr>
+<th><p></th>
+<th>Field Pattern</th>
+<th>Validation Rule</th>
+<th>Example</th>
+</tr></thead><tbody>
+<tr>
+<td>service_id</td>
+<td>Unique identifier</td>
+<td>SVC001, SVC002</td>
+</tr>
+<tr>
+<td>tierLevel</td>
+<td>Integer 1-6</td>
+<td>1 (most critical)</td>
+</tr>
+<tr>
+<td>sloTarget</td>
+<td>Decimal 0-100</td>
+<td>99.5</td>
+</tr>
+<tr>
+<td>Timestamps</td>
+<td>ISO 8601 format</td>
+<td>2024-01-15T10:30:00Z</td>
+</tr>
+<tr>
+<td>URLs</td>
+<td>Valid URL format</td>
+<td>https://wiki.company.com/runbook</td>
+</tr>
+<tr>
+<td>Email</td>
+<td>Valid email format</td>
+<td>team@company.com</td>
+</tr>
+<tr>
+<td>Boolean</td>
+<td>true/false</td>
+<td>true</td>
+<td></p></td>
+</tr>
+</tbody></table>
+<h3>Query Patterns</h3>
+<p>Common queries your platform will need to support:</p>
+<h4>Basic Service Queries</h4>
+<h5>Get complete service data</h5>
+<pre><code class="sql">SELECT * FROM services s
+LEFT JOIN sli_definitions sli ON s.service_id = sli.service_id
+LEFT JOIN slo_configurations slo ON s.service_id = slo.service_id
+LEFT JOIN impact_assessments ia ON s.service_id = ia.service_id
+LEFT JOIN operational_metadata om ON s.service_id = om.service_id
+WHERE s.service_id = 'SVC001';
+</code></pre>
+<h5>Find critical services by tier</h5>
+<pre><code class="sql">SELECT * FROM services
+WHERE tierLevel <= 2
+ORDER BY tierLevel, serviceName;
+</code></pre>
+<h4>Specialized Query Patterns</h4>
+<h5>Find validation and compliance services</h5>
+<pre><code class="sql">SELECT * FROM services
+WHERE businessPurpose LIKE '%validat%'
+   OR businessPurpose LIKE '%monitor%'
+   OR businessPurpose LIKE '%compliance%';
+</code></pre>
+<h5>Get zero-tolerance services</h5>
+<pre><code class="sql">SELECT s.*, slo.sloTarget, slo.sloTargetRationale
+FROM services s
+JOIN slo_configurations slo ON s.service_id = slo.service_id
+WHERE slo.sloTarget = 100.0;  -- Zero tolerance services
+</code></pre>
+<h5>Find services with exception queues</h5>
+<pre><code class="sql">SELECT s.*, sli.thresholdValue, sli.thresholdOperator
+FROM services s
+JOIN sli_definitions sli ON s.service_id = sli.service_id
+WHERE sli.goodEventsCriteria_Dev LIKE '%exception_queue%'
+   OR sli.goodEventsCriteria_Dev LIKE '%manual_intervention%';
+</code></pre>
+<h4>Impact Analysis Queries</h4>
+<h5>Get all impacts for a service</h5>
+<pre><code class="sql">SELECT * FROM impact_assessments
+WHERE service_id = 'SVC001'
+ORDER BY impactCategory;
+</code></pre>
+<h5>Find services with regulatory risk</h5>
+<code>`</code>sql
+SELECT DISTINCT s.*, ia.regulatoryImpact
+FROM services s
+JOIN impact_assessments ia ON s.service_id = ia.service_id
+WHERE ia.impactCategory = 'legal_risk'
+AND ia.regulatoryImpact IS NOT NULL;
+<h3>Common Query Patterns for Different Service Purposes</h3>
+<h4>Exception Queue Monitoring</h4>
+For services tracking items requiring manual review:
+<ul><li>Track percentage in exception queue vs total processed</li>
+<li>Threshold typically 5-10% depending on complexity</li>
+<li>Query pattern: <code>WHERE manual_intervention=false</code></li>
+</ul>
+<h4>Compliance Validation</h4>
+For services verifying policy adherence:
+<ul><li>Often have 100% SLO targets (zero tolerance)</li>
+<li>Check for violations rather than successes</li>
+<li>Query pattern: <code>WHERE policy_violation=false</code></li>
+</ul>
+<h4>Completeness Tracking</h4>
+For services finding missing transactions:
+<ul><li>Compare what should exist vs what does exist</li>
+<li>Often involves JOIN queries across systems</li>
+<li>Query pattern: <code>WHERE expected=true AND processed=false</code></li>
+</ul>
+<h3>Data Integrity Rules</h3>
+<li><strong>service_id</strong> must exist in services table before adding to other tables</li>
+<li><strong>impactCategory</strong> must be one of: customer_experience, financial, legal_risk, operational</li>
+<li><strong>sliType</strong> must be either:</li>
+   - <strong>ratioMetric</strong>: Percentage-based (goodEvents/totalEvents)
+   - <strong>thresholdMetric</strong>: Boundary-based (value < threshold)
+<li><strong>serviceType</strong> must be one of: customer-facing, internal, infrastructure</li>
+<li><strong>status</strong> must be one of: draft, active, deprecated</li>
+<li><strong>financialImpact</strong>: Must be actual transaction amounts, not hypothetical costs</li>
+<h3>CSV to Database Mapping</h3>
+<p>Simple approach for initial implementation:</p>
+<li>Read all CSV files</li>
+<li>Create tables with all fields as VARCHAR/TEXT</li>
+<li>Add indexes on service_id for all tables</li>
+<li>Add unique constraint on services.service_id</li>
+<li>Implement foreign key constraints</li>
+<h3>Performance Considerations</h3>
+<p>For 1000+ services scale:
+<ul><li>Index on service_id (all tables)</li>
+<li>Index on tierLevel (services)</li>
+<li>Index on status (operational_metadata)</li>
+<li>Consider partitioning impact_assessments by impactCategory</li>
+</ul></p>
+<h3>Implementation Notes</h3>
+<ul><li>Start with direct CSV import for walking skeleton</li>
+<li>Add validation layer after basic functionality works</li>
+<li>Consider caching layer for read-heavy operations</li>
+</ul>
+<li>Plan for versioning strategy early (version field exists)</li></div><div id="known-gaps" class="subsection"><h2>Known Gaps and Limitations</h2>
+<h3>Intentional Omissions for v1.0</h3>
+<p>These gaps are <strong>by design</strong> for the walking skeleton approach. Do not implement these yet.</p>
+<h4>1. Service Dependencies ❌</h4>
+<strong>Not Tracked</strong>: No upstream/downstream service relationships
+<ul><li>Cannot map service call chains</li>
+<li>Cannot trace failure propagation</li>
+<li>Cannot identify critical path dependencies</li>
+</ul>
+<strong>Why Omitted</strong>: Complexity of many-to-many relationships; need discovery methodology first
+<strong>Future Plan (v1.2)</strong>: Add dependencies.csv with source/target/criticality fields
+<h4>2. Organizational Hierarchy ❌</h4>
+<strong>Not Included</strong>: No L3/L4 business unit structure
+<ul><li>Cannot roll up metrics by organization</li>
+<li>Cannot map to executive reporting structure</li>
+<li>No matrix organization support</li>
+</ul>
+<strong>Why Omitted</strong>: Every enterprise has unique org structure; need input first
+<strong>Future Plan (v2.0)</strong>: Add organizational dimension table
+<h4>3. Business Functions ❌</h4>
+<strong>Not Modeled</strong>: No connection to business processes
+<ul><li>Cannot answer "what business function does this support?"</li>
+<li>Missing business capability taxonomy</li>
+<li>No process flow mapping</li>
+</ul>
+<strong>Why Omitted</strong>: Requires business architecture maturity that doesn't exist yet
+<strong>Future Plan</strong>: Add business_functions.csv when process taxonomy defined
+<h4>4. Multiple SLIs per Service ❌</h4>
+<strong>Current Limit</strong>: One SLI per service only
+<ul><li>Real services often have multiple SLIs</li>
+<li>Cannot track different aspects (latency + availability)</li>
+<li>Oversimplified for complex services</li>
+</ul>
+<strong>Why Limited</strong>: Proving pattern with simplest case first
+<strong>Future Plan (v1.1)</strong>: Extend to many-to-one relationship
+<h4>5. Technical Service Layer ❌</h4>
+<strong>Not Separated</strong>: No distinction between business and technical services
+<ul><li>Cannot model microservice architectures</li>
+<li>Missing container/pod level details</li>
+<li>No deployment topology</li>
+</ul>
+<strong>Why Omitted</strong>: Focus on business observability first, technical details second
+<h4>6. Time-based Variations ❌</h4>
+<strong>Not Supported</strong>: No concept of different SLOs by time
+<ul><li>Cannot set different targets for business hours</li>
+<li>No seasonal adjustment capability</li>
+<li>Single static target only</li>
+</ul>
+<strong>Why Omitted</strong>: Advanced feature, not needed for initial proof
+<h3>Implementation Guidance</h3>
+<h4>What This Means for Platform Design</h4>
+<li><strong>Design for Extension</strong>: These gaps will be filled in future versions</li>
+<li><strong>Don't Over-Engineer</strong>: Resist adding these features proactively</li>
+<li><strong>Feedback Loop</strong>: Use v1.0 to discover real requirements</li>
+<li><strong>Schema Evolution</strong>: Plan for non-breaking additions</li>
+<h4>Migration Strategy</h4>
+<p>When these gaps are addressed:
+<ul><li>New tables will be added (not modifications to existing)</li>
+<li>Foreign key relationships will extend current model</li>
+<li>Backward compatibility will be maintained</li>
+<li>Optional fields pattern for gradual adoption</li>
+</ul></p>
+<h3>Current Coverage</h3>
+<p>What we DO have (~45% of full vision):
+<ul><li>✅ Core service definition</li>
+<li>✅ SLI/SLO configuration</li>
+<li>✅ Business impact assessment</li>
+<li>✅ Operational metadata</li>
+<li>✅ Basic lifecycle management</li>
+</ul></p>
+<p>What we DON'T have (remaining 55%):
+<ul><li>❌ Service dependencies</li>
+<li>❌ Organizational hierarchy</li>
+<li>❌ Business process mapping</li>
+<li>❌ Multi-SLI support</li>
+<li>❌ Technical service details</li>
+<li>❌ Advanced SLO patterns</li>
+</ul></p>
+<h3>Questions to Ask</h3>
+<p>Before building the platform, clarify:</p>
+<li>Is single SLI per service acceptable for MVP?</li>
+<li>How critical is dependency tracking for phase 1?</li>
+<li>Can organizational rollup wait until v2?</li>
+<li>What's the timeline pressure vs. completeness tradeoff?</li>
+<h3>Recommendation</h3>
+<p>Build v1.0 as specified. Use production experience to validate which gaps matter most, then address in priority order based on real usage patterns, not theoretical completeness.</p></div></section><section id="product-owners" class="section"><h1>Product Owners</h1><div id="quick-start" class="subsection"><h2>Quick Start Guide for Product Owners</h2>
+<h3>Your Role in BOS</h3>
+<p>As a Product Owner, you define the <strong>business context</strong> for your service. You answer: What does this service do for the business? What happens when it fails? Who is affected?</p>
+<h3>The Validation Chain</h3>
+<p>A problem is only solved if the intended outcome is achieved. Achieving an outcome requires knowing what that outcome is. Knowing if the outcome was achieved requires explicit validation. Validation requires instrumentation and measurement. Instrumentation requires the goal to be defined as a requirement in the first place.</p>
+<strong>Therefore</strong>: If we want to know whether a business problem is solved, we must treat the business goal as a requirement and build in validation through SLIs and SLOs.
+<h3>The Three Tables You Own</h3>
+<h4>1. services.csv - Core Service Information</h4>
+You own all 10 fields in this table:
+<table class="data-table">
+<thead><tr>
+<th><p></th>
+<th>Field</th>
+<th>What to Provide</th>
+<th>Example</th>
+</tr></thead><tbody>
+<tr>
+<td>service_id</td>
+<td>Unique identifier (work with tech team)</td>
+<td>SVC001</td>
+</tr>
+<tr>
+<td>serviceName</td>
+<td>Technical name of service</td>
+<td>treasury-order-funding-service</td>
+</tr>
+<tr>
+<td>displayName</td>
+<td>Human-friendly name</td>
+<td>Treasury Order Funding Service</td>
+</tr>
+<tr>
+<td>businessPurpose</td>
+<td>What it does in business terms</td>
+<td>Execute wire transfers for home purchases</td>
+</tr>
+<tr>
+<td>serviceType</td>
+<td>customer-facing, internal, or infrastructure</td>
+<td>customer-facing</td>
+</tr>
+<tr>
+<td>tierLevel</td>
+<td>1 (critical) to 6 (low impact)</td>
+<td>1</td>
+</tr>
+<tr>
+<td>businessUnit</td>
+<td>Your organization</td>
+<td>Home Lending</td>
+</tr>
+<tr>
+<td>performanceQuestion</td>
+<td>The ONE question that matters</td>
+<td>What % of wires complete on time?</td>
+</tr>
+<tr>
+<td>tags</td>
+<td>Optional categorization</td>
+<td>mortgage,funding</td>
+</tr>
+<tr>
+<td>productOwner</td>
+<td>Your email</td>
+<td>sarah.chen@company.com</td>
+<td></p></td>
+</tr>
+</tbody></table>
+<h4>2. sli_definitions.csv - Defining Success (Your Fields)</h4>
+You define success in business language - developers will translate to technical:
+<table class="data-table">
+<thead><tr>
+<th><p></th>
+<th>Field</th>
+<th>What to Provide</th>
+<th>Example</th>
+</tr></thead><tbody>
+<tr>
+<td>goodEventsCriteria_PO</td>
+<td>What counts as success?</td>
+<td>Wire transfer completed successfully</td>
+</tr>
+<tr>
+<td>totalEventsCriteria_PO</td>
+<td>What are we measuring?</td>
+<td>All wire transfer attempts</td>
+<td></p></td>
+</tr>
+</tbody></table>
+<strong>Key Point</strong>: Describe this as you would to an executive, not an engineer.
+<h4>3. impact_assessments.csv - What Happens When Things Fail</h4>
+Create 1-4 rows per service, one for each applicable impact type:
+<table class="data-table">
+<thead><tr>
+<th><p></th>
+<th>Impact Type</th>
+<th>What to Document</th>
+<th>Example</th>
+</tr></thead><tbody>
+<tr>
+<td>customer_experience</td>
+<td>Who can't do what</td>
+<td>850 homebuyers can't close on their homes</td>
+</tr>
+<tr>
+<td>financial</td>
+<td><strong>Actual transaction dollars</strong> flowing through service</td>
+<td>$323M daily wire transfer volume</td>
+</tr>
+<tr>
+<td>legal_risk</td>
+<td>Regulatory violations, compliance breaches</td>
+<td>TRID timing violations, CFPB penalties</td>
+</tr>
+<tr>
+<td>operational</td>
+<td>Manual work, efficiency loss</td>
+<td>10 ops staff handle escalations</td>
+<td></p></td>
+</tr>
+</tbody></table>
+<strong>Important</strong>: Financial impact captures <strong>real money</strong> processed by your service (wire transfers, loans, trades, fees), NOT hypothetical costs like "$10K/hour downtime".
+<h3>Step-by-Step Process</h3>
+<h4>Step 1: Start with WHY</h4>
+Before filling any fields, answer:
+<ul><li>Why does this service exist?</li>
+<li>What business problem does it solve?</li>
+<li>Who relies on it?</li>
+</ul>
+<h4>Step 2: Fill services.csv</h4>
+Start here - this is your service's identity card.
+<h4>Step 3: Define Success</h4>
+In sli_definitions.csv, describe in plain language:
+<ul><li>What does "working correctly" mean?</li>
+<li>What percentage of the time should it work?</li>
+</ul>
+<h4>Step 4: Document Impact</h4>
+Think through what breaks when your service fails:
+<ul><li><strong>Customers</strong>: Can they complete their transaction?</li>
+<li><strong>Revenue</strong>: Is money at risk?</li>
+<li><strong>Compliance</strong>: Any regulatory issues?</li>
+<li><strong>Operations</strong>: Who has to scramble?</li>
+</ul>
+<h4>Step 5: Partner with Tech Teams</h4>
+<ul><li><strong>Developers</strong> will translate your business definitions to technical queries</li>
+<li><strong>Operations</strong> will add monitoring and runbook details</li>
+<li>Stay involved to ensure business context isn't lost</li>
+</ul>
+<h3>Common Service Patterns</h3>
+<p>BOS applies to many different service purposes. Here are examples showing the range of performance questions and impact patterns:</p>
+<h4>Processing Services</h4>
+<h5>Wire Transfer Service (Deadline-Critical)</h5>
+<ul><li><strong>Performance Question</strong>: "Are all closings funded by 8 AM deadline?"</li>
+<li><strong>SLO Target</strong>: 100% (zero tolerance for deadline misses)</li>
+<li><strong>Financial Impact</strong>: $323M daily wire volume</li>
+<li><strong>Key Impact</strong>: Home purchases can't close</li>
+</ul>
+<h5>Credit Check Service (Response Time)</h5>
+<ul><li><strong>Performance Question</strong>: "What % return valid scores within 30 seconds?"</li>
+<li><strong>SLO Target</strong>: 99.5% success rate</li>
+<li><strong>Financial Impact</strong>: Loan origination volume at risk</li>
+<li><strong>Key Impact</strong>: Loan decisions delayed</li>
+</ul>
+<h5>Payment API (Latency-Critical)</h5>
+<ul><li><strong>Performance Question</strong>: "Are responses under 100ms?"</li>
+<li><strong>SLO Target</strong>: 99% meet threshold</li>
+<li><strong>Financial Impact</strong>: Transaction volume dependent on speed</li>
+<li><strong>Key Impact</strong>: Customer timeouts and abandonment</li>
+</ul>
+<h4>Validation and Compliance Services</h4>
+<h5>Payment Accuracy Monitor</h5>
+<ul><li><strong>Performance Question</strong>: "Is exception queue below 5% threshold?"</li>
+<li><strong>SLO Target</strong>: 95% posting accuracy</li>
+<li><strong>Financial Impact</strong>: Remediation costs for misapplied payments</li>
+<li><strong>Key Impact</strong>: Wrong account balances require manual correction</li>
+<li><strong>Note</strong>: Measures correctness of payment posting</li>
+</ul>
+<h5>Fee Compliance Validator</h5>
+<ul><li><strong>Performance Question</strong>: "Are fees correctly withheld from deferred accounts?"</li>
+<li><strong>SLO Target</strong>: 100% compliance (zero tolerance)</li>
+<li><strong>Financial Impact</strong>: Wrongful fee collections requiring refunds</li>
+<li><strong>Legal Risk</strong>: CFPB enforcement for pattern violations</li>
+<li><strong>Note</strong>: Validates adherence to fee policies</li>
+</ul>
+<h5>Refund Completeness Tracker</h5>
+<ul><li><strong>Performance Question</strong>: "Are all eligible GAP refunds being issued?"</li>
+<li><strong>SLO Target</strong>: 99% completeness</li>
+<li><strong>Financial Impact</strong>: Unearned premiums retained incorrectly</li>
+<li><strong>Legal Risk</strong>: State insurance regulator penalties</li>
+<li><strong>Note</strong>: Identifies missing refunds that should have been processed</li>
+</ul>
+<h3>Tips for Success</h3>
+<h4>DO:</h4>
+<ul><li>Use plain business language</li>
+<li>Quantify impacts where possible ($, customer count)</li>
+<li>Focus on your most critical service first</li>
+<li>Ask "what would the CEO care about?"</li>
+</ul>
+<h4>DON'T:</h4>
+<ul><li>Use technical jargon in PO fields</li>
+<li>Leave impact sections vague ("stuff breaks")</li>
+<li>Try to do the developer's fields</li>
+<li>Overthink version 1.0</li>
+</ul>
+<h3>Getting Help</h3>
+<ul><li>Review the treasury example for a complete walkthrough</li>
+<li>Partner with your technical team early</li>
+<li>Focus on business value, not technical implementation</li>
+</ul>
+<li>Remember: This is iterative, not final</li></div><div id="example-walkthrough" class="subsection"><h2>Example Walkthrough: Treasury Order Funding Service</h2>
+<h3>Service Context</h3>
+<p>This example shows how to document a wire transfer service that enables home purchases. It's a Tier 1 (critical) service because failures directly impact customers' ability to close on their homes.</p>
+<h3>Step 1: Core Service Definition (services.csv)</h3>
+<pre><code class="csv">service_id: SVC001
+serviceName: treasury-order-funding-service
+displayName: Treasury Order Funding Service
+businessPurpose: Execute wire transfers to complete home purchase transactions
+serviceType: customer-facing
+tierLevel: 1
+businessUnit: Home Lending
+performanceQuestion: What percentage of wire transfers complete successfully on scheduled closing date?
+tags: mortgage,funding,critical
+productOwner: sarah.chen@company.com
+</code></pre>
+<h4>Why These Choices:</h4>
+<ul><li><strong>tierLevel = 1</strong>: Home closings are time-critical with legal implications</li>
+<li><strong>customer-facing</strong>: Directly impacts external customers (homebuyers)</li>
+<li><strong>performanceQuestion</strong>: Focuses on the business outcome (successful closing), not technical metrics</li>
+</ul>
+<h3>Step 2: Defining Success (sli_definitions.csv)</h3>
+<h4>Business Language (Product Owner fills these):</h4>
+<pre><code class="">goodEventsCriteria_PO: Wire transfer completed successfully enabling scheduled closing
+totalEventsCriteria_PO: All wire transfer attempts for scheduled closings
+</code></pre>
+<h4>Technical Translation (Developer fills these):</h4>
+<pre><code class="">goodEventsCriteria_Dev: status='FUNDED' AND closing_date=scheduled_date AND amount>0
+totalEventsCriteria_Dev: request_type='CLOSING_FUNDING' AND scheduled_date IS NOT NULL
+</code></pre>
+<h4>Why This Matters:</h4>
+The PO defines success as "closing happened on time" while the developer translates this to specific database fields and conditions.
+<h3>Step 3: Setting Targets (slo_configurations.csv)</h3>
+<pre><code class="csv">sloTarget: 99.5
+sloTargetRationale: Based on commitment to real estate partners and regulatory requirements
+timeWindow: 7d
+timeWindowType: rolling
+</code></pre>
+<h4>Business Reasoning:</h4>
+<ul><li><strong>99.5% target</strong>: Allows ~4 failures per 1000 transactions</li>
+<li><strong>7-day rolling</strong>: Matches weekly business reporting cycles</li>
+<li><strong>Rationale</strong>: Not arbitrary - tied to partner agreements</li>
+</ul>
+<h3>Step 4: Impact Assessment (impact_assessments.csv)</h3>
+<p>Every service can have up to FOUR types of impact. This service affects three of the four categories, so it has THREE rows:</p>
+<h4>Row 1: Customer Impact</h4>
+<pre><code class="csv">service_id: SVC001
+impactCategory: customer_experience
+stakeholderType: homebuyers
+stakeholderCount: 850 daily
+failureScenario: Wire transfer fails preventing scheduled closing
+businessConsequence: Homebuyers cannot complete purchase and may lose rate lock
+</code></pre>
+<h4>Row 2: Financial Impact</h4>
+<pre><code class="csv">service_id: SVC001
+impactCategory: financial
+stakeholderType: company
+failureScenario: Wire transfer failures prevent closings
+businessConsequence: Lost transaction revenue and potential customer churn
+financialImpact: $323M daily wire volume
+</code></pre>
+<strong>Note</strong>: The $323M represents actual money flowing through the service daily - real wire transfers that won't be processed if the service fails. This is NOT a hypothetical "cost of downtime" calculation.
+<h4>Row 3: Operational Impact</h4>
+<pre><code class="csv">service_id: SVC001
+impactCategory: operational
+stakeholderType: operations team
+stakeholderCount: 10 people
+failureScenario: Wire failures require manual intervention
+businessConsequence: Manual escalation process consuming ops capacity
+</code></pre>
+<h4>Why No Legal/Risk Impact?</h4>
+This service doesn't have specific regulatory timing requirements (like TRID disclosures) or compliance obligations that would be violated by a failure. Standard banking regulations apply but aren't at risk from service failures.
+<strong>When Legal/Risk WOULD Apply</strong>:
+<ul><li>TRID disclosure services (3-day/7-day timing requirements)</li>
+<li>BSA/AML transaction monitoring (must review within timeframes)</li>
+<li>Fair lending decision services (must comply with ECOA timelines)</li>
+<li>Data privacy services (CCPA/GDPR requirements)</li>
+</ul>
+<h3>Step 5: Operational Details (operational_metadata.csv)</h3>
+<pre><code class="csv">alertNotificationTargets: email:homelending-ops@company.com;pagerduty:PD-HL-001
+dashboardUrl: https://grafana.company.com/d/funding-slo
+runbookUrl: https://wiki.company.com/runbooks/funding
+alertingConfigured: true
+status: active
+</code></pre>
+<h3>Key Lessons from This Example</h3>
+<h4>1. Start with Business Purpose</h4>
+Everything flows from understanding why this service matters to the business.
+<h4>2. Multiple Impacts Are Common</h4>
+Most critical services affect customers, revenue, AND operations.
+<h4>3. Quantify Where Possible</h4>
+<ul><li>850 customers daily (specific)</li>
+<li>$380,000 average transaction (measurable)</li>
+<li>10 ops people (countable)</li>
+</ul>
+<h4>4. Business vs Technical Language</h4>
+Notice how PO fields use business terms while Dev fields use technical syntax.
+<h4>5. Not Every Field Applies</h4>
+<ul><li>No legal_risk impact for this service</li>
+<li>Some optional fields left empty</li>
+<li>That's perfectly fine</li>
+</ul>
+<h3>Applying This to Your Service</h3>
+<p>Ask yourself:
+<li>What's my service's core business purpose?</li>
+<li>How do I define success in business terms?</li>
+<li>Who suffers when it fails? (customers, revenue, compliance, operations)</li>
+<li>What's a reasonable success target based on business needs?</li>
+<li>Who needs to be alerted when something goes wrong?</li></p>
+<h3>Remember</h3>
+<p>This is a <strong>walking skeleton</strong> - start simple:
+<ul><li>Document one service well rather than many poorly</li>
+<li>Focus on the most critical business impacts</li>
+<li>Iterate based on what you learn</li>
+</ul>
+<li>Perfect is the enemy of good enough</li></p></div></section><section id="data-model" class="section"><h1>Data Model</h1><div id="data-model-overview" class="subsection"><h2>BOS Data Model Templates</h2>
+<h3>Overview</h3>
+<p>This folder contains the CSV templates that define the Business Observability System data model. These templates show the structure and include example data for two services.</p>
+<h3>Files Included</h3>
+<table class="data-table">
+<thead><tr>
+<th><p></th>
+<th>File</th>
+<th>Description</th>
+<th>Owner</th>
+<th>Records</th>
+</tr></thead><tbody>
+<tr>
+<td>services.csv</td>
+<td>Core service definitions</td>
+<td>Product Owner</td>
+<td>2 examples</td>
+</tr>
+<tr>
+<td>sli_definitions.csv</td>
+<td>Service level indicators</td>
+<td>PO + Developer</td>
+<td>2 examples</td>
+</tr>
+<tr>
+<td>slo_configurations.csv</td>
+<td>Targets and thresholds</td>
+<td>PO + Operations</td>
+<td>2 examples</td>
+</tr>
+<tr>
+<td>impact_assessments.csv</td>
+<td>Business impact when failures occur</td>
+<td>Product Owner</td>
+<td>5 examples</td>
+</tr>
+<tr>
+<td>operational_metadata.csv</td>
+<td>Dashboards, alerts, runbooks</td>
+<td>Operations</td>
+<td>2 examples</td>
+<td></p></td>
+</tr>
+</tbody></table>
+<h3>Relationships</h3>
+<p>All tables connect through the <code>service_id</code> field:
+<ul><li>Each service has exactly ONE row in services, sli_definitions, slo_configurations, and operational_metadata</li>
+<li>Each service has 1-4 rows in impact_assessments (one per applicable impact category)</li>
+</ul></p>
+<h3>Example Services Included</h3>
+<h4>SVC001: Treasury Order Funding Service</h4>
+<ul><li><strong>Type</strong>: Customer-facing, Tier 1 (critical)</li>
+<li><strong>Purpose</strong>: Execute wire transfers for home purchases</li>
+<li><strong>Impact Types</strong>: Customer, Financial, Operational</li>
+</ul>
+<h4>SVC002: Credit Check Service</h4>
+<ul><li><strong>Type</strong>: Internal, Tier 2</li>
+<li><strong>Purpose</strong>: Validate borrower creditworthiness</li>
+<li><strong>Impact Types</strong>: Customer, Financial, Legal/Risk, Operational</li>
+</ul>
+<h3>How to Use These Templates</h3>
+<li><strong>Review the Examples</strong>: Study how SVC001 and SVC002 are documented</li>
+<li><strong>Copy the Structure</strong>: Use these as templates for your services</li>
+<li><strong>Start with services.csv</strong>: Define your service's basic information</li>
+<li><strong>Work Through Each Table</strong>: Follow the relationships to complete all data</li>
+<li><strong>Focus on Your Fields</strong>: Each role owns specific fields (see comments in files)</li>
+<h3>Field Guidance</h3>
+<p>Each CSV file includes:
+<ul><li>Comment headers explaining each field</li>
+<li>Example data showing proper format</li>
+<li>Clear indication of required vs optional fields</li>
+</ul></p>
+<h3>Important Notes</h3>
+<ul><li><strong>service_id</strong> must be unique and consistent across all files</li>
+<li>Start with your most critical service (Tier 1 or 2)</li>
+<li>Some fields may not apply to your service - that's OK</li>
+<li>This is v1.0 - we expect to iterate based on your feedback</li>
+</ul>
+<h3>Next Steps</h3>
+<li>Choose a critical service from your portfolio</li>
+<li>Create a new service_id (e.g., SVC003)</li>
+<li>Fill out each CSV following the examples</li>
+<li>Note any fields that don't fit your needs</li>
+<li>Share feedback on gaps or confusion</li>
+<h3>Questions?</h3>
+<ul><li>Which fields are unclear?</li>
+<li>What information about your service doesn't fit?</li>
+<li>What's missing that you need to track?</li>
+</ul>
+<p>Your feedback shapes the evolution of this model from walking skeleton to enterprise standard.</p></div><div id="csv-templates" class="subsection"><h2>CSV Templates</h2><p>The following tables show the complete data model structure with example data:</p><div class="csv-section"><h4>Services</h4><table class="csv-table" id="services">
+<thead><tr>
+<th># services.csv - Core service information owned by Product Owner</th>
+<th></th>
+</tr></thead>
+<tbody>
+<tr>
+<td># service_id: Unique identifier for the service (e.g.</td>
+<td>[&#x27; SVC001)&#x27;]</td>
+</tr>
+<tr>
+<td># serviceName: Technical name used in systems (e.g.</td>
+<td>[&#x27; treasury-order-funding-service)&#x27;]</td>
+</tr>
+<tr>
+<td># displayName: Human-readable name for dashboards (e.g.</td>
+<td>[&#x27; Treasury Order Funding Service)&#x27;]</td>
+</tr>
+<tr>
+<td># businessPurpose: What the service does for the business in plain language</td>
+</tr>
+<tr>
+<td># serviceType: One of [customer-facing</td>
+<td>[&#x27; internal&#x27;, &#x27; infrastructure]&#x27;]</td>
+</tr>
+<tr>
+<td># tierLevel: Criticality from 1 (most critical) to 6 (least critical)</td>
+</tr>
+<tr>
+<td># businessUnit: Owning business organization</td>
+</tr>
+<tr>
+<td># performanceQuestion: The key question this service&#x27;s SLO answers</td>
+</tr>
+<tr>
+<td># tags: Comma-separated categorization labels (optional)</td>
+</tr>
+<tr>
+<td># productOwner: Email of the responsible Product Owner</td>
+</tr>
+<tr>
+<td>service_id</td>
+<td>[&#x27;serviceName&#x27;, &#x27;displayName&#x27;, &#x27;businessPurpose&#x27;, &#x27;serviceType&#x27;, &#x27;tierLevel&#x27;, &#x27;businessUnit&#x27;, &#x27;performanceQuestion&#x27;, &#x27;tags&#x27;, &#x27;productOwner&#x27;]</td>
+</tr>
+<tr>
+<td>SVC001</td>
+<td>[&#x27;treasury-order-funding-service&#x27;, &#x27;Treasury Order Funding Service&#x27;, &#x27;Execute wire transfers to complete home purchase transactions&#x27;, &#x27;customer-facing&#x27;, &#x27;1&#x27;, &#x27;Home Lending&#x27;, &#x27;Are all scheduled closings funded by 8:00 AM deadline?&#x27;, &#x27;mortgage;funding;critical&#x27;, &#x27;sarah.chen@company.com&#x27;]</td>
+</tr>
+<tr>
+<td>SVC002</td>
+<td>[&#x27;credit-check-service&#x27;, &#x27;Credit Check Service&#x27;, &#x27;Validate borrower creditworthiness for loan approval decisions&#x27;, &#x27;internal&#x27;, &#x27;2&#x27;, &#x27;Home Lending&#x27;, &#x27;What percentage of credit checks return valid scores within 30 seconds?&#x27;, &#x27;lending;credit;validation&#x27;, &#x27;michael.torres@company.com&#x27;]</td>
+</tr>
+<tr>
+<td>SVC003</td>
+<td>[&#x27;payment-processing-api&#x27;, &#x27;Payment Processing API&#x27;, &#x27;Process mortgage payment transactions and update loan balances&#x27;, &#x27;internal&#x27;, &#x27;2&#x27;, &#x27;Home Lending&#x27;, &#x27;Are payment authorizations responding within 100ms?&#x27;, &#x27;payment;api;performance&#x27;, &#x27;alex.kim@company.com&#x27;]</td>
+</tr>
+<tr>
+<td>SVC017</td>
+<td>[&#x27;payment-application-monitor&#x27;, &#x27;Payment Application Monitor&#x27;, &#x27;Monitor payment posting accuracy to prevent misapplication&#x27;, &#x27;internal&#x27;, &#x27;1&#x27;, &#x27;Loan Servicing&#x27;, &#x27;Is payment exception queue below 5% threshold?&#x27;, &#x27;payment;accuracy;monitoring&#x27;, &#x27;monitor.team@company.com&#x27;]</td>
+</tr>
+<tr>
+<td>SVC018</td>
+<td>[&#x27;fee-assessment-validator&#x27;, &#x27;Fee Assessment Validator&#x27;, &#x27;Validate late fees are correctly withheld from deferred accounts&#x27;, &#x27;internal&#x27;, &#x27;1&#x27;, &#x27;Loan Servicing&#x27;, &#x27;Are late fees correctly withheld from deferred accounts?&#x27;, &#x27;fees;compliance;validation&#x27;, &#x27;validator.team@company.com&#x27;]</td>
+</tr>
+<tr>
+<td>SVC019</td>
+<td>[&#x27;refund-process-tracker&#x27;, &#x27;Refund Process Tracker&#x27;, &#x27;Track GAP insurance refunds on early loan terminations&#x27;, &#x27;internal&#x27;, &#x27;2&#x27;, &#x27;Loan Servicing&#x27;, &#x27;Are GAP refunds processed for all early terminations?&#x27;, &#x27;refunds;gap;compliance&#x27;, &#x27;refund.team@company.com&#x27;]</td>
+</tr>
+</tbody>
+</table></div><div class="csv-section"><h4>SLI Definitions</h4><table class="csv-table" id="sli_definitions">
+<thead><tr>
+<th># sli_definitions.csv - SLI configuration owned by Product Owner and Developer</th>
+</tr></thead>
+<tbody>
+<tr>
+<td># service_id: Foreign key linking to services.csv</td>
+</tr>
+<tr>
+<td># sliName: Technical identifier for the SLI (e.g.</td>
+<td>[&#x27; funding-success-rate)&#x27;]</td>
+</tr>
+<tr>
+<td># sliDisplayName: Human-readable name for dashboards (optional)</td>
+</tr>
+<tr>
+<td># sliType: One of [ratioMetric</td>
+<td>[&#x27; thresholdMetric]&#x27;]</td>
+</tr>
+<tr>
+<td># goodEventsCriteria_PO: Business language definition of success</td>
+</tr>
+<tr>
+<td># goodEventsCriteria_Dev: Technical query/condition for success</td>
+</tr>
+<tr>
+<td># totalEventsCriteria_PO: Business language definition of scope</td>
+</tr>
+<tr>
+<td># totalEventsCriteria_Dev: Technical query/condition for total events</td>
+</tr>
+<tr>
+<td># thresholdQuery_Dev: Query for threshold metrics (optional</td>
+<td>[&#x27; for thresholdMetric type)&#x27;]</td>
+</tr>
+<tr>
+<td># thresholdOperator: One of [lt</td>
+<td>[&#x27; lte&#x27;, &#x27; gt&#x27;, &#x27; gte] (optional)&#x27;]</td>
+</tr>
+<tr>
+<td># thresholdValue: Numeric threshold value (optional)</td>
+</tr>
+<tr>
+<td># queryImplementation: Actual production query details (optional)</td>
+</tr>
+<tr>
+<td># dataSource: One of [sql</td>
+<td>[&#x27; splunk&#x27;, &#x27; prometheus]&#x27;]</td>
+</tr>
+<tr>
+<td># dataSourceDetails: JSON with connection info (e.g.</td>
+<td>[&#x27; {&quot;database&quot;:&quot;loans&quot;&#x27;, &#x27;table:&quot;funding&quot;})&#x27;]</td>
+</tr>
+<tr>
+<td># technicalOwner: Development team responsible</td>
+</tr>
+<tr>
+<td># implementationNotes: Technical context or special considerations (optional)</td>
+</tr>
+<tr>
+<td>service_id</td>
+<td>[&#x27;sliName&#x27;, &#x27;sliDisplayName&#x27;, &#x27;sliType&#x27;, &#x27;goodEventsCriteria_PO&#x27;, &#x27;goodEventsCriteria_Dev&#x27;, &#x27;totalEventsCriteria_PO&#x27;, &#x27;totalEventsCriteria_Dev&#x27;, &#x27;thresholdQuery_Dev&#x27;, &#x27;thresholdOperator&#x27;, &#x27;thresholdValue&#x27;, &#x27;queryImplementation&#x27;, &#x27;dataSource&#x27;, &#x27;dataSourceDetails&#x27;, &#x27;technicalOwner&#x27;, &#x27;implementationNotes&#x27;]</td>
+</tr>
+<tr>
+<td>SVC001</td>
+<td>[&#x27;funding-success-rate&#x27;, &#x27;Wire Transfer 8AM Success Rate&#x27;, &#x27;ratioMetric&#x27;, &#x27;Wire transfer funded by 8 AM deadline&#x27;, &quot;status=&#x27;FUNDED&#x27; AND funded_time&lt;=&#x27;08:00:00&#x27; AND closing_date=CURRENT_DATE&quot;, &#x27;All scheduled closings for today&#x27;, &quot;closing_date=CURRENT_DATE AND request_type=&#x27;CLOSING_FUNDING&#x27;&quot;, &#x27;&#x27;, &#x27;&#x27;, &#x27;&#x27;, &quot;SELECT COUNT(*) WHERE status=&#x27;FUNDED&#x27; AND TIME(funded_timestamp)&lt;=&#x27;08:00:00&#x27;&quot;, &#x27;sql&#x27;, &#x27;{&quot;database&quot;:&quot;loans&quot;,&quot;table&quot;:&quot;wire_transfers&quot;}&#x27;, &#x27;platform-engineering-team&#x27;, &#x27;Critical 6-8 AM monitoring window&#x27;]</td>
+</tr>
+<tr>
+<td>SVC002</td>
+<td>[&#x27;credit-check-success-rate&#x27;, &#x27;Credit Check Success Rate&#x27;, &#x27;ratioMetric&#x27;, &#x27;Credit check returns valid score within 30 seconds&#x27;, &quot;status=&#x27;SUCCESS&#x27; AND score BETWEEN 300 AND 850 AND response_time_ms&lt;30000&quot;, &#x27;All credit check requests&#x27;, &quot;request_type=&#x27;CREDIT_CHECK&#x27;&quot;, &#x27;&#x27;, &#x27;&#x27;, &#x27;&#x27;, &quot;SELECT COUNT(*) WHERE status=&#x27;SUCCESS&#x27; AND response_time_ms&lt;30000&quot;, &#x27;sql&#x27;, &#x27;{&quot;database&quot;:&quot;lending&quot;,&quot;table&quot;:&quot;credit_checks&quot;}&#x27;, &#x27;platform-engineering-team&#x27;, &#x27;30-second SLA for bureau response&#x27;]</td>
+</tr>
+<tr>
+<td>SVC003</td>
+<td>[&#x27;payment-response-time&#x27;, &#x27;Payment API Response Time&#x27;, &#x27;thresholdMetric&#x27;, &#x27;Payment API responds within 100ms&#x27;, &#x27;&#x27;, &#x27;All payment API requests&#x27;, &#x27;&#x27;, &#x27;SELECT PERCENTILE(response_time_ms; 0.99) FROM payment_api&#x27;, &#x27;lt&#x27;, &#x27;100&#x27;, &#x27;SELECT PERCENTILE(response_time_ms; 0.99)&#x27;, &#x27;prometheus&#x27;, &#x27;{&quot;metric&quot;:&quot;payment_api_response_milliseconds&quot;}&#x27;, &#x27;platform-engineering-team&#x27;, &#x27;99th percentile must be under 100ms&#x27;]</td>
+</tr>
+<tr>
+<td>SVC017</td>
+<td>[&#x27;payment-posting-accuracy&#x27;, &#x27;Payment Posting Accuracy&#x27;, &#x27;ratioMetric&#x27;, &#x27;Payment posts without manual intervention&#x27;, &#x27;manual_intervention=false AND exception_queue=false&#x27;, &#x27;All payments received&#x27;, &#x27;payment_received=true&#x27;, &#x27;&#x27;, &#x27;&#x27;, &#x27;&#x27;, &#x27;SELECT COUNT(*) WHERE manual_intervention=false&#x27;, &#x27;sql&#x27;, &#x27;{&quot;database&quot;:&quot;servicing&quot;,&quot;table&quot;:&quot;payment_posting&quot;}&#x27;, &#x27;platform-engineering-team&#x27;, &#x27;Exception queue monitoring&#x27;]</td>
+</tr>
+<tr>
+<td>SVC018</td>
+<td>[&#x27;fee-deferment-accuracy&#x27;, &#x27;Fee Assessment Accuracy&#x27;, &#x27;ratioMetric&#x27;, &#x27;No late fees on deferred accounts&#x27;, &#x27;late_fee_assessed=false&#x27;, &#x27;All deferred accounts&#x27;, &quot;account_status=&#x27;DEFERRED&#x27;&quot;, &#x27;&#x27;, &#x27;&#x27;, &#x27;&#x27;, &quot;SELECT COUNT(*) WHERE late_fee_assessed=false AND account_status=&#x27;DEFERRED&#x27;&quot;, &#x27;sql&#x27;, &#x27;{&quot;database&quot;:&quot;servicing&quot;,&quot;table&quot;:&quot;fee_assessment&quot;}&#x27;, &#x27;compliance-engineering-team&#x27;, &#x27;Zero tolerance for deferment fee errors&#x27;]</td>
+</tr>
+<tr>
+<td>SVC019</td>
+<td>[&#x27;gap-refund-processing&#x27;, &#x27;GAP Refund Processing&#x27;, &#x27;ratioMetric&#x27;, &#x27;GAP refund processed for early termination&#x27;, &#x27;gap_refund_processed=true&#x27;, &#x27;All early loan terminations with GAP&#x27;, &#x27;loan_closed_early=true AND gap_insurance=true&#x27;, &#x27;&#x27;, &#x27;&#x27;, &#x27;&#x27;, &#x27;SELECT COUNT(*) WHERE gap_refund_processed=true&#x27;, &#x27;sql&#x27;, &#x27;{&quot;database&quot;:&quot;auto_servicing&quot;,&quot;table&quot;:&quot;gap_refunds&quot;}&#x27;, &#x27;compliance-engineering-team&#x27;, &#x27;Insurance refund compliance&#x27;]</td>
+</tr>
+</tbody>
+</table></div><div class="csv-section"><h4>SLO Configurations</h4><table class="csv-table" id="slo_configurations">
+<thead><tr>
+<th># slo_configurations.csv - SLO targets and windows owned by Product Owner and Operations</th>
+</tr></thead>
+<tbody>
+<tr>
+<td># service_id: Foreign key linking to services.csv</td>
+</tr>
+<tr>
+<td># sloTarget: Target percentage (e.g.</td>
+<td>[&#x27; 99.5 for 99.5%)&#x27;]</td>
+</tr>
+<tr>
+<td># sloTargetRationale: Business justification for this target</td>
+</tr>
+<tr>
+<td># timeWindow: Measurement period (e.g.</td>
+<td>[&#x27; 7d&#x27;, &#x27; 28d&#x27;, &#x27; 1h)&#x27;]</td>
+</tr>
+<tr>
+<td># timeWindowType: One of [rolling</td>
+<td>[&#x27; calendar]&#x27;]</td>
+</tr>
+<tr>
+<td># budgetingMethod: One of [Occurrences</td>
+<td>[&#x27; Timeslices&#x27;, &#x27; RatioTimeslices]&#x27;]</td>
+</tr>
+<tr>
+<td># timeSliceTarget: Target for timeslice budgeting (optional</td>
+<td>[&#x27; 0-1)&#x27;]</td>
+</tr>
+<tr>
+<td># timeSliceWindow: Duration of each time slice (optional</td>
+<td>[&#x27; e.g.&#x27;, &#x27; 1h)&#x27;]</td>
+</tr>
+<tr>
+<td># alertingThreshold: Warning threshold percentage</td>
+</tr>
+<tr>
+<td># pageThreshold: Critical threshold percentage for paging</td>
+</tr>
+<tr>
+<td>service_id</td>
+<td>[&#x27;sloTarget&#x27;, &#x27;sloTargetRationale&#x27;, &#x27;timeWindow&#x27;, &#x27;timeWindowType&#x27;, &#x27;budgetingMethod&#x27;, &#x27;timeSliceTarget&#x27;, &#x27;timeSliceWindow&#x27;, &#x27;alertingThreshold&#x27;, &#x27;pageThreshold&#x27;]</td>
+</tr>
+<tr>
+<td>SVC001</td>
+<td>[&#x27;100.0&#x27;, &#x27;8 AM funding deadline is critical for home closings - zero tolerance for misses&#x27;, &#x27;1d&#x27;, &#x27;rolling&#x27;, &#x27;Occurrences&#x27;, &#x27;&#x27;, &#x27;&#x27;, &#x27;99.9&#x27;, &#x27;99.5&#x27;]</td>
+</tr>
+<tr>
+<td>SVC002</td>
+<td>[&#x27;99.5&#x27;, &#x27;Credit checks block loan approval; brief outages tolerable but impact customer experience&#x27;, &#x27;7d&#x27;, &#x27;rolling&#x27;, &#x27;Occurrences&#x27;, &#x27;&#x27;, &#x27;&#x27;, &#x27;99.3&#x27;, &#x27;99.0&#x27;]</td>
+</tr>
+<tr>
+<td>SVC003</td>
+<td>[&#x27;99.0&#x27;, &#x27;Payment API must respond quickly to prevent timeout errors&#x27;, &#x27;1h&#x27;, &#x27;rolling&#x27;, &#x27;Timeslices&#x27;, &#x27;0.95&#x27;, &#x27;5m&#x27;, &#x27;98.5&#x27;, &#x27;98.0&#x27;]</td>
+</tr>
+<tr>
+<td>SVC017</td>
+<td>[&#x27;95.0&#x27;, &#x27;5% exception rate allows for complex payment scenarios requiring manual review&#x27;, &#x27;1d&#x27;, &#x27;rolling&#x27;, &#x27;Occurrences&#x27;, &#x27;&#x27;, &#x27;&#x27;, &#x27;93.0&#x27;, &#x27;90.0&#x27;]</td>
+</tr>
+<tr>
+<td>SVC018</td>
+<td>[&#x27;100.0&#x27;, &#x27;Zero tolerance for incorrectly assessed fees on deferred accounts due to regulatory risk&#x27;, &#x27;7d&#x27;, &#x27;rolling&#x27;, &#x27;Occurrences&#x27;, &#x27;&#x27;, &#x27;&#x27;, &#x27;99.99&#x27;, &#x27;99.9&#x27;]</td>
+</tr>
+<tr>
+<td>SVC019</td>
+<td>[&#x27;99.0&#x27;, &#x27;GAP refunds must be processed but occasional delays acceptable within compliance window&#x27;, &#x27;7d&#x27;, &#x27;rolling&#x27;, &#x27;Occurrences&#x27;, &#x27;&#x27;, &#x27;&#x27;, &#x27;98.5&#x27;, &#x27;98.0&#x27;]</td>
+</tr>
+</tbody>
+</table></div><div class="csv-section"><h4>Impact Assessments</h4><table class="csv-table" id="impact_assessments">
+<thead><tr>
+<th># impact_assessments.csv - Business impact quantification owned by Product Owner</th>
+</tr></thead>
+<tbody>
+<tr>
+<td># STRUCTURE: Each service has 1-4 rows (one per applicable impact category)</td>
+</tr>
+<tr>
+<td># CRITICAL: Only populate fields that match the impactCategory type</td>
+</tr>
+<tr>
+<td>#</td>
+</tr>
+<tr>
+<td># service_id: Foreign key linking to services.csv (many-to-one relationship)</td>
+</tr>
+<tr>
+<td># impactCategory: Impact type [customer_experience</td>
+<td>[&#x27; financial&#x27;, &#x27; legal_risk&#x27;, &#x27; operational]&#x27;]</td>
+</tr>
+<tr>
+<td># stakeholderType: Who is affected (for customer/operational impacts)</td>
+</tr>
+<tr>
+<td># stakeholderCount: Number affected (for customer/operational impacts)</td>
+</tr>
+<tr>
+<td># failureScenario: Specific description of what failure looks like</td>
+</tr>
+<tr>
+<td># businessConsequence: What happens when this fails</td>
+</tr>
+<tr>
+<td># financialImpact: Dollar amount (ONLY for financial impact rows)</td>
+</tr>
+<tr>
+<td># regulatoryImpact: Compliance implications (ONLY for legal_risk rows)</td>
+</tr>
+<tr>
+<td># [query fields]: Only populate the query matching your impactCategory</td>
+</tr>
+<tr>
+<td>service_id</td>
+<td>[&#x27;impactCategory&#x27;, &#x27;stakeholderType&#x27;, &#x27;stakeholderCount&#x27;, &#x27;failureScenario&#x27;, &#x27;businessConsequence&#x27;, &#x27;financialImpact&#x27;, &#x27;regulatoryImpact&#x27;, &#x27;customerImpactQuery&#x27;, &#x27;financialImpactQuery&#x27;, &#x27;legalRiskQuery&#x27;, &#x27;operationalImpactQuery&#x27;]</td>
+</tr>
+<tr>
+<td>SVC001</td>
+<td>[&#x27;customer_experience&#x27;, &#x27;homebuyers&#x27;, &#x27;850 daily&#x27;, &#x27;Wire transfers miss 8 AM deadline&#x27;, &#x27;Homebuyers cannot complete scheduled closing and may lose rate lock&#x27;, &#x27;&#x27;, &#x27;&#x27;, &quot;COUNT(DISTINCT customer_id) WHERE funded_time&gt;&#x27;08:00:00&#x27;&quot;, &#x27;&#x27;, &#x27;&#x27;, &#x27;&#x27;]</td>
+</tr>
+<tr>
+<td>SVC001</td>
+<td>[&#x27;financial&#x27;, &#x27;company&#x27;, &#x27;&#x27;, &#x27;Wire transfers not funded by deadline&#x27;, &#x27;Daily home purchase transaction volume at risk&#x27;, &#x27;$323000000 daily wire volume&#x27;, &#x27;&#x27;, &#x27;&#x27;, &quot;SUM(wire_amount) WHERE funded_time&gt;&#x27;08:00:00&#x27;&quot;, &#x27;&#x27;, &#x27;&#x27;]</td>
+</tr>
+<tr>
+<td>SVC002</td>
+<td>[&#x27;customer_experience&#x27;, &#x27;loan applicants&#x27;, &#x27;2000 daily&#x27;, &#x27;Credit check fails preventing loan application progression&#x27;, &#x27;Loan applicants stuck in process and may seek other lenders&#x27;, &#x27;&#x27;, &#x27;&#x27;, &quot;COUNT(DISTINCT applicant_id) WHERE status=&#x27;FAILED&#x27;&quot;, &#x27;&#x27;, &#x27;&#x27;, &#x27;&#x27;]</td>
+</tr>
+<tr>
+<td>SVC002</td>
+<td>[&#x27;financial&#x27;, &#x27;company&#x27;, &#x27;&#x27;, &#x27;Failed credit checks prevent loan origination&#x27;, &#x27;Lost loan origination revenue opportunity&#x27;, &#x27;$50000 average loan amount&#x27;, &#x27;&#x27;, &#x27;&#x27;, &quot;SUM(loan_amount) WHERE credit_check_status=&#x27;FAILED&#x27;&quot;, &#x27;&#x27;, &#x27;&#x27;]</td>
+</tr>
+<tr>
+<td>SVC002</td>
+<td>[&#x27;legal_risk&#x27;, &#x27;company&#x27;, &#x27;&#x27;, &#x27;Credit checks exceed FCRA 30-day timing requirements&#x27;, &#x27;Regulatory compliance violation risk&#x27;, &#x27;&#x27;, &#x27;Potential CFPB fines&#x27;, &#x27;&#x27;, &#x27;&#x27;, &#x27;COUNT(*) WHERE response_time_days &gt; 30&#x27;, &#x27;&#x27;]</td>
+</tr>
+<tr>
+<td>SVC002</td>
+<td>[&#x27;operational&#x27;, &#x27;loan processors&#x27;, &#x27;50 processors&#x27;, &#x27;Credit check failures require manual intervention&#x27;, &#x27;Manual workarounds reduce processing capacity&#x27;, &#x27;&#x27;, &#x27;&#x27;, &#x27;&#x27;, &#x27;&#x27;, &quot;COUNT(*) WHERE requires_manual_review=&#x27;TRUE&#x27;&quot;]</td>
+</tr>
+<tr>
+<td>SVC003</td>
+<td>[&#x27;customer_experience&#x27;, &#x27;mortgage customers&#x27;, &#x27;5000 daily&#x27;, &#x27;Payment API slow response causes timeout&#x27;, &#x27;Customers unable to make mortgage payments online&#x27;, &#x27;&#x27;, &#x27;&#x27;, &#x27;COUNT(DISTINCT user_id) WHERE response_time&gt;100ms&#x27;, &#x27;&#x27;, &#x27;&#x27;, &#x27;&#x27;]</td>
+</tr>
+<tr>
+<td>SVC003</td>
+<td>[&#x27;financial&#x27;, &#x27;company&#x27;, &#x27;&#x27;, &#x27;Payment API delays block mortgage payments&#x27;, &#x27;Daily mortgage payment processing delayed&#x27;, &#x27;$50000000 daily payment volume&#x27;, &#x27;&#x27;, &#x27;&#x27;, &#x27;SUM(payment_amount) WHERE response_time&gt;100ms&#x27;, &#x27;&#x27;, &#x27;&#x27;]</td>
+</tr>
+<tr>
+<td>SVC003</td>
+<td>[&#x27;operational&#x27;, &#x27;payment ops team&#x27;, &#x27;10 analysts&#x27;, &#x27;Slow API responses require manual processing&#x27;, &#x27;Manual payment processing required for timeout cases&#x27;, &#x27;&#x27;, &#x27;&#x27;, &#x27;&#x27;, &#x27;&#x27;, &quot;COUNT(*) WHERE requires_manual=&#x27;TRUE&#x27;&quot;]</td>
+</tr>
+<tr>
+<td>SVC017</td>
+<td>[&#x27;customer_experience&#x27;, &#x27;loan customers&#x27;, &#x27;100000&#x27;, &#x27;Payments posted incorrectly&#x27;, &#x27;Customer accounts show wrong balance triggering concerns&#x27;, &#x27;&#x27;, &#x27;&#x27;, &quot;COUNT(DISTINCT account_id) WHERE payment_status=&#x27;MISAPPLIED&#x27;&quot;, &#x27;&#x27;, &#x27;&#x27;, &#x27;&#x27;]</td>
+</tr>
+<tr>
+<td>SVC017</td>
+<td>[&#x27;financial&#x27;, &#x27;company&#x27;, &#x27;&#x27;, &#x27;Payment misapplication causes accounting errors&#x27;, &#x27;Incorrect loan balances require expensive remediation&#x27;, &#x27;$500000&#x27;, &#x27;&#x27;, &#x27;&#x27;, &quot;SUM(payment_amount) WHERE status=&#x27;MISAPPLIED&#x27;&quot;, &#x27;&#x27;, &#x27;&#x27;]</td>
+</tr>
+<tr>
+<td>SVC017</td>
+<td>[&#x27;operational&#x27;, &#x27;reconciliation team&#x27;, &#x27;15 analysts&#x27;, &#x27;Misapplied payments require manual correction&#x27;, &#x27;Analysts must manually research and correct payment postings&#x27;, &#x27;&#x27;, &#x27;&#x27;, &#x27;&#x27;, &#x27;&#x27;, &quot;COUNT(*) WHERE requires_manual_correction=&#x27;TRUE&#x27;&quot;]</td>
+</tr>
+<tr>
+<td>SVC018</td>
+<td>[&#x27;customer_experience&#x27;, &#x27;deferred account holders&#x27;, &#x27;5000&#x27;, &#x27;Wrongful late fee assessment&#x27;, &#x27;Customers charged fees despite valid deferments&#x27;, &#x27;&#x27;, &#x27;&#x27;, &quot;COUNT(DISTINCT account_id) WHERE fee_type=&#x27;LATE&#x27; AND status=&#x27;DEFERRED&#x27;&quot;, &#x27;&#x27;, &#x27;&#x27;, &#x27;&#x27;]</td>
+</tr>
+<tr>
+<td>SVC018</td>
+<td>[&#x27;financial&#x27;, &#x27;company&#x27;, &#x27;&#x27;, &#x27;Erroneous fee collection&#x27;, &#x27;Wrongfully collected fees must be refunded with interest&#x27;, &#x27;$50000&#x27;, &#x27;&#x27;, &#x27;&#x27;, &quot;SUM(fee_amount) WHERE fee_invalid=&#x27;TRUE&#x27;&quot;, &#x27;&#x27;, &#x27;&#x27;]</td>
+</tr>
+<tr>
+<td>SVC018</td>
+<td>[&#x27;legal_risk&#x27;, &#x27;company&#x27;, &#x27;&#x27;, &#x27;CFPB fee assessment violations&#x27;, &#x27;Pattern of wrongful fees triggers enforcement action&#x27;, &#x27;&#x27;, &#x27;CFPB enforcement risk&#x27;, &#x27;&#x27;, &#x27;&#x27;, &quot;COUNT(*) WHERE fee_type=&#x27;LATE&#x27; AND deferment_active=&#x27;TRUE&#x27;&quot;, &#x27;&#x27;]</td>
+</tr>
+<tr>
+<td>SVC019</td>
+<td>[&#x27;customer_experience&#x27;, &#x27;early payoff customers&#x27;, &#x27;500&#x27;, &#x27;GAP refund not received&#x27;, &quot;Customers who paid loans early don&#x27;t receive insurance refunds&quot;, &#x27;&#x27;, &#x27;&#x27;, &quot;COUNT(DISTINCT customer_id) WHERE gap_refund_owed=&#x27;TRUE&#x27;&quot;, &#x27;&#x27;, &#x27;&#x27;, &#x27;&#x27;]</td>
+</tr>
+<tr>
+<td>SVC019</td>
+<td>[&#x27;financial&#x27;, &#x27;company&#x27;, &#x27;&#x27;, &#x27;Unreturned GAP premiums&#x27;, &#x27;Company retains unearned insurance premiums&#x27;, &#x27;$250000&#x27;, &#x27;&#x27;, &#x27;&#x27;, &quot;SUM(gap_refund_amount) WHERE refund_status=&#x27;PENDING&#x27;&quot;, &#x27;&#x27;, &#x27;&#x27;]</td>
+</tr>
+<tr>
+<td>SVC019</td>
+<td>[&#x27;legal_risk&#x27;, &#x27;company&#x27;, &#x27;&#x27;, &#x27;Insurance refund violations&#x27;, &#x27;State insurance regulators may impose penalties&#x27;, &#x27;&#x27;, &#x27;State regulatory fines&#x27;, &#x27;&#x27;, &#x27;&#x27;, &#x27;COUNT(*) WHERE days_since_payoff &gt; 30&#x27;, &#x27;&#x27;]</td>
+</tr>
+</tbody>
+</table></div><div class="csv-section"><h4>Operational Metadata</h4><table class="csv-table" id="operational_metadata">
+<thead><tr>
+<th># operational_metadata.csv - Lifecycle and operational data owned by Operations and all personas</th>
+</tr></thead>
+<tbody>
+<tr>
+<td># service_id: Foreign key linking to services.csv</td>
+</tr>
+<tr>
+<td># alertNotificationTargets: Semicolon-separated notification channels (optional)</td>
+</tr>
+<tr>
+<td># dashboardUrl: Link to monitoring dashboard (optional)</td>
+</tr>
+<tr>
+<td># runbookUrl: Link to incident response guide (optional)</td>
+</tr>
+<tr>
+<td># alertingConfigured: Whether alerts are set up [true</td>
+<td>[&#x27; false] (optional)&#x27;]</td>
+</tr>
+<tr>
+<td># lastValidated: Date of last validation (YYYY-MM-DD) (optional)</td>
+</tr>
+<tr>
+<td># version: Record version number (e.g.</td>
+<td>[&#x27; 1.0&#x27;, &#x27; 1.1)&#x27;]</td>
+</tr>
+<tr>
+<td># created: Creation timestamp (ISO 8601 format)</td>
+</tr>
+<tr>
+<td># modified: Last modification timestamp (ISO 8601 format)</td>
+</tr>
+<tr>
+<td># modifiedBy: Email of last person to modify</td>
+</tr>
+<tr>
+<td># status: Lifecycle state [draft</td>
+<td>[&#x27; active&#x27;, &#x27; deprecated]&#x27;]</td>
+</tr>
+<tr>
+<td># reviewDate: Next scheduled review date (YYYY-MM-DD) (optional)</td>
+</tr>
+<tr>
+<td># notes: General notes or comments (optional)</td>
+</tr>
+<tr>
+<td>service_id</td>
+<td>[&#x27;alertNotificationTargets&#x27;, &#x27;dashboardUrl&#x27;, &#x27;runbookUrl&#x27;, &#x27;alertingConfigured&#x27;, &#x27;lastValidated&#x27;, &#x27;version&#x27;, &#x27;created&#x27;, &#x27;modified&#x27;, &#x27;modifiedBy&#x27;, &#x27;status&#x27;, &#x27;reviewDate&#x27;, &#x27;notes&#x27;]</td>
+</tr>
+<tr>
+<td>SVC001</td>
+<td>[&#x27;email:homelending-ops@company.com;pagerduty:PD-HL-001&#x27;, &#x27;https://grafana.company.com/d/funding-slo&#x27;, &#x27;https://wiki.company.com/runbooks/funding&#x27;, &#x27;true&#x27;, &#x27;2025-09-29&#x27;, &#x27;1.1&#x27;, &#x27;2024-01-01T00:00:00Z&#x27;, &#x27;2025-09-29T00:00:00Z&#x27;, &#x27;sarah.chen@company.com&#x27;, &#x27;active&#x27;, &#x27;2026-01-01&#x27;, &#x27;8 AM funding deadline monitoring&#x27;]</td>
+</tr>
+<tr>
+<td>SVC002</td>
+<td>[&#x27;email:lending-platform@company.com;slack:#lending-alerts&#x27;, &#x27;https://grafana.company.com/d/credit-check-slo&#x27;, &#x27;https://wiki.company.com/credit-check-runbook&#x27;, &#x27;true&#x27;, &#x27;2025-09-29&#x27;, &#x27;1.1&#x27;, &#x27;2025-09-15T18:00:00Z&#x27;, &#x27;2025-09-29T00:00:00Z&#x27;, &#x27;michael.torres@company.com&#x27;, &#x27;active&#x27;, &#x27;2026-01-15&#x27;, &#x27;30-second bureau response SLA&#x27;]</td>
+</tr>
+<tr>
+<td>SVC003</td>
+<td>[&#x27;slack:#payment-ops&#x27;, &#x27;https://grafana.company.com/d/payment-api-slo&#x27;, &#x27;https://wiki.company.com/runbooks/payment-api&#x27;, &#x27;true&#x27;, &#x27;2025-09-29&#x27;, &#x27;1.1&#x27;, &#x27;2025-09-23T00:00:00Z&#x27;, &#x27;2025-09-29T00:00:00Z&#x27;, &#x27;alex.kim@company.com&#x27;, &#x27;active&#x27;, &#x27;2026-01-23&#x27;, &#x27;100ms response time monitoring&#x27;]</td>
+</tr>
+<tr>
+<td>SVC017</td>
+<td>[&#x27;email:payment-accuracy@company.com;pagerduty:PD-PAY-MON&#x27;, &#x27;https://grafana.company.com/d/payment-monitor&#x27;, &#x27;https://wiki.company.com/runbooks/payment-accuracy&#x27;, &#x27;true&#x27;, &#x27;2025-09-29&#x27;, &#x27;1.0&#x27;, &#x27;2025-09-29T00:00:00Z&#x27;, &#x27;2025-09-29T00:00:00Z&#x27;, &#x27;monitor.team@company.com&#x27;, &#x27;active&#x27;, &#x27;2026-03-01&#x27;, &#x27;Payment posting accuracy monitoring&#x27;]</td>
+</tr>
+<tr>
+<td>SVC018</td>
+<td>[&#x27;email:compliance@company.com;pagerduty:PD-COMPLIANCE&#x27;, &#x27;https://grafana.company.com/d/fee-validator&#x27;, &#x27;https://wiki.company.com/runbooks/fee-compliance&#x27;, &#x27;true&#x27;, &#x27;2025-09-29&#x27;, &#x27;1.0&#x27;, &#x27;2025-09-29T00:00:00Z&#x27;, &#x27;2025-09-29T00:00:00Z&#x27;, &#x27;validator.team@company.com&#x27;, &#x27;active&#x27;, &#x27;2026-03-01&#x27;, &#x27;Zero tolerance fee validation&#x27;]</td>
+</tr>
+<tr>
+<td>SVC019</td>
+<td>[&#x27;email:refund-ops@company.com&#x27;, &#x27;https://grafana.company.com/d/refund-tracker&#x27;, &#x27;https://wiki.company.com/runbooks/gap-refunds&#x27;, &#x27;true&#x27;, &#x27;2025-09-29&#x27;, &#x27;1.0&#x27;, &#x27;2025-09-29T00:00:00Z&#x27;, &#x27;2025-09-29T00:00:00Z&#x27;, &#x27;refund.team@company.com&#x27;, &#x27;active&#x27;, &#x27;2026-03-01&#x27;, &#x27;GAP insurance refund tracking&#x27;]</td>
+</tr>
+</tbody>
+</table></div></div></section><section id="platform-ops" class="section"><h1>Platform Operations - Future Role in BOS</h1>
+<h2>Overview</h2>
+<p>As the Platform Operations team, you will be the <strong>third persona</strong> in the Business Observability System, responsible for maintaining operational health and responding to issues using BOS data.</p>
+<h2>Your Future Responsibilities</h2>
+<h3>1. Operational Data Maintenance</h3>
+You will own fields in the <code>operational_metadata.csv</code> table:
+<ul><li><strong>Alert Configuration</strong>: Where alerts get sent (email, PagerDuty, Slack)</li>
+<li><strong>Dashboard Links</strong>: URLs to service monitoring dashboards</li>
+<li><strong>Runbook Links</strong>: Quick access to incident response procedures</li>
+<li><strong>Review Cycles</strong>: Ensuring data stays current and accurate</li>
+</ul>
+<h3>2. Incident Response Using BOS</h3>
+When services degrade or fail, you'll use BOS to understand:
+<ul><li>What business function is impacted</li>
+<li>How many customers are affected</li>
+<li>What the financial exposure is</li>
+<li>Which runbook to follow</li>
+</ul>
+<h3>3. Operational Health Tracking</h3>
+<ul><li>Monitor SLO adherence across services</li>
+<li>Track alert response times</li>
+<li>Identify patterns requiring preventive action</li>
+<li>Coordinate with Product Owners on impact assessments</li>
+</ul>
+<h2>What's Available Now</h2>
+<p>Currently, you can review the data model to understand:
+<ul><li>What operational data will be tracked</li>
+<li>How services are categorized by criticality</li>
+<li>The relationship between technical metrics and business impact</li>
+</ul></p>
+<h3>Sample Operational Fields</h3>
+<p>From <code>operational_metadata.csv</code>:
+<pre><code class="">alertNotificationTargets: email:team@company.com;pagerduty:PD-001;slack:#alerts
+dashboardUrl: https://grafana.company.com/d/service-health
+runbookUrl: https://wiki.company.com/runbooks/service-response
+alertingConfigured: true
+lastValidated: 2024-01-15
+reviewDate: 2024-07-01
+</code></pre></p>
+<h2>What's Coming</h2>
+<h3>Phase 1 (Next Quarter)</h3>
+<ul><li>Platform deployment of BOS</li>
+<li>Initial service onboarding</li>
+<li>Basic dashboards and alerts</li>
+</ul>
+<h3>Phase 2 (Following Quarter)</h3>
+<ul><li>Full operational playbooks</li>
+<li>Automated alert routing</li>
+<li>SLO breach procedures</li>
+<li>Integration with incident management</li>
+</ul>
+<h3>Your Input Needed</h3>
+<p>As we build out the platform, we need your feedback on:
+<ul><li>Alert routing preferences</li>
+<li>Dashboard requirements</li>
+<li>Runbook standards</li>
+<li>Integration with existing tools</li>
+</ul></p>
+<h2>For Now</h2>
+<li><strong>Review</strong> the operational_metadata structure</li>
+<li><strong>Consider</strong> how this maps to your current processes</li>
+<li><strong>Identify</strong> gaps in the operational data model</li>
+<li><strong>Prepare</strong> for pilot participation</li>
+<h2>Questions to Consider</h2>
+<ul><li>How do you currently track service health?</li>
+<li>What information do you need during incidents?</li>
+<li>How should alerts be routed and escalated?</li>
+<li>What tools need to integrate with BOS?</li>
+</ul>
+<h2>Next Steps</h2>
+<p>Full operational documentation will be provided once the platform is ready for deployment. For now, familiarize yourself with the data model and consider how BOS will enhance your operational capabilities.</p>
+<h2>Contact</h2>
+<p>For questions about the Platform Operations role in BOS, reach out to the BOS implementation team.</p></section>
+        <footer class="section">
+            <p><em>Generated on 2025-09-29 12:47:47</em></p>
+            <p><em>Business Observability System Documentation v1.3.1</em></p>
+        </footer>
+    </main>
+        <button id="back-to-top" onclick="scrollToTop()">↑</button>
+    </div>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Back to top button
+        window.onscroll = function() {
+            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+                document.getElementById('back-to-top').style.display = 'block';
+            } else {
+                document.getElementById('back-to-top').style.display = 'none';
+            }
+        };
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Mobile menu toggle
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+        }
+
+        // Highlight current section in navigation
+        const sections = document.querySelectorAll('.section');
+        const navLinks = document.querySelectorAll('.nav-link, .nav-sublink');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.style.background = '#34495e';
+                } else {
+                    link.style.background = '';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
