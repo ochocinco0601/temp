@@ -1,0 +1,3716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="version" content="2.5.4">
+    <title>BOS Data Model Technical Specification</title>
+    <style>
+        /* ===== DESIGN TOKENS ===== */
+:root {
+    /* Brand Colors */
+    --color-brand-primary: #D71E28;
+    --color-brand-primary-hover: #B71C24;
+    --color-brand-primary-light: rgba(215, 30, 40, 0.1);
+    --color-brand-primary-ultralight: rgba(215, 30, 40, 0.05);
+
+    /* Semantic Colors */
+    --color-success: #10B981;
+    --color-warning: #F59E0B;
+    --color-info: #3B82F6;
+    --color-info-light: #DBEAFE;
+
+    /* Grayscale */
+    --color-gray-50: #F9FAFB;
+    --color-gray-100: #F3F4F6;
+    --color-gray-200: #E5E7EB;
+    --color-gray-300: #D1D5DB;
+    --color-gray-400: #9CA3AF;
+    --color-gray-500: #6B7280;
+    --color-gray-600: #4B5563;
+    --color-gray-700: #374151;
+
+    /* Text */
+    --color-text-primary: #111827;
+    --color-text-secondary: #374151;
+    --color-text-tertiary: #6B7280;
+    --color-text-inverse: #FFFFFF;
+
+    /* Backgrounds */
+    --color-bg-primary: #FFFFFF;
+    --color-bg-secondary: #F3F4F6;
+    --color-border-default: #D1D5DB;
+    --color-border-light: #E5E7EB;
+
+    /* Typography */
+    --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-monospace: 'Courier New', 'Consolas', monospace;
+    --font-size-xs: 0.75rem;
+    --font-size-sm: 0.875rem;
+    --font-size-base: 1rem;
+    --font-size-lg: 1.125rem;
+    --font-size-xl: 1.25rem;
+    --font-size-2xl: 1.5rem;
+    --font-size-3xl: 2rem;
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    --line-height-normal: 1.5;
+    --line-height-relaxed: 1.6;
+
+    /* Spacing */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 12px;
+    --spacing-lg: 16px;
+    --spacing-xl: 24px;
+    --spacing-2xl: 32px;
+
+    /* Effects */
+    --radius-sm: 0.25rem;
+    --radius-md: 0.375rem;
+    --radius-lg: 0.5rem;
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.15);
+    --shadow-drawer: -4px 0 20px rgba(0, 0, 0, 0.2);
+
+    /* Transitions */
+    --transition-base: 0.2s ease;
+    --transition-slow: 0.3s ease;
+
+    /* Layout Dimensions */
+    --width-drawer: 500px;
+    --width-form-max: 800px;
+    --height-header: 64px;
+    --height-footer: 48px;
+    --height-tab-bar: 60px;
+
+    /* Borders */
+    --border-width-default: 1px;
+    --border-width-thick: 2px;
+    --border-focus: #D71E28;
+
+    /* Z-indexes */
+    --z-index-overlay: 1500;
+    --z-index-drawer: 1600;
+
+    /* Spacing Helpers */
+    --spacing-card-padding: 2rem;
+    --spacing-section-gap: 1.5rem;
+    --spacing-field-padding: 0.75rem 1rem;
+
+    /* Additional Colors */
+    --color-border-focus: #D71E28;
+    --color-purple: #9333EA;
+}
+
+/* ===== RESET & BASE ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-primary);
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+    line-height: var(--line-height-relaxed);
+}
+
+/* ===== STICKY NAVIGATION ===== */
+.sticky-nav {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 260px;
+    height: 100vh;
+    background: var(--color-gray-50);
+    border-right: 1px solid var(--color-gray-200);
+    padding: 24px 0;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.nav-logo {
+    padding: 0 20px 20px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--color-gray-200);
+}
+
+.nav-logo h3 {
+    font-size: 1.125rem;
+    color: var(--color-brand-primary);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: 4px;
+}
+
+.nav-logo .version {
+    display: inline-block;
+    background: var(--color-brand-primary);
+    color: var(--color-text-inverse);
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    margin-left: 8px;
+}
+
+.nav-logo p {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+    line-height: 1.3;
+    margin-top: 8px;
+}
+
+.nav-items {
+    list-style: none;
+}
+
+.nav-item {
+    margin-bottom: 2px;
+}
+
+.nav-link {
+    display: block;
+    padding: 10px 20px;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    border-left: 4px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+    background: var(--color-gray-100);
+    color: var(--color-text-primary);
+}
+
+.nav-link.active {
+    background: var(--color-brand-primary-ultralight);
+    border-left-color: var(--color-brand-primary);
+    color: var(--color-brand-primary);
+    font-weight: var(--font-weight-semibold);
+}
+
+/* ===== MAIN CONTENT ===== */
+.main-content {
+    max-width: 1200px;
+    margin-left: 280px;
+    padding: var(--spacing-2xl);
+}
+
+/* ===== HERO SECTION ===== */
+.page-hero {
+    text-align: center;
+    padding: 40px 0 24px;
+    border-bottom: 2px solid var(--color-gray-200);
+    margin-bottom: var(--spacing-2xl);
+}
+
+.page-hero h1 {
+    font-size: var(--font-size-3xl);
+    color: var(--color-brand-primary);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: -0.02em;
+    margin-bottom: var(--spacing-sm);
+}
+
+.page-hero .subtitle {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-secondary);
+    font-weight: var(--font-weight-medium);
+    margin-bottom: var(--spacing-md);
+}
+
+.page-hero .meta {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-tertiary);
+}
+
+.page-hero .meta strong {
+    color: var(--color-text-secondary);
+}
+
+/* ===== CONTENT SECTIONS ===== */
+section {
+    background: var(--color-bg-primary);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    padding: var(--spacing-2xl);
+    margin-bottom: var(--spacing-xl);
+}
+
+/* ===== TYPOGRAPHY ===== */
+h2 {
+    font-size: var(--font-size-2xl);
+    color: var(--color-text-primary);
+    margin-top: var(--spacing-2xl);
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 2px solid var(--color-gray-200);
+}
+
+h2:first-child {
+    margin-top: 0;
+}
+
+h3 {
+    font-size: var(--font-size-xl);
+    color: var(--color-text-primary);
+    margin-top: var(--spacing-xl);
+    margin-bottom: var(--spacing-md);
+}
+
+h4 {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-secondary);
+    margin-top: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+}
+
+p {
+    margin-bottom: var(--spacing-md);
+    color: var(--color-text-secondary);
+}
+
+ul, ol {
+    margin-left: var(--spacing-xl);
+    margin-bottom: var(--spacing-md);
+}
+
+li {
+    margin-bottom: var(--spacing-sm);
+    color: var(--color-text-secondary);
+}
+
+/* ===== CODE & PRE ===== */
+code {
+    background: var(--color-gray-100);
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-monospace);
+    font-size: 0.9em;
+    color: var(--color-text-primary);
+}
+
+pre {
+    background: var(--color-gray-100);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-md);
+    overflow-x: auto;
+    margin-bottom: var(--spacing-md);
+    border-left: 4px solid var(--color-brand-primary);
+}
+
+pre code {
+    background: none;
+    padding: 0;
+}
+
+/* ===== TABLES ===== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: var(--spacing-lg) 0;
+    font-size: var(--font-size-sm);
+    background: var(--color-bg-primary);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+th {
+    background: var(--color-gray-100);
+    color: var(--color-text-primary);
+    padding: var(--spacing-md);
+    text-align: left;
+    font-weight: var(--font-weight-semibold);
+    border-bottom: 2px solid var(--color-gray-200);
+}
+
+td {
+    padding: var(--spacing-md);
+    border-bottom: 1px solid var(--color-gray-200);
+    color: var(--color-text-secondary);
+}
+
+tbody tr:hover {
+    background: var(--color-gray-50);
+}
+
+/* ===== CALLOUT BOXES ===== */
+.callout {
+    padding: var(--spacing-lg);
+    margin: var(--spacing-lg) 0;
+    border-radius: var(--radius-md);
+    border-left: 4px solid;
+}
+
+.callout-info {
+    background: var(--color-info-light);
+    border-color: var(--color-info);
+}
+
+.callout-warning {
+    background: #FEF3C7;
+    border-color: var(--color-warning);
+}
+
+.callout-important {
+    background: var(--color-brand-primary-light);
+    border-color: var(--color-brand-primary);
+}
+
+.callout strong {
+    color: var(--color-text-primary);
+    display: block;
+    margin-bottom: var(--spacing-sm);
+}
+
+.callout p {
+    margin-bottom: var(--spacing-sm);
+}
+
+.callout p:last-child {
+    margin-bottom: 0;
+}
+
+.callout ul {
+    margin-top: var(--spacing-sm);
+    margin-bottom: 0;
+}
+
+/* ===== BADGES ===== */
+.status-badge {
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+    font-weight: var(--font-weight-semibold);
+    display: inline-block;
+}
+
+.status-verified {
+    background: #D1FAE5;
+    color: #065F46;
+}
+
+.status-gap {
+    background: #FEF3C7;
+    color: #92400E;
+}
+
+/* ===== UTILITIES ===== */
+strong {
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-semibold);
+}
+
+hr {
+    border: none;
+    border-top: 1px solid var(--color-gray-200);
+    margin: var(--spacing-2xl) 0;
+}
+
+/* ===== MERMAID DIAGRAMS ===== */
+.diagram-container {
+    background: var(--color-bg-primary);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-xl);
+    margin: var(--spacing-xl) 0;
+    overflow-x: auto;
+    box-shadow: var(--shadow-sm);
+}
+
+.diagram-container h4 {
+    margin-top: 0;
+    margin-bottom: var(--spacing-lg);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 2px solid var(--color-gray-200);
+}
+
+.diagram-container .mermaid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+}
+
+.diagram-caption {
+    margin-top: var(--spacing-md);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-tertiary);
+    font-style: italic;
+    text-align: center;
+}
+
+.diagram-container .mermaid {
+    cursor: pointer;
+}
+
+.diagram-expand-hint {
+    text-align: center;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+    margin-top: var(--spacing-sm);
+    font-style: italic;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .sticky-nav {
+        position: relative;
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--color-gray-200);
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: var(--spacing-lg);
+    }
+}
+
+        .page-wrapper {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== HEADER ===== */
+        .page-header {
+            background-color: var(--color-brand-primary);
+            color: var(--color-text-inverse);
+            padding: var(--spacing-md) var(--spacing-xl);
+            box-shadow: var(--shadow-md);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: var(--height-header);
+            flex-shrink: 0;
+        }
+
+        .page-header h1 {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-lg);
+        }
+
+        .help-icon {
+            font-size: var(--font-size-xl);
+            cursor: pointer;
+            opacity: 0.9;
+            transition: opacity var(--transition-base);
+            background: none;
+            border: none;
+            color: var(--color-text-inverse);
+            padding: var(--spacing-sm);
+        }
+
+        .help-icon:hover {
+            opacity: 1;
+        }
+
+        .back-to-gallery {
+            background: none;
+            border: none;
+            color: var(--color-text-inverse);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            cursor: pointer;
+            opacity: 0.9;
+            transition: opacity var(--transition-base);
+            display: none;
+            align-items: center;
+            gap: var(--spacing-xs);
+            padding: var(--spacing-sm) var(--spacing-md);
+        }
+
+        .back-to-gallery:hover {
+            opacity: 1;
+        }
+
+        .back-to-gallery.visible {
+            display: flex;
+        }
+
+        /* ===== CONTAINER ===== */
+        .container {
+            flex: 1;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            width: 100%;
+        }
+
+        /* ===== INTRO SECTION ===== */
+        .intro-section {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .intro-section h2 {
+            font-size: 2rem;
+            color: var(--color-text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .intro-section p {
+            font-size: 1.125rem;
+            color: var(--color-text-secondary);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        /* ===== EXAMPLE GRID ===== */
+        .example-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .example-card {
+            background: var(--color-bg-primary);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            padding: 1.5rem;
+            transition: transform var(--transition-base), box-shadow var(--transition-base);
+            border-left: 4px solid var(--color-brand-primary);
+        }
+
+        .example-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .example-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .example-icon {
+            font-size: 2.5rem;
+            flex-shrink: 0;
+        }
+
+        .example-title-section {
+            flex: 1;
+        }
+
+        .complexity-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-semibold);
+            margin-bottom: 0.5rem;
+        }
+
+        .complexity-badge.standard {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+
+        .complexity-badge.complex {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        .example-card h3 {
+            font-size: var(--font-size-lg);
+            color: var(--color-text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .example-card p {
+            color: var(--color-text-secondary);
+            font-size: var(--font-size-sm);
+            margin-bottom: 1.5rem;
+            min-height: 60px;
+        }
+
+        .example-actions {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: var(--spacing-md) var(--spacing-xl);
+            border-radius: var(--radius-md);
+            font-weight: var(--font-weight-semibold);
+            font-size: var(--font-size-sm);
+            cursor: pointer;
+            transition: all var(--transition-base);
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            flex: 1;
+            min-width: 120px;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: var(--color-brand-primary);
+            color: var(--color-text-inverse);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: var(--color-brand-primary-hover);
+        }
+
+        .btn-secondary {
+            background: var(--color-bg-primary);
+            color: var(--color-text-secondary);
+            border: var(--border-width-default) solid var(--color-border-default);
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: var(--color-gray-50);
+            border-color: var(--color-gray-400);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* ===== START SECTION ===== */
+        .start-section {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+        }
+
+        .start-section h3 {
+            font-size: var(--font-size-lg);
+            margin-bottom: 1rem;
+            color: var(--color-text-primary);
+        }
+
+        .start-section p {
+            color: var(--color-text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-large {
+            padding: 0.875rem 2rem;
+            font-size: 1rem;
+        }
+
+        /* ===== FORM VIEW (Hidden initially) ===== */
+        .form-view {
+            display: none;
+            flex-direction: column;
+            min-height: calc(100vh - var(--height-header) - var(--height-footer));
+        }
+
+        .form-view.active {
+            display: flex;
+        }
+
+        /* ===== TAB BAR ===== */
+        .tab-bar {
+            background: var(--color-bg-primary);
+            border-bottom: var(--border-width-thick) solid var(--color-gray-200);
+            display: flex;
+            height: var(--height-tab-bar);
+            align-items: stretch;
+            flex-shrink: 0;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .tab {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            background: var(--color-gray-50);
+            border: none;
+            border-right: var(--border-width-default) solid var(--color-gray-200);
+            cursor: pointer;
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-tertiary);
+            transition: all var(--transition-base);
+            position: relative;
+            padding: var(--spacing-sm);
+        }
+
+        .tab:last-child {
+            border-right: none;
+        }
+
+        .tab:hover:not(.active) {
+            background: var(--color-gray-100);
+            color: var(--color-text-secondary);
+        }
+
+        .tab.active {
+            background: var(--color-bg-primary);
+            color: var(--color-brand-primary);
+            border-bottom: 3px solid var(--color-brand-primary);
+        }
+
+        .tab.completed {
+            color: var(--color-success);
+        }
+
+        .tab-status {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-xs);
+            border: 2px solid currentColor;
+            flex-shrink: 0;
+        }
+
+        .tab.active .tab-status {
+            border-color: var(--color-brand-primary);
+            background: var(--color-brand-primary-light);
+        }
+
+        .tab.completed .tab-status {
+            border-color: var(--color-success);
+            background: var(--color-success);
+            color: white;
+        }
+
+        /* ===== FORM CONTAINER ===== */
+        .form-container {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            justify-content: center;
+            padding: var(--spacing-lg);
+        }
+
+        .form-card {
+            background: var(--color-bg-primary);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            padding: var(--spacing-card-padding);
+            width: 100%;
+            max-width: var(--width-form-max);
+            height: fit-content;
+        }
+
+        /* ===== TAB CONTENT ===== */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* ===== FORM ELEMENTS ===== */
+        .form-group {
+            margin-bottom: var(--spacing-section-gap);
+        }
+
+        .form-label {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-sm);
+            font-size: var(--font-size-sm);
+        }
+
+        .form-label.critical {
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+        }
+
+        .required {
+            color: var(--color-brand-primary);
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: var(--spacing-field-padding);
+            border: var(--border-width-default) solid var(--color-border-default);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-sm);
+            font-family: var(--font-primary);
+            transition: all var(--transition-base);
+            background: var(--color-bg-primary);
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--color-border-focus);
+            box-shadow: 0 0 0 3px var(--color-brand-primary-light);
+        }
+
+        .form-input.critical:focus {
+            border-color: var(--color-brand-primary);
+            box-shadow: 0 0 0 4px var(--color-brand-primary-light);
+        }
+
+        textarea.form-input {
+            resize: vertical;
+            font-family: var(--font-primary);
+        }
+
+        textarea.form-input.short {
+            min-height: 80px;
+        }
+
+        textarea.form-input.medium {
+            min-height: 100px;
+        }
+
+        textarea.form-input.tall {
+            min-height: 160px;
+        }
+
+        textarea.technical {
+            font-family: var(--font-monospace);
+            font-size: var(--font-size-xs);
+            background: var(--color-gray-50);
+        }
+
+        .field-hint {
+            font-size: var(--font-size-xs);
+            color: var(--color-text-tertiary);
+            margin-top: var(--spacing-xs);
+            line-height: var(--line-height-normal);
+        }
+
+        .template-indicator {
+            display: inline-block;
+            font-size: var(--font-size-xs);
+            color: var(--color-info);
+            font-weight: var(--font-weight-medium);
+            margin-left: var(--spacing-sm);
+        }
+
+        /* ===== IMPACT SECTIONS (Tab 4) ===== */
+        .impact-section {
+            margin-bottom: var(--spacing-xl);
+            border: 1px solid var(--color-border-default);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .impact-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-lg);
+            background-color: var(--color-gray-50);
+            cursor: pointer;
+            transition: background-color var(--transition-base);
+        }
+
+        .impact-section-header:hover {
+            background-color: var(--color-gray-100);
+        }
+
+        .impact-section-header h4 {
+            margin: 0;
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+        }
+
+        .expand-icon {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-tertiary);
+            transition: transform var(--transition-base);
+        }
+
+        .expand-icon.expanded {
+            transform: rotate(-180deg);
+        }
+
+        .impact-section-content {
+            padding: var(--spacing-xl);
+            border-top: 1px solid var(--color-border-light);
+        }
+
+        .tab-description {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-xl);
+            line-height: var(--line-height-relaxed);
+        }
+
+        /* ===== NAVIGATION BUTTONS ===== */
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: var(--spacing-md);
+            padding-top: var(--spacing-lg);
+            border-top: var(--border-width-default) solid var(--color-border-light);
+            margin-top: var(--spacing-xl);
+        }
+
+        .progress-indicator {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            font-size: var(--font-size-xs);
+            color: var(--color-text-tertiary);
+        }
+
+        .progress-bar {
+            width: 120px;
+            height: 6px;
+            background: var(--color-gray-200);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--color-brand-primary);
+            transition: width var(--transition-slow);
+        }
+
+        /* ===== QUALITY CHECKLIST (Preview Tab) ===== */
+        .checklist-section {
+            background: var(--color-gray-50);
+            border: var(--border-width-default) solid var(--color-border-light);
+            border-radius: var(--radius-md);
+            margin-top: var(--spacing-xl);
+        }
+
+        .checklist-header {
+            padding: var(--spacing-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .checklist-header h4 {
+            font-size: var(--font-size-base);
+            color: var(--color-text-primary);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .checklist-toggle {
+            font-size: var(--font-size-xs);
+            color: var(--color-text-tertiary);
+            transition: transform var(--transition-base);
+        }
+
+        .checklist-header.expanded .checklist-toggle {
+            transform: rotate(180deg);
+        }
+
+        .checklist-content {
+            display: none;
+            padding: 0 var(--spacing-lg) var(--spacing-lg);
+        }
+
+        .checklist-content.visible {
+            display: block;
+        }
+
+        .checklist-category {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .checklist-category:last-child {
+            margin-bottom: 0;
+        }
+
+        .checklist-category h5 {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-sm);
+            font-size: var(--font-size-sm);
+        }
+
+        .checklist-item .icon {
+            flex-shrink: 0;
+            font-size: var(--font-size-base);
+        }
+
+        /* ===== PREVIEW TAB STYLES ===== */
+        .preview-container {
+            background: var(--color-gray-50);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+        }
+
+        .preview-header {
+            text-align: center;
+            margin-bottom: var(--spacing-xl);
+            padding-bottom: var(--spacing-lg);
+            border-bottom: 2px solid var(--color-gray-200);
+        }
+
+        .preview-header h3 {
+            font-size: var(--font-size-xl);
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .preview-header p {
+            color: var(--color-text-tertiary);
+            font-size: var(--font-size-sm);
+        }
+
+        .preview-card {
+            background: var(--color-bg-primary);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-xl);
+            margin-bottom: var(--spacing-lg);
+            box-shadow: var(--shadow-md);
+        }
+
+        .preview-section-title {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-brand-primary);
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-sm);
+            border-bottom: 2px solid var(--color-brand-primary);
+        }
+
+        .preview-field {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .preview-field:last-child {
+            margin-bottom: 0;
+        }
+
+        .preview-field-label {
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .preview-field-value {
+            font-size: var(--font-size-base);
+            color: var(--color-text-primary);
+            line-height: var(--line-height-relaxed);
+            white-space: pre-wrap;
+        }
+
+        .preview-field-value.code {
+            background: var(--color-gray-100);
+            border: var(--border-width-default) solid var(--color-border-light);
+            border-radius: var(--radius-sm);
+            padding: var(--spacing-md);
+            font-family: var(--font-monospace);
+            font-size: var(--font-size-sm);
+            overflow-x: auto;
+        }
+
+        .preview-field-value.empty {
+            color: var(--color-text-tertiary);
+            font-style: italic;
+        }
+
+        /* User Stories Section */
+        .user-stories-section {
+            margin-top: var(--spacing-xl);
+            padding: var(--spacing-lg);
+            background: var(--color-gray-50);
+            border-radius: var(--radius-md);
+        }
+
+        .user-stories-section h4 {
+            font-size: var(--font-size-lg);
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .user-stories-section > p {
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-lg);
+            font-size: var(--font-size-sm);
+        }
+
+        .story-card {
+            background: var(--color-bg-primary);
+            border: var(--border-width-default) solid var(--color-border-default);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .story-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .story-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .story-id {
+            font-family: var(--font-monospace);
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-gray-600);
+            background: var(--color-gray-100);
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--radius-sm);
+        }
+
+        .story-persona {
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-medium);
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .story-persona.developer {
+            background: #DBEAFE;
+            color: #1E40AF;
+        }
+
+        .story-persona.sre {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        .story-persona.po {
+            background: #DCFCE7;
+            color: #166534;
+        }
+
+        .story-card h5 {
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .story-details {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .story-details p {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .story-details strong {
+            color: var(--color-text-primary);
+            font-weight: var(--font-weight-semibold);
+        }
+
+        .story-dynamic {
+            color: var(--color-brand-primary);
+            font-weight: var(--font-weight-medium);
+            font-style: italic;
+        }
+
+        .acceptance-criteria {
+            background: var(--color-gray-50);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-sm);
+            margin-top: var(--spacing-md);
+        }
+
+        .acceptance-criteria strong {
+            display: block;
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .acceptance-criteria ul {
+            margin-left: var(--spacing-xl);
+            margin-top: var(--spacing-sm);
+        }
+
+        .acceptance-criteria li {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-xs);
+            line-height: var(--line-height-relaxed);
+        }
+
+        .preview-next-steps {
+            background: var(--color-info-light);
+            border-left: 4px solid var(--color-info);
+            border-radius: var(--radius-sm);
+            padding: var(--spacing-lg);
+            margin-top: var(--spacing-xl);
+        }
+
+        .preview-next-steps h4 {
+            font-size: var(--font-size-base);
+            color: var(--color-info);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .preview-next-steps ul {
+            margin-left: var(--spacing-xl);
+        }
+
+        .preview-next-steps li {
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-sm);
+            font-size: var(--font-size-sm);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-semibold);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .badge-complete {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+
+        .badge-incomplete {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        /* ===== MODALS ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: var(--z-index-overlay);
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .modal-overlay.visible {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: var(--radius-lg);
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        }
+
+        .modal-header {
+            background: var(--color-brand-primary);
+            color: white;
+            padding: var(--spacing-xl);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .modal-header h3 {
+            font-size: var(--font-size-lg);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0.9;
+        }
+
+        .modal-close:hover {
+            opacity: 1;
+        }
+
+        .modal-content {
+            padding: var(--spacing-xl);
+        }
+
+        .field-display {
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-lg);
+            border-bottom: 1px solid var(--color-gray-200);
+        }
+
+        .field-display:last-child {
+            border-bottom: none;
+        }
+
+        .field-label {
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-secondary);
+            font-size: var(--font-size-sm);
+            margin-bottom: var(--spacing-sm);
+            display: block;
+        }
+
+        .field-value {
+            color: var(--color-text-primary);
+            font-size: var(--font-size-base);
+            white-space: pre-wrap;
+        }
+
+        .field-value.code {
+            background: var(--color-gray-50);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-sm);
+            font-family: var(--font-monospace);
+            font-size: var(--font-size-sm);
+            overflow-x: auto;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            flex-shrink: 0;
+            padding: var(--spacing-md) var(--spacing-xl);
+            text-align: center;
+            font-size: var(--font-size-xs);
+            color: var(--color-text-tertiary);
+            border-top: var(--border-width-default) solid var(--color-border-light);
+            background: var(--color-bg-primary);
+            height: var(--height-footer);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ===== HELP DRAWER ===== */
+        .guide-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: var(--z-index-overlay);
+        }
+
+        .guide-overlay.visible {
+            display: block;
+        }
+
+        .help-drawer {
+            position: fixed;
+            top: 0;
+            right: -500px;
+            width: var(--width-drawer);
+            height: 100%;
+            background: var(--color-bg-primary);
+            box-shadow: var(--shadow-drawer);
+            z-index: var(--z-index-drawer);
+            transition: right var(--transition-slow);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .help-drawer.visible {
+            right: 0;
+        }
+
+        .drawer-header {
+            background: var(--color-brand-primary);
+            color: var(--color-text-inverse);
+            padding: var(--spacing-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .drawer-header h2 {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-bold);
+        }
+
+        .close-btn {
+            font-size: var(--font-size-2xl);
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: var(--color-text-inverse);
+            line-height: 1;
+            opacity: 0.9;
+            padding: 0;
+        }
+
+        .close-btn:hover {
+            opacity: 1;
+        }
+
+        .drawer-content {
+            padding: var(--spacing-lg);
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .drawer-content h3 {
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+            margin-top: var(--spacing-lg);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .drawer-content h3:first-child {
+            margin-top: 0;
+        }
+
+        .drawer-content p {
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-md);
+            font-size: var(--font-size-sm);
+        }
+
+        .drawer-content ul {
+            margin-left: var(--spacing-xl);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .drawer-content li {
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-sm);
+            font-size: var(--font-size-sm);
+        }
+
+        .example-box {
+            background: var(--color-gray-50);
+            border-left: 4px solid var(--color-brand-primary);
+            padding: var(--spacing-md);
+            margin: var(--spacing-md) 0;
+            font-size: var(--font-size-sm);
+        }
+
+        .example-box strong {
+            display: block;
+            color: var(--color-brand-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .pattern-hint {
+            background: var(--color-info-light);
+            border-left: 3px solid var(--color-info);
+            padding: var(--spacing-md);
+            margin: var(--spacing-sm) 0;
+            font-size: var(--font-size-xs);
+            border-radius: var(--radius-sm);
+        }
+
+        .pattern-hint strong {
+            color: var(--color-info);
+            display: block;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        /* ===== GLOSSARY DRAWER ===== */
+        .glossary-drawer {
+            position: fixed;
+            top: 0;
+            right: -500px;
+            width: var(--width-drawer);
+            height: 100%;
+            background: var(--color-bg-primary);
+            box-shadow: var(--shadow-drawer);
+            z-index: var(--z-index-drawer);
+            transition: right var(--transition-slow);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .glossary-drawer.visible {
+            right: 0;
+        }
+
+        .glossary-search {
+            padding: var(--spacing-md);
+            background: var(--color-gray-50);
+            border-bottom: var(--border-width-default) solid var(--color-border-light);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .glossary-search-input {
+            width: 100%;
+            padding: var(--spacing-md);
+            font-size: var(--font-size-sm);
+            border: var(--border-width-default) solid var(--color-border-default);
+            border-radius: var(--radius-md);
+            font-family: var(--font-primary);
+            transition: border-color var(--transition-base);
+        }
+
+        .glossary-search-input:focus {
+            outline: none;
+            border-color: var(--color-border-focus);
+        }
+
+        .glossary-section {
+            padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-md);
+            border-bottom: var(--border-width-default) solid var(--color-border-light);
+        }
+
+        .glossary-section:last-child {
+            border-bottom: none;
+        }
+
+        .glossary-section h3 {
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-brand-primary);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .glossary-term {
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-lg);
+            border-bottom: var(--border-width-default) solid var(--color-gray-200);
+        }
+
+        .glossary-term:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .term-name {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .term-dual {
+            font-size: var(--font-size-xs);
+            color: var(--color-info);
+            font-style: italic;
+            margin-bottom: var(--spacing-sm);
+            font-weight: var(--font-weight-medium);
+        }
+
+        .term-definition {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            line-height: var(--line-height-relaxed);
+        }
+
+        /* ===== LANDING SCREEN ===== */
+        .landing-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--color-bg-primary);
+            z-index: 2000;
+            overflow-y: auto;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .landing-screen.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        /* ===== STICKY SIDEBAR NAVIGATION ===== */
+        .sidebar-nav {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 220px;
+            height: 100vh;
+            background: var(--color-gray-50);
+            border-right: 1px solid var(--color-gray-200);
+            padding: 24px 0;
+            overflow-y: auto;
+            z-index: 2001;
+        }
+
+        .nav-logo {
+            padding: 0 20px 20px;
+            margin-bottom: 16px;
+            border-bottom: 1px solid var(--color-gray-200);
+        }
+
+        .nav-logo h3 {
+            font-size: 1rem;
+            color: var(--color-brand-primary);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: 4px;
+        }
+
+        .nav-logo p {
+            font-size: 0.6875rem;
+            color: var(--color-text-tertiary);
+            line-height: 1.3;
+        }
+
+        .nav-items {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 2px;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 12px 20px;
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            border-left: 4px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .nav-link:hover {
+            background: var(--color-gray-100);
+            color: var(--color-text-primary);
+        }
+
+        .nav-link.active {
+            background: rgba(215, 30, 40, 0.05);
+            border-left-color: var(--color-brand-primary);
+            color: var(--color-brand-primary);
+            font-weight: var(--font-weight-semibold);
+        }
+
+        .landing-content {
+            max-width: 1200px;
+            margin: 0 auto 0 240px; /* Left margin for sidebar */
+            padding: var(--spacing-2xl);
+        }
+
+        .landing-hero {
+            text-align: center;
+            padding: 40px 0 24px;
+            border-bottom: 2px solid var(--color-border-light);
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .landing-hero h1 {
+            font-size: 2.5rem;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-lg);
+            font-weight: var(--font-weight-bold);
+            line-height: 1.2;
+        }
+
+        .landing-hero .subtitle {
+            font-size: var(--font-size-lg);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .executive-questions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-lg);
+            max-width: 800px;
+            margin: 0 auto var(--spacing-2xl);
+        }
+
+        .exec-question {
+            background: #FEF2F2;
+            border-left: 4px solid var(--color-brand-primary);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-base);
+            color: var(--color-text-primary);
+            font-weight: var(--font-weight-medium);
+        }
+
+        .landing-section {
+            margin-bottom: var(--spacing-2xl);
+            padding: var(--spacing-2xl) 0;
+        }
+
+        .landing-section h2 {
+            font-size: 1.75rem;
+            color: var(--color-brand-primary);
+            margin-bottom: var(--spacing-lg);
+            text-align: center;
+        }
+
+        .landing-section h3 {
+            font-size: 1.25rem;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .landing-section p {
+            font-size: var(--font-size-base);
+            color: var(--color-text-secondary);
+            line-height: var(--line-height-relaxed);
+            margin-bottom: var(--spacing-md);
+        }
+
+        /* Two-Column Comparison Grid - V4 COMPACT */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .comparison-column {
+            background: var(--color-bg-secondary);
+            border: 2px solid var(--color-border-default);
+            border-radius: var(--radius-lg);
+            padding: 10px;
+        }
+
+        .comparison-column h3 {
+            font-size: 1.125rem;
+            margin-bottom: 6px;
+            color: var(--color-text-primary);
+        }
+
+        .subtitle {
+            font-size: 0.8125rem;
+            color: var(--color-text-tertiary);
+            margin-bottom: 14px;
+        }
+
+        .signal-list {
+            font-family: var(--font-monospace);
+            font-size: 0.8125rem;
+            color: var(--color-text-primary);
+            line-height: 1.4;
+            white-space: pre-wrap;
+        }
+
+        .signal-warning {
+            color: #D97706;
+        }
+
+        .signal-ok {
+            color: var(--color-success);
+        }
+
+        .highlight-text {
+            background: #FEF3C7;
+            padding: 1px 3px;
+            border-radius: 2px;
+            font-weight: 600;
+        }
+
+        .tells-us {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid var(--color-gray-200);
+            font-size: 0.8125rem;
+        }
+
+        .tells-us strong {
+            color: var(--color-text-primary);
+        }
+
+        .bos-adds-green {
+            color: var(--color-success);
+            font-weight: 600;
+        }
+
+        .bos-adds-blue {
+            color: var(--color-info);
+            font-weight: 600;
+        }
+
+        /* Signal type definitions */
+        .signal-type-note {
+            font-size: 0.75rem;
+            color: var(--color-text-tertiary);
+            font-style: italic;
+            margin-top: 4px;
+        }
+
+        /* De-emphasized traditional signals */
+        .deemphasized {
+            opacity: 0.4;
+            font-size: 0.75rem;
+        }
+
+        /* Stakeholder context box */
+        .stakeholder-context {
+            background: #F0FDF4;
+            border-left: 3px solid var(--color-success);
+            padding: 6px 8px;
+            margin-bottom: 8px;
+            font-size: 0.8125rem;
+            border-radius: 3px;
+        }
+
+        .stakeholder-context strong {
+            color: var(--color-success);
+        }
+
+        /* BOS Layers - COMPACT */
+        .bos-layer {
+            margin-top: 8px;
+            padding: 6px;
+            border-radius: var(--radius-md);
+            border: 2px solid;
+        }
+
+        .bos-layer.business-health {
+            background: #ECFDF5;
+            border-color: var(--color-success);
+        }
+
+        .bos-layer.business-impact {
+            background: #EFF6FF;
+            border-color: var(--color-info);
+        }
+
+        .layer-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: var(--color-success);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 0.6875rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .layer-label.impact {
+            background: var(--color-info);
+        }
+
+        /* Dimension labels */
+        .dimension {
+            color: var(--color-text-tertiary);
+            font-size: 0.75rem;
+            font-style: italic;
+        }
+
+        /* Bridge Box */
+        .bridge-box {
+            margin-top: 16px;
+            padding: 10px;
+            background: linear-gradient(90deg, var(--color-gray-100) 0%, rgba(16, 185, 129, 0.1) 100%);
+            border: 2px dashed var(--color-success);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .bridge-box-content {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+
+        .bridge-arrow {
+            font-size: 1.5rem;
+            color: var(--color-success);
+            font-weight: bold;
+        }
+
+        /* Summary Bar */
+        .summary-bar {
+            margin-top: 16px;
+            padding: 8px;
+            background: linear-gradient(135deg, #FAF5FF 0%, #EFF6FF 100%);
+            border: 2px solid var(--color-purple);
+            border-radius: var(--radius-lg);
+            text-align: center;
+        }
+
+        .summary-bar strong {
+            font-size: 1.125rem;
+            color: var(--color-purple);
+        }
+
+        .summary-bar .detail {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin-top: 4px;
+        }
+
+        .semantic-flow {
+            background: var(--color-gray-50);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-2xl);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .flow-diagram {
+            font-size: var(--font-size-base);
+            line-height: 2;
+            text-align: center;
+            color: var(--color-text-primary);
+        }
+
+        .flow-diagram .flow-item {
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-brand-primary);
+        }
+
+        .flow-example {
+            margin-top: var(--spacing-xl);
+            padding: var(--spacing-lg);
+            background: var(--color-bg-primary);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-sm);
+            line-height: 1.8;
+        }
+
+        .role-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-xl);
+        }
+
+        .role-card {
+            background: var(--color-bg-primary);
+            border: 2px solid var(--color-border-default);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            text-align: center;
+        }
+
+        .role-card .role-number {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            background: var(--color-brand-primary);
+            color: white;
+            border-radius: 50%;
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .role-card h4 {
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-md);
+            font-size: var(--font-size-lg);
+        }
+
+        .role-card ul {
+            text-align: left;
+            list-style: none;
+            padding: 0;
+        }
+
+        .role-card li {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-sm);
+            padding-left: var(--spacing-lg);
+            position: relative;
+        }
+
+        .role-card li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--color-brand-primary);
+            font-weight: bold;
+        }
+
+        .bridge-message {
+            background: var(--color-info-light);
+            border: 2px solid var(--color-info);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-2xl);
+            margin: var(--spacing-2xl) 0;
+        }
+
+        .bridge-message h3 {
+            color: var(--color-info);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .bridge-formula {
+            background: var(--color-bg-primary);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+            font-family: var(--font-monospace);
+            font-size: var(--font-size-sm);
+            line-height: 1.8;
+            margin: var(--spacing-lg) 0;
+        }
+
+        .bridge-points {
+            list-style: none;
+            padding: 0;
+        }
+
+        .bridge-points li {
+            padding-left: var(--spacing-xl);
+            margin-bottom: var(--spacing-sm);
+            position: relative;
+        }
+
+        .bridge-points li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--color-success);
+            font-weight: bold;
+        }
+
+        .landing-cta {
+            text-align: center;
+            padding: 60px 0;
+        }
+
+        .landing-cta h2 {
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .landing-cta .btn-large {
+            font-size: var(--font-size-lg);
+            padding: var(--spacing-lg) var(--spacing-2xl);
+            border-radius: var(--radius-md);
+            font-weight: var(--font-weight-semibold);
+        }
+
+        /* BOS Title/Branding */
+        .bos-title {
+            font-size: 3rem;
+            color: var(--color-brand-primary);
+            font-weight: var(--font-weight-bold);
+            letter-spacing: -0.02em;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .bos-subtitle {
+            font-size: 1.25rem;
+            color: var(--color-text-secondary);
+            font-weight: var(--font-weight-medium);
+            margin-bottom: 0;
+        }
+
+        .value-proposition {
+            font-size: var(--font-size-lg);
+            color: var(--color-text-secondary);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        /* Traditional Observability Gap */
+        .observability-gap {
+            background: #FEF2F2;
+            border-left: 4px solid var(--color-warning);
+            padding: var(--spacing-xl);
+            max-width: 900px;
+            margin: 0 auto var(--spacing-2xl);
+            border-radius: var(--radius-md);
+        }
+
+        .observability-gap h4 {
+            color: var(--color-warning);
+            font-size: var(--font-size-lg);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .observability-gap p {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            line-height: var(--line-height-relaxed);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .observability-gap .scenario {
+            background: white;
+            padding: var(--spacing-md);
+            border-radius: var(--radius-sm);
+            margin: var(--spacing-md) 0;
+            font-family: var(--font-monospace);
+            font-size: var(--font-size-sm);
+            line-height: 1.8;
+        }
+
+        .observability-gap .scenario strong {
+            color: var(--color-text-primary);
+        }
+
+        .observability-gap p:last-child {
+            margin-bottom: 0;
+            font-weight: var(--font-weight-semibold);
+        }
+
+        /* Business Principle Callout */
+        .business-principle {
+            background: var(--color-gray-50);
+            border-left: 4px solid var(--color-brand-primary);
+            padding: var(--spacing-xl);
+            max-width: 900px;
+            margin: 0 auto var(--spacing-2xl);
+            border-radius: var(--radius-md);
+        }
+
+        .business-principle h4 {
+            color: var(--color-brand-primary);
+            font-size: var(--font-size-lg);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .business-principle p {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            line-height: var(--line-height-relaxed);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .business-principle p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* ===== INCIDENT RESPONSE COMPARISON ===== */
+        .incident-response-comparison {
+            margin-bottom: var(--spacing-2xl);
+            padding: var(--spacing-2xl) 0;
+        }
+
+        .incident-response-comparison h2 {
+            font-size: 1.75rem;
+            color: var(--color-brand-primary);
+            margin-bottom: var(--spacing-xl);
+            text-align: center;
+        }
+
+        .response-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 16px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .response-column {
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            border: 2px solid;
+        }
+
+        .response-column.without-bos {
+            background: #FEF3C7;
+            border-color: var(--color-warning);
+        }
+
+        .response-column.with-bos {
+            background: #ECFDF5;
+            border-color: var(--color-success);
+        }
+
+        .response-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid;
+        }
+
+        .response-column.without-bos .response-header {
+            border-bottom-color: var(--color-warning);
+        }
+
+        .response-column.with-bos .response-header {
+            border-bottom-color: var(--color-success);
+        }
+
+        .response-header .icon {
+            font-size: 1.5rem;
+        }
+
+        .response-header h3 {
+            font-size: 1.125rem;
+            color: var(--color-text-primary);
+            font-weight: var(--font-weight-bold);
+        }
+
+        .response-timeline {
+            margin-bottom: 20px;
+        }
+
+        .timeline-step {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding: 12px;
+            background: white;
+            border-radius: var(--radius-md);
+            border-left: 3px solid;
+        }
+
+        .response-column.without-bos .timeline-step {
+            border-left-color: var(--color-warning);
+        }
+
+        .response-column.with-bos .timeline-step {
+            border-left-color: var(--color-success);
+        }
+
+        .timeline-step .time {
+            font-family: var(--font-monospace);
+            font-size: 0.8125rem;
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+            min-width: 60px;
+            flex-shrink: 0;
+        }
+
+        .timeline-step .event {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+        }
+
+        .exec-questions {
+            margin-top: 8px;
+            padding-left: 12px;
+        }
+
+        .exec-questions li {
+            font-size: 0.8125rem;
+            color: var(--color-text-secondary);
+            margin-bottom: 4px;
+            list-style-type: disc;
+        }
+
+        .signal-types {
+            margin-top: 8px;
+            padding: 8px 12px;
+            background: #F0F9FF;
+            border-radius: var(--radius-sm);
+            font-size: 0.8125rem;
+            line-height: 1.7;
+        }
+
+        .signal-types strong {
+            color: var(--color-text-primary);
+        }
+
+        .signal-types .signal-type {
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .response-cost,
+        .response-benefit {
+            padding: 12px;
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            font-weight: var(--font-weight-semibold);
+            text-align: center;
+        }
+
+        .response-cost {
+            background: white;
+            color: #B45309;
+            border: 2px solid #FCD34D;
+        }
+
+        .response-benefit {
+            background: white;
+            color: #047857;
+            border: 2px solid #6EE7B7;
+        }
+
+        .comparison-insight {
+            margin-top: 24px;
+            padding: 16px;
+            background: #EFF6FF;
+            border: 2px solid var(--color-info);
+            border-radius: var(--radius-lg);
+            text-align: center;
+            font-size: 0.9375rem;
+            color: var(--color-text-secondary);
+            line-height: 1.7;
+        }
+
+        .comparison-insight strong {
+            color: var(--color-info);
+        }
+
+        /* ===== RESPONSIVE DESIGN FOR SIDEBAR NAV ===== */
+        @media (max-width: 768px) {
+            .sidebar-nav {
+                position: relative;
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid var(--color-gray-200);
+            }
+
+            .nav-items {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 4px;
+                padding: 0 12px 12px;
+            }
+
+            .nav-item {
+                margin-bottom: 0;
+            }
+
+            .nav-link {
+                padding: 8px 12px;
+                border-left: none;
+                border-bottom: 3px solid transparent;
+                font-size: 0.8125rem;
+            }
+
+            .nav-link.active {
+                border-left: none;
+                border-bottom-color: var(--color-brand-primary);
+            }
+
+            .landing-content {
+                margin-left: 0;
+                padding: var(--spacing-lg);
+            }
+        }
+    </style>
+
+    </style>
+
+<!-- Generated: 2025-10-14 14:25:50  | Version: 2.5.4 | Page: bos-data-model -->
+</head>
+<body>
+    <!-- Sticky Navigation -->
+    <nav class="sticky-nav">
+        <div class="nav-logo">
+            <h3>BOS Data Model Technical Specification</h3>
+            <span class="version-badge">2.5.4</span>
+        </div>
+        <ul class="nav-items">
+<li class="nav-item">
+  <a href="#executive-summary" class="nav-link">1. Executive Summary</a>
+</li>
+<li class="nav-item">
+  <a href="#architecture" class="nav-link">2. Architecture Overview</a>
+</li>
+<li class="nav-item">
+  <a href="#table-specs" class="nav-link">3. Table Specifications (All 8 Tables)</a>
+</li>
+<li class="nav-item">
+  <a href="#business-rules" class="nav-link">4. Business Rules & Validation Logic</a>
+</li>
+<li class="nav-item">
+  <a href="#example" class="nav-link">5. Complete Service Example (SVC002)</a>
+</li>
+<li class="nav-item">
+  <a href="#patterns" class="nav-link">6. Critical Patterns</a>
+</li>
+<li class="nav-item">
+  <a href="#questions" class="nav-link">7. Questions for Engineering Review</a>
+</li>
+<li class="nav-item">
+  <a href="#documentation-reference" class="nav-link">8. Companion Documentation</a>
+</li>
+</ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <section id="executive-summary">
+    <h2 id="executive-summary">1. Executive Summary</h2>
+
+    <h3>What is BOS?</h3>
+    <p>Business Observability System (BOS) is a data model that connects <strong>business outcomes</strong> with <strong>technical monitoring</strong>. The core principle: we instrument what we build (APIs, databases, queues) but typically not what stakeholders expect (outcomes, timelines, business impact). BOS makes business expectations as measurable, visible, and discoverable as technical health.</p>
+
+    <div class="callout callout-info">
+        <strong>Core Innovation (Three-Signal Model):</strong>
+        <ul style="margin-top: 8px; margin-bottom: 0;">
+            <li><strong>Traditional Observability (System/Process):</strong> Technical health metrics (uptime, latency, error rates)</li>
+            <li><strong>Business Health/Success:</strong> Stakeholder expectation attainment (KPI vs target, measured outcomes)</li>
+            <li><strong>Business Impact:</strong> Consequence quantification (customers affected, dollars at risk, compliance cases)</li>
+        </ul>
+        <p style="margin-top: 12px; margin-bottom: 0;"><strong>Both business signal types are equally important.</strong> Success signals answer "are we meeting stakeholder expectations?" Impact signals answer "what's the business consequence of failure?" Both are treated as real-time signals with current values, not static metadata. When a service degrades, BOS shows technical health (99.2% success rate) + expectation gap (target: 99.5%) + business consequences (10 customers blocked, $4.8M at risk).</p>
+    </div>
+
+    <div class="diagram-container">
+        <h4>Three-Signal Model Data Flow</h4>
+        <div class="mermaid">
+graph TD
+    subgraph Legend[" "]
+        L1["<b>Table Name</b><br/>Table Purpose"]
+        style L1 fill:#F9FAFB,stroke:#D1D5DB,stroke-width:1px
+    end
+
+    subgraph Traditional["Signal Type 1: Traditional Observability (Baseline)"]
+        T1["<b>signal_definitions</b><br/>Technical health metrics<br/>(signal_type: sli_ratio, sli_threshold)"]
+        T1 -->|queries| TS["<b>signal_status</b><br/>Current values"]
+        TS --> TD["<b>Dashboards</b><br/>99.2% success, 250ms latency"]
+        style T1 fill:#DBEAFE,stroke:#3B82F6,stroke-width:3px
+        style TS fill:#E5E7EB,stroke:#6B7280,stroke-width:2px
+        style TD fill:#D1FAE5,stroke:#10B981,stroke-width:2px
+    end
+
+    subgraph Innovation["Business Health & Impact Signals (Unified Architecture)"]
+        I1["<b>stakeholder_expectations_context</b><br/>Unified stakeholder stories<br/>(8 fields: stakeholder + expectation + impact)"]
+        I1 --> I1B["<b>signal_definitions</b><br/>Business measurement queries<br/>(signal_type: sli_ratio, sli_threshold, business_impact)"]
+        I1B -->|queries| IS["<b>signal_status</b><br/>Current business values"]
+        IS --> ID["<b>Dashboards</b><br/>Target: 99.5%, Current: 99.2%<br/>10 customers blocked, $4.8M at risk"]
+        style I1 fill:#FEF3C7,stroke:#F59E0B,stroke-width:3px
+        style I1B fill:#FEF3C7,stroke:#F59E0B,stroke-width:2px
+        style IS fill:#E5E7EB,stroke:#6B7280,stroke-width:2px
+        style ID fill:#D1FAE5,stroke:#10B981,stroke-width:2px
+    end
+
+    style Legend fill:#FFFFFF,stroke:#D1D5DB,stroke-width:1px,stroke-dasharray:3
+    style Traditional fill:#F9FAFB,stroke:#3B82F6,stroke-width:2px
+    style Innovation fill:#FFFBEB,stroke:#F59E0B,stroke-width:3px
+        </div>
+        <p class="diagram-caption">Traditional observability answers "is it working?" while BOS answers "is it meeting stakeholder expectations?" and "what's the business consequence of failure?" All signal types (technical + business) converge at signal_status for unified current values.</p>
+        <p class="diagram-expand-hint">💡 Click diagram to open in new tab</p>
+    </div>
+
+    <h3>Data Model Overview</h3>
+    <p>The BOS data model consists of <strong>8 normalized tables</strong> connected by <code>service_id</code> foreign keys:</p>
+    <ul>
+        <li><strong>Core Tables (4):</strong> services, signal_definitions, stakeholder_expectations_context, operational_metadata</li>
+        <li><strong>Signal Table (1):</strong> signal_status (current values for all signal types)</li>
+        <li><strong>Operational Tables (3):</strong> incidents, cmdb_applications, service_application_mappings</li>
+    </ul>
+
+    <h3>Key Features</h3>
+    <ul>
+        <li><strong>Multi-Row Patterns:</strong> Services have 0 to many stakeholder context rows (current data: 3-5 rows per service for focused prioritization)</li>
+        <li><strong>Unified Stakeholder Stories:</strong> Each context row combines stakeholder expectation with business impact in single narrative</li>
+        <li><strong>Business Impact as Signals:</strong> Impact indicators link to signal_status for real-time current values</li>
+        <li><strong>Incident History Support:</strong> Incidents table enables configurable time-window annotations on dashboards</li>
+        <li><strong>Organizational Hierarchy:</strong> L4/L3 organizational levels for executive dashboard rollups</li>
+        <li><strong>CMDB Integration:</strong> Maps business services to supporting technical applications</li>
+    </ul>
+
+    <div class="callout callout-important">
+        <strong>Validation Status:</strong>
+        All cardinality and relationship claims in this document have been verified against actual CSV data (20 services, 8 tables, 61 unified context rows). Open questions are documented in the Questions section.
+    </div>
+</section>
+
+
+<section id="architecture">
+    <h2 id="architecture">2. Architecture Overview</h2>
+
+    <div class="diagram-container">
+        <h4>Entity Relationship Diagram (All 8 Tables)</h4>
+        <div class="mermaid">
+erDiagram
+    services ||--o{ signal_definitions : "service_id (0..N)"
+    services ||--o{ stakeholder_expectations_context : "service_id (0..N)"
+    services ||--o| operational_metadata : "service_id (0..1)"
+    services ||--o| service_application_mappings : "service_id (0..1)"
+    services ||--o{ incidents : "service_id (0..N)"
+
+    signal_definitions }o--|| signal_status : "signal_id"
+
+    service_application_mappings }o--|| cmdb_applications : "application_ids"
+
+    services {
+        TEXT service_id PK
+        TEXT serviceName
+        TEXT displayName
+        TEXT businessPurpose
+        TEXT l4_product_line
+        TEXT l3_product
+        INTEGER tierLevel
+    }
+
+    signal_definitions {
+        TEXT signal_id PK
+        TEXT service_id FK
+        TEXT signal_name
+        TEXT signal_display_name
+        TEXT signal_type
+        TEXT query_numerator
+        TEXT query_denominator
+        TEXT description_business
+        TEXT description_technical
+        TEXT impact_category
+        TEXT impact_unit
+        REAL sloTarget
+        TEXT sloTargetRationale
+        TEXT timeWindow
+        TEXT timeWindowType
+        TEXT budgetingMethod
+        REAL timeSliceTarget
+        TEXT timeSliceWindow
+        REAL alertingThreshold
+        REAL pageThreshold
+        TEXT sloNotes
+    }
+
+    stakeholder_expectations_context {
+        TEXT service_id FK
+        TEXT context_id PK
+        TEXT stakeholderType
+        TEXT stakeholderGroup
+        TEXT expectationStatement
+        TEXT impactCategory
+        TEXT impactDescription
+        TEXT priority
+    }
+
+    signal_status {
+        TEXT signal_id PK
+        TEXT signalName
+        TEXT signalType
+        REAL currentValue
+        TEXT status
+        TEXT lastUpdated
+    }
+
+    operational_metadata {
+        TEXT service_id FK
+        TEXT oncallTeam
+        TEXT escalationPath
+        TEXT runbookUrl
+        INTEGER mttrMinutes
+    }
+
+    incidents {
+        TEXT incident_id PK
+        TEXT service_id FK
+        TEXT title
+        TEXT severity
+        TEXT status
+        TEXT timeAgo
+    }
+
+    cmdb_applications {
+        TEXT app_id PK
+        TEXT appName
+        TEXT appType
+        TEXT techStack
+    }
+
+    service_application_mappings {
+        TEXT service_id FK
+        TEXT application_ids
+        TEXT deploymentEnv
+    }
+        </div>
+        <p class="diagram-caption">The architecture uses unified stakeholder_expectations_context table (8 fields per row). Each context row tells complete stakeholder story: "As [stakeholder], I expect [X]. If broken: [impactCategory]: [impactDescription]". signal_definitions contains SLO targets plus measurement definitions with signal_type discriminator (sli_ratio, sli_threshold, business_impact). <strong>Cardinality:</strong> stakeholder_expectations_context is 0..N (services can have zero or multiple context rows).</p>
+        <p class="diagram-expand-hint">💡 Click diagram to open in new tab</p>
+    </div>
+
+    <h3>Table Relationships</h3>
+    <pre><code>services (service_id) [1 parent → 0 to many children]
+    ├── signal_definitions (service_id) [0..N] Contains unified signals + SLO targets
+    ├── stakeholder_expectations_context (service_id) [0..N] Typical: 3-5 rows per service
+    ├── operational_metadata (service_id) [0..1] Optional operational data
+    └── service_application_mappings (service_id) [0..1] Optional CMDB mapping
+
+signal_status (signal_id) [independent, linked via signal_definitions.signal_id]
+    Current values for all signals (technical + business)
+
+incidents (service_id) [0..N, optional foreign key]
+    Incident history for dashboard annotations
+
+cmdb_applications (app_id) [independent, linked via service_application_mappings]
+    Supporting technical applications</code></pre>
+
+    <h3>Design Recommendations</h3>
+
+    <div class="callout callout-info">
+        <strong>Recommended Patterns:</strong>
+        <ul style="margin-top: 8px; margin-bottom: 0;">
+            <li><strong>stakeholder_expectations_context:</strong> 3-5 rows per service to enforce focused prioritization for dashboard orientation</li>
+            <li><strong>signal_definitions:</strong> 2-8 signals per service (mix of technical SLIs + business impact measurements)</li>
+            <li><strong>operational_metadata:</strong> Optional per service (0..1) - recommended for production services</li>
+            <li><strong>service_application_mappings:</strong> Optional per service (0..1) - links business service to supporting technical applications</li>
+        </ul>
+    </div>
+
+    <div class="callout callout-warning">
+        <strong>Cardinality Note:</strong>
+        Many relationships are 0..1 or 0..N (not required 1:1) to support incremental adoption. Engineering review should clarify whether optional relationships are permanent design (flexible) or temporary (incomplete coverage during rollout).
+    </div>
+</section>
+
+
+<section id="table-specs">
+    <h2 id="table-specs">3. Table Specifications (All 8 Tables)</h2>
+
+    <p>Each table specification includes: purpose, relationship to services, field definitions with types and examples using SVC002 (Credit Check Service) as the reference implementation.</p>
+
+    <h3 id="table-services">3.1 services.csv - Core Service Information</h3>
+    <p><strong>Purpose:</strong> Core service identification and business context</p>
+    <p><strong>Relationship:</strong> Parent table (1 row per service)</p>
+    <p><strong>Fields:</strong> 12</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Column</th>
+                <th>Type</th>
+                <th>Required</th>
+                <th>Description</th>
+                <th>SVC002 Example</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>service_id</td>
+                <td>TEXT</td>
+                <td>Yes</td>
+                <td>Unique identifier</td>
+                <td>SVC002</td>
+            </tr>
+            <tr>
+                <td>serviceName</td>
+                <td>TEXT</td>
+                <td>Yes</td>
+                <td>Technical service name</td>
+                <td>credit-check-service</td>
+            </tr>
+            <tr>
+                <td>displayName</td>
+                <td>TEXT</td>
+                <td>Yes</td>
+                <td>Human-readable name</td>
+                <td>Credit Check Service</td>
+            </tr>
+            <tr>
+                <td>businessPurpose</td>
+                <td>TEXT</td>
+                <td>Yes</td>
+                <td>What service does for business</td>
+                <td>Validate borrower creditworthiness for loan approval</td>
+            </tr>
+            <tr>
+                <td>tierLevel</td>
+                <td>INTEGER</td>
+                <td>Yes</td>
+                <td>Criticality tier (1=most critical, 6=least)</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>businessUnit</td>
+                <td>TEXT</td>
+                <td>Yes</td>
+                <td>Owning organization</td>
+                <td>Home Lending</td>
+            </tr>
+            <tr>
+                <td>performanceQuestion</td>
+                <td>TEXT</td>
+                <td>Yes</td>
+                <td>Key measurement question</td>
+                <td>What percentage of credit checks return valid scores?</td>
+            </tr>
+            <tr>
+                <td>tags</td>
+                <td>TEXT</td>
+                <td>No</td>
+                <td>Comma-separated tags</td>
+                <td>lending,credit,tier2</td>
+            </tr>
+            <tr>
+                <td>productOwner</td>
+                <td>TEXT</td>
+                <td>Yes</td>
+                <td>Product Owner email</td>
+                <td>jane.doe@company.com</td>
+            </tr>
+            <tr>
+                <td>l4_product_line</td>
+                <td>TEXT</td>
+                <td>Yes</td>
+                <td>L4 organizational level</td>
+                <td>Home Lending</td>
+            </tr>
+            <tr>
+                <td>l3_product</td>
+                <td>TEXT</td>
+                <td>Yes</td>
+                <td>L3 organizational level</td>
+                <td>Home Originations</td>
+            </tr>
+            <tr>
+                <td>l3_description</td>
+                <td>TEXT</td>
+                <td>No</td>
+                <td>L3 business purpose description</td>
+                <td>Automate loan application processing from submission to approval</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3 id="table-signal-definitions">3.2 signal_definitions.csv - Unified Signal Definitions</h3>
+    <p><strong>Purpose:</strong> Define ALL signals (technical SLIs + business impact measurements + SLO targets)</p>
+    <p><strong>Relationship:</strong> 0 to many per service</p>
+    <p><strong>Fields:</strong> 31 (10 universal + 21 type-specific)</p>
+    <p><strong>Signal Types:</strong> sli_ratio (ratio metrics), sli_threshold (threshold metrics), business_impact (consequence measurements)</p>
+
+    <div class="callout callout-info">
+        <strong>Schema Note:</strong> signal_definitions uses a polymorphic pattern with signal_type discriminator. Universal fields apply to all signals; type-specific fields are populated based on signal_type (nullable by design ~40% null density).
+    </div>
+
+    <p><strong>Universal Fields (All Signal Types):</strong></p>
+    <table>
+        <thead>
+            <tr>
+                <th>Column</th>
+                <th>Type</th>
+                <th>Required</th>
+                <th>Description</th>
+                <th>SIG010 Example</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>signal_id</td>
+                <td>TEXT</td>
+                <td>Yes</td>
+                <td>Unique signal identifier</td>
+                <td>SIG010</td>
+            </tr>
+            <tr>
+                <td>service_id</td>
+                <td>TEXT</td>
+                <td>Yes</td>
+                <td>Foreign key to services</td>
+                <td>SVC002</td>
+            </tr>
+            <tr>
+                <td>signal_name</td>
+                <td>TEXT</td>
+                <td>Yes</td>
+                <td>Technical identifier</td>
+                <td>credit-check-success-rate</td>
+            </tr>
+            <tr>
+                <td>signal_display_name</td>
+                <td>TEXT</td>
+                <td>Yes</td>
+                <td>Human-readable name</td>
+                <td>Credit Check Success Rate</td>
+            </tr>
+            <tr>
+                <td>signal_type</td>
+                <td>ENUM</td>
+                <td>Yes</td>
+                <td>Discriminator [sli_ratio, sli_threshold, business_impact]</td>
+                <td>sli_ratio</td>
+            </tr>
+            <tr>
+                <td>description_business</td>
+                <td>TEXT</td>
+                <td>Yes</td>
+                <td>Product Owner definition</td>
+                <td>Credit check returns valid score</td>
+            </tr>
+            <tr>
+                <td>description_technical</td>
+                <td>TEXT</td>
+                <td>Yes</td>
+                <td>Developer/Engineer query logic</td>
+                <td>status='SUCCESS' AND score BETWEEN 300 AND 850</td>
+            </tr>
+            <tr>
+                <td>data_source</td>
+                <td>ENUM</td>
+                <td>Yes</td>
+                <td>Source system [sql, splunk, prometheus, custom]</td>
+                <td>sql</td>
+            </tr>
+            <tr>
+                <td colspan="5" style="background: var(--color-gray-50); text-align: center;"><em>+ 23 additional type-specific fields: ratio metrics (query_numerator, query_denominator), threshold metrics (threshold_operator, threshold_value), business impact (impact_category, impact_unit), SLO targets (sloTarget, timeWindow, alertingThreshold), etc. See Section 4 for field dependencies.</em></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3 id="table-stakeholder-context">3.3 stakeholder_expectations_context.csv - Unified Stakeholder Context</h3>
+    <p><strong>Purpose:</strong> Qualitative business context for dashboard orientation (who cares, what could break)</p>
+    <p><strong>Relationship:</strong> 0 to many per service (typical: 3-5 rows per service)</p>
+    <p><strong>Fields:</strong> 8</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Column</th>
+                <th>Type</th>
+                <th>Required</th>
+                <th>Description</th>
+                <th>CTX001 Example</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>service_id</td>
+                <td>TEXT</td>
+                <td>Yes</td>
+                <td>Foreign key to services</td>
+                <td>SVC002</td>
+            </tr>
+            <tr>
+                <td>context_id</td>
+                <td>TEXT</td>
+                <td>Yes</td>
+                <td>Unique context identifier (primary key)</td>
+                <td>CTX001</td>
+            </tr>
+            <tr>
+                <td>stakeholderType</td>
+                <td>ENUM</td>
+                <td>Yes</td>
+                <td>Stakeholder category [customer, internal, company, partner, compliance]</td>
+                <td>customer</td>
+            </tr>
+            <tr>
+                <td>stakeholderGroup</td>
+                <td>TEXT</td>
+                <td>Yes</td>
+                <td>Specific group name</td>
+                <td>loan applicants</td>
+            </tr>
+            <tr>
+                <td>expectationStatement</td>
+                <td>TEXT</td>
+                <td>Yes</td>
+                <td>What stakeholder expects</td>
+                <td>Credit checks return valid scores within acceptable time</td>
+            </tr>
+            <tr>
+                <td>impactCategory</td>
+                <td>ENUM</td>
+                <td>Yes</td>
+                <td>Impact type [customer_experience, financial, legal_risk, operational]</td>
+                <td>customer_experience</td>
+            </tr>
+            <tr>
+                <td>impactDescription</td>
+                <td>TEXT</td>
+                <td>Yes</td>
+                <td>What breaks if expectation not met</td>
+                <td>Loan applicants unable to proceed with application</td>
+            </tr>
+            <tr>
+                <td>priority</td>
+                <td>ENUM</td>
+                <td>Yes</td>
+                <td>Priority level [CRITICAL, HIGH, MEDIUM, LOW]</td>
+                <td>HIGH</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p style="margin-top: 12px;"><strong>Pattern:</strong> Each row tells complete stakeholder story: "As [stakeholderType: stakeholderGroup], I expect [expectationStatement]. If broken: [impactCategory]: [impactDescription]."</p>
+
+    <h3 id="table-operational-metadata">3.4 operational_metadata.csv - Lifecycle and Operations</h3>
+    <p><strong>Purpose:</strong> Track deployment, lifecycle, and operational procedures</p>
+    <p><strong>Relationship:</strong> 0 or 1 per service (optional, recommended for production services)</p>
+    <p><strong>Fields:</strong> 14</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Column</th>
+                <th>Type</th>
+                <th>Required</th>
+                <th>Description</th>
+                <th>Example</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>service_id</td>
+                <td>TEXT</td>
+                <td>Yes</td>
+                <td>Foreign key to services</td>
+                <td>SVC002</td>
+            </tr>
+            <tr>
+                <td>oncallTeam</td>
+                <td>TEXT</td>
+                <td>No</td>
+                <td>On-call team responsible</td>
+                <td>lending-platform-team</td>
+            </tr>
+            <tr>
+                <td>escalationPath</td>
+                <td>TEXT</td>
+                <td>No</td>
+                <td>Escalation procedure</td>
+                <td>PagerDuty → Team Lead → Director</td>
+            </tr>
+            <tr>
+                <td>runbookUrl</td>
+                <td>TEXT</td>
+                <td>No</td>
+                <td>Incident response guide</td>
+                <td>https://wiki.company.com/credit-check-runbook</td>
+            </tr>
+            <tr>
+                <td>mttrMinutes</td>
+                <td>INTEGER</td>
+                <td>No</td>
+                <td>Mean time to recovery target</td>
+                <td>15</td>
+            </tr>
+            <tr>
+                <td colspan="5" style="background: var(--color-gray-50); text-align: center;"><em>+ 9 additional lifecycle fields (dashboardUrl, alertingConfigured, lastValidated, version, created, modified, modifiedBy, status, reviewDate, notes)</em></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3 id="table-signal-status">3.5 signal_status.csv - Current Signal Values</h3>
+    <p><strong>Purpose:</strong> Store current values for all signals (technical + business)</p>
+    <p><strong>Relationship:</strong> 1 per signal (linked via signal_id)</p>
+    <p><strong>Fields:</strong> 6</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Column</th>
+                <th>Type</th>
+                <th>Required</th>
+                <th>Description</th>
+                <th>SIG010 Example</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>signal_id</td>
+                <td>TEXT</td>
+                <td>Yes</td>
+                <td>Primary key, FK to signal_definitions</td>
+                <td>SIG010</td>
+            </tr>
+            <tr>
+                <td>signalName</td>
+                <td>TEXT</td>
+                <td>Yes</td>
+                <td>Signal name (denormalized for queries)</td>
+                <td>credit-check-success-rate</td>
+            </tr>
+            <tr>
+                <td>signalType</td>
+                <td>TEXT</td>
+                <td>Yes</td>
+                <td>Signal type (denormalized for queries)</td>
+                <td>sli_ratio</td>
+            </tr>
+            <tr>
+                <td>currentValue</td>
+                <td>REAL</td>
+                <td>Yes</td>
+                <td>Current measured value</td>
+                <td>99.2</td>
+            </tr>
+            <tr>
+                <td>status</td>
+                <td>TEXT</td>
+                <td>Yes</td>
+                <td>Health status [OK, WARNING, CRITICAL]</td>
+                <td>OK</td>
+            </tr>
+            <tr>
+                <td>lastUpdated</td>
+                <td>TEXT</td>
+                <td>Yes</td>
+                <td>Timestamp of last update</td>
+                <td>2025-10-14T14:30:00Z</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3 id="table-incidents">3.6 incidents.csv - Incident History</h3>
+    <p><strong>Purpose:</strong> Track incidents for dashboard annotations and trend analysis</p>
+    <p><strong>Relationship:</strong> 0 to many per service (optional foreign key)</p>
+    <p><strong>Fields:</strong> 6</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Column</th>
+                <th>Type</th>
+                <th>Required</th>
+                <th>Description</th>
+                <th>Example</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>incident_id</td>
+                <td>TEXT</td>
+                <td>Yes</td>
+                <td>Unique incident identifier</td>
+                <td>INC001</td>
+            </tr>
+            <tr>
+                <td>service_id</td>
+                <td>TEXT</td>
+                <td>No</td>
+                <td>FK to services (optional for org-level incidents)</td>
+                <td>SVC002</td>
+            </tr>
+            <tr>
+                <td>title</td>
+                <td>TEXT</td>
+                <td>Yes</td>
+                <td>Incident title</td>
+                <td>Credit check service degradation</td>
+            </tr>
+            <tr>
+                <td>severity</td>
+                <td>TEXT</td>
+                <td>Yes</td>
+                <td>Severity level [SEV1, SEV2, SEV3, SEV4]</td>
+                <td>SEV2</td>
+            </tr>
+            <tr>
+                <td>status</td>
+                <td>TEXT</td>
+                <td>Yes</td>
+                <td>Current status [ACTIVE, RESOLVED]</td>
+                <td>RESOLVED</td>
+            </tr>
+            <tr>
+                <td>timeAgo</td>
+                <td>TEXT</td>
+                <td>Yes</td>
+                <td>Relative time (display format)</td>
+                <td>30m ago</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3 id="table-cmdb-applications">3.7 cmdb_applications.csv - CMDB Applications</h3>
+    <p><strong>Purpose:</strong> Catalog of technical applications that support business services</p>
+    <p><strong>Relationship:</strong> Independent table (linked via service_application_mappings)</p>
+    <p><strong>Fields:</strong> 4</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Column</th>
+                <th>Type</th>
+                <th>Required</th>
+                <th>Description</th>
+                <th>Example</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>app_id</td>
+                <td>TEXT</td>
+                <td>Yes</td>
+                <td>Unique application identifier</td>
+                <td>APP004</td>
+            </tr>
+            <tr>
+                <td>appName</td>
+                <td>TEXT</td>
+                <td>Yes</td>
+                <td>Application name</td>
+                <td>equifax-api-gateway</td>
+            </tr>
+            <tr>
+                <td>appType</td>
+                <td>TEXT</td>
+                <td>Yes</td>
+                <td>Application type [api, database, queue, service]</td>
+                <td>api</td>
+            </tr>
+            <tr>
+                <td>techStack</td>
+                <td>TEXT</td>
+                <td>Yes</td>
+                <td>Technology stack</td>
+                <td>Java Spring Boot, REST API</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3 id="table-service-application-mappings">3.8 service_application_mappings.csv - Service to Application Mapping</h3>
+    <p><strong>Purpose:</strong> Links business services to supporting technical applications</p>
+    <p><strong>Relationship:</strong> 0 or 1 per service</p>
+    <p><strong>Fields:</strong> 3</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Column</th>
+                <th>Type</th>
+                <th>Required</th>
+                <th>Description</th>
+                <th>Example</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>service_id</td>
+                <td>TEXT</td>
+                <td>Yes</td>
+                <td>Foreign key to services</td>
+                <td>SVC002</td>
+            </tr>
+            <tr>
+                <td>application_ids</td>
+                <td>TEXT</td>
+                <td>Yes</td>
+                <td>Semicolon-separated list of app_ids</td>
+                <td>APP004;APP005;APP012</td>
+            </tr>
+            <tr>
+                <td>deploymentEnv</td>
+                <td>TEXT</td>
+                <td>Yes</td>
+                <td>Deployment environment [production, staging, dev]</td>
+                <td>production</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="callout callout-warning">
+        <strong>Engineering Review Question:</strong> Should application_ids remain semicolon-separated or normalize to junction table? (See Section 7)
+    </div>
+</section>
+
+
+<section id="business-rules">
+    <h2 id="business-rules">4. Business Rules & Validation Logic</h2>
+
+    <h3>Conditional Field Requirements</h3>
+
+    <h4>Signal Type Dependencies</h4>
+    <pre><code>IF signal_definitions.signal_type = 'sli_ratio' THEN
+    query_numerator IS NOT NULL
+    AND query_denominator IS NOT NULL
+    AND query_numerator_description IS NOT NULL
+    AND query_denominator_description IS NOT NULL
+    AND sloTarget IS NOT NULL  -- SLO targets required for technical SLIs
+
+IF signal_definitions.signal_type = 'sli_threshold' THEN
+    query_numerator IS NOT NULL
+    AND threshold_operator IS NOT NULL
+    AND threshold_value IS NOT NULL
+    AND sloTarget IS NOT NULL  -- SLO targets required for technical SLIs
+
+IF signal_definitions.signal_type = 'business_impact' THEN
+    query_numerator IS NOT NULL
+    AND impact_category IS NOT NULL
+    AND impact_unit IS NOT NULL
+    AND sloTarget IS NULL  -- Business impacts measure consequences, not health (no SLO)</code></pre>
+
+    <h3>Cardinality Rules</h3>
+    <pre><code>-- Each service can have 0 to many signals (signals contain SLO targets):
+COUNT(signal_definitions WHERE service_id = X) BETWEEN 0 AND N
+-- Typical: 2-8 signals per service (mix of technical SLIs + business impacts)
+
+-- Each service can have 0 or 1 row in these tables:
+COUNT(operational_metadata WHERE service_id = X) BETWEEN 0 AND 1
+
+-- Each service can have 0 to many stakeholder context rows (unified table):
+COUNT(stakeholder_expectations_context WHERE service_id = X) BETWEEN 0 AND N
+-- Recommended: 3-5 context rows per service (forces prioritization for orientation purpose)
+-- Each row combines stakeholder expectation + impact in unified story format</code></pre>
+
+    <h3>Referential Integrity Rules</h3>
+    <pre><code>-- All service_id foreign keys must exist in services table:
+signal_definitions.service_id IN (SELECT service_id FROM services)
+stakeholder_expectations_context.service_id IN (SELECT service_id FROM services)
+operational_metadata.service_id IN (SELECT service_id FROM services)
+service_application_mappings.service_id IN (SELECT service_id FROM services)
+
+-- All signals have signal_id primary key with FK to signal_status:
+signal_definitions.signal_id = signal_status.signal_id
+
+-- Unified stakeholder_expectations_context ensures relationship integrity:
+-- Each context row contains both stakeholder expectation AND business impact
+-- No orphaned expectations or impacts possible (all data in single row)</code></pre>
+</section>
+
+
+<section id="example">
+    <h2 id="example">5. Complete Service Example (SVC002)</h2>
+
+    <p>This section shows a complete service (Credit Check Service) across all 7 tables to demonstrate how the unified context data model works in practice.</p>
+
+    <div class="diagram-container">
+        <h4>SVC002 Data Population Across Tables</h4>
+        <div class="mermaid">
+graph TD
+    SVC002[SVC002<br/>Credit Check Service]
+
+    SVC002 --> T1[services<br/>1 row]
+    SVC002 --> T2[signal_definitions<br/>6 rows with SLO targets]
+    SVC002 --> T3[stakeholder_expectations_context<br/>4 rows unified stories]
+    SVC002 --> T6[operational_metadata<br/>0 rows]
+
+    T2 -.-> S1[SIG010: Success Rate<br/>sli_ratio]
+    T2 -.-> S2[SIG012: Response Time<br/>sli_threshold]
+    T2 -.-> S3[SIG023: Customers Blocked<br/>business_impact]
+    T2 -.-> S4[SIG024: Revenue at Risk<br/>business_impact]
+    T2 -.-> S5[SIG025: Compliance Cases<br/>business_impact]
+    T2 -.-> S6[SIG026: Manual Processing<br/>business_impact]
+
+    S1 --> SS[signal_status<br/>6 signals total]
+    S2 --> SS
+    S3 --> SS
+    S4 --> SS
+    S5 --> SS
+    S6 --> SS
+
+    T3A[CTX001: Customer expectation<br/>+ customer_experience impact] --> T3
+    T3B[CTX002: Company expectation<br/>+ financial impact] --> T3
+    T3C[CTX003: Company expectation<br/>+ legal_risk impact] --> T3
+    T3D[CTX004: Internal expectation<br/>+ operational impact] --> T3
+
+    style SVC002 fill:#D71E28,stroke:#B71C24,stroke-width:3px,color:#fff
+    style T1 fill:#DBEAFE,stroke:#3B82F6,stroke-width:2px
+    style T2 fill:#FEF3C7,stroke:#F59E0B,stroke-width:3px
+    style T3 fill:#FEE2E2,stroke:#D71E28,stroke-width:2px
+    style T6 fill:#E5E7EB,stroke:#9CA3AF,stroke-width:1px,stroke-dasharray: 5 5
+    style SS fill:#D1FAE5,stroke:#10B981,stroke-width:2px
+        </div>
+        <p class="diagram-caption">Service SVC002 shows unified architecture - 6 signals (2 technical SLIs with SLO targets + 4 business impact measurements) all defined in signal_definitions table. stakeholder_expectations_context provides complete stakeholder stories (4 rows): each row combines stakeholder + expectation + impact in single entry. Dashed tables indicate no data for this service (walking skeleton).</p>
+        <p class="diagram-expand-hint">💡 Click diagram to open in new tab</p>
+    </div>
+
+    <div class="callout callout-info">
+        <strong>SVC002 Overview (Unified Context Schema):</strong>
+        <ul>
+            <li>1 row in services (core info)</li>
+            <li>6 rows in signal_definitions (2 technical SLIs with SLO targets + 4 business impact signals with NULL SLO fields)</li>
+            <li>4 rows in stakeholder_expectations_context (unified stakeholder stories with expectations + impacts)</li>
+            <li>6 signals total with current values in signal_status</li>
+        </ul>
+        <p style="margin-top: 8px;"><strong>Architecture:</strong> stakeholder_expectations_context uses unified story format. Each row tells complete story: "As [stakeholder], I expect [X]. If broken: [impactCategory]: [description]." This ensures guaranteed relationship integrity (no orphaned data).</p>
+    </div>
+
+    <h3>5.1 services.csv - SVC002 Row</h3>
+    <pre><code>service_id,serviceName,displayName,businessPurpose,tierLevel,businessUnit,performanceQuestion,tags,productOwner,l4_product_line,l3_product,l3_description
+SVC002,credit-check-service,Credit Check Service,Validate borrower creditworthiness for loan approval,2,Home Lending,What percentage of credit checks return valid scores?,lending|credit|tier2,jane.doe@company.com,Home Lending,Home Originations,Automate loan application processing from submission to approval</code></pre>
+
+    <h3>5.2 signal_definitions.csv - Sample Signals</h3>
+    <p><strong>SIG010 - Technical SLI (Ratio):</strong></p>
+    <pre><code>signal_id,service_id,signal_name,signal_display_name,signal_type,description_business,description_technical,data_source,query_numerator,query_denominator,sloTarget
+SIG010,SVC002,credit-check-success-rate,Credit Check Success Rate,sli_ratio,Credit check returns valid score,status='SUCCESS' AND score BETWEEN 300 AND 850,sql,COUNT(*) WHERE status='SUCCESS' AND score BETWEEN 300 AND 850,COUNT(*) WHERE request_type='CREDIT_CHECK',99.5</code></pre>
+
+    <p><strong>SIG023 - Business Impact Signal:</strong></p>
+    <pre><code>signal_id,service_id,signal_name,signal_display_name,signal_type,description_business,description_technical,data_source,query_numerator,impact_category,impact_unit
+SIG023,SVC002,customers-blocked,Customers Blocked,business_impact,Count of loan applicants unable to proceed,COUNT(DISTINCT applicant_id) WHERE credit_score IS NULL,sql,COUNT(DISTINCT applicant_id) WHERE credit_score IS NULL AND status='BLOCKED',customer_experience,customers</code></pre>
+
+    <div class="callout callout-info">
+        <strong>Note:</strong> signal_definitions has 31 total fields. Above shows key fields only. Type-specific fields (like query_denominator for ratio, impact_unit for business_impact) are populated based on signal_type. See Section 3.2 for complete field list.
+    </div>
+
+    <h3>5.3 stakeholder_expectations_context.csv - Context Rows</h3>
+    <pre><code>service_id,context_id,stakeholderType,stakeholderGroup,expectationStatement,impactCategory,impactDescription,priority
+SVC002,CTX001,customer,loan applicants,Credit checks return valid scores within acceptable timeframe,customer_experience,Loan applicants unable to proceed with application,HIGH
+SVC002,CTX002,company,Home Lending,Credit checks complete successfully without failures,financial,Lost loan origination revenue opportunity,HIGH
+SVC002,CTX003,internal,loan processors,Credit checks complete successfully without manual intervention,operational,Manual workarounds reduce processing capacity,MEDIUM</code></pre>
+
+    <h3>5.4 signal_status.csv - Current Values</h3>
+    <pre><code>signal_id,signalName,signalType,currentValue,status,lastUpdated
+SIG010,credit-check-success-rate,sli_ratio,99.2,OK,2025-10-14T14:30:00Z
+SIG023,customers-blocked,business_impact,10,WARNING,2025-10-14T14:30:00Z</code></pre>
+
+    <p style="margin-top: 16px; font-size: 0.9em; color: var(--color-text-tertiary);"><em>Note: SVC002 has 6 total signals (2 technical SLIs + 4 business impacts) and 4 stakeholder context rows. Above shows representative samples. operational_metadata has no row for SVC002 (optional 0..1 relationship).</em></p>
+</section>
+
+
+<section id="patterns">
+    <h2 id="patterns">6. Critical Patterns</h2>
+
+    <h3>Pattern 1: Business Impact as Signals</h3>
+
+    <div class="callout callout-info">
+        <strong>Core Concept:</strong> Business impact measurements ARE signals with current values, not static descriptions. This is the key innovation that makes BOS "more than traditional observability."
+    </div>
+
+    <p><strong>Three-Signal Flow:</strong></p>
+    <pre><code>Traditional Observability (System/Process):
+    signal_definitions (signal_type: sli_ratio, sli_threshold) → signal_status → dashboards
+
+Business Health/Success & Impact:
+    stakeholder_expectations_context (unified stories: stakeholder + expectation + impact)
+    → signal_definitions (signal_type: sli_ratio, sli_threshold, business_impact)
+    → signal_status → dashboards</code></pre>
+
+    <p><strong>Example: SVC002 Credit Check Service</strong></p>
+    <ul>
+        <li><strong>Technical Signals:</strong> SIG010 (99.2% success), SIG012 (250ms response time)</li>
+        <li><strong>Business Impact Signals:</strong> SIG023 (10 customers blocked), SIG024 ($4.8M revenue at risk)</li>
+    </ul>
+
+    <h3>Pattern 2: Multi-Row Stakeholder Context</h3>
+
+    <div class="callout callout-important">
+        <strong>Schema Capability:</strong> Services have 0 to many rows in stakeholder_expectations_context.csv. Each row combines stakeholder expectation with business impact. Current data shows 3-5 rows per service (average 3.05), enforcing focused prioritization for dashboard orientation.
+    </div>
+
+    <p><strong>Unified Story Format:</strong> Each context row tells complete narrative: "As [stakeholderType: stakeholderGroup], I expect [expectationStatement]. If broken: [impactCategory]: [impactDescription]"</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Service</th>
+                <th>Context Rows</th>
+                <th>Coverage Pattern</th>
+                <th>Prioritization Benefit</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>SVC002</td>
+                <td>4</td>
+                <td>All 4 impact categories covered</td>
+                <td>Comprehensive stakeholder view</td>
+            </tr>
+            <tr>
+                <td>Most Services</td>
+                <td>3</td>
+                <td>Top 3 stakeholder priorities</td>
+                <td>Focused dashboard narrative</td>
+            </tr>
+            <tr>
+                <td>All 20 Services</td>
+                <td>100%</td>
+                <td>Every service has stakeholder context</td>
+                <td>No missing business context</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p><strong>Design Intent:</strong> Limiting to 3-5 context rows forces Product Owners to prioritize most critical stakeholder perspectives, preventing dashboard cognitive overload while maintaining comprehensive business impact visibility.</p>
+
+    <h3>Pattern 3: Incident History for Dashboard Annotations</h3>
+
+    <p>The incidents.csv table enables configurable time-window annotations on dashboards (current dashboard implementation uses configurable time windows, but this is a visualization parameter, not a data model constraint).</p>
+
+    <div class="callout callout-warning">
+        <strong>Configuration Note:</strong> Time window for incident display (e.g., "past 12 hours") is a dashboard parameter, not stored in the data model. Engineering review should clarify if incidents table needs timestamp fields for programmatic querying or if relative time strings ("30m ago") are sufficient.
+    </div>
+</section>
+
+
+<section id="questions">
+    <h2 id="questions">7. Questions for Engineering Review</h2>
+
+    <h3>Data Model Design</h3>
+
+    <ol>
+        <li><strong>Should service_application_mappings.application_ids remain semicolon-separated?</strong>
+            <ul>
+                <li>Current: "APP004;APP005;APP012" (semicolon-separated list)</li>
+                <li>Question: Is this acceptable for Oracle, or should we normalize to junction table?</li>
+            </ul>
+        </li>
+
+        <li><strong>Do incidents need timestamp fields for programmatic querying?</strong>
+            <ul>
+                <li>Current: Uses relative time strings ("30m ago")</li>
+                <li>Question: Should we add started_timestamp, resolved_timestamp for SQL queries?</li>
+            </ul>
+        </li>
+
+        <li><strong>What enum values are valid for each ENUM field?</strong>
+            <ul>
+                <li>Current: Examples shown (e.g., "Green, Amber, Red")</li>
+                <li>Question: Need complete exhaustive lists for Oracle CHECK constraints?</li>
+            </ul>
+        </li>
+    </ol>
+</section>
+
+
+<section id="documentation-reference">
+    <h2 id="documentation-reference">8. Companion Documentation</h2>
+
+    <p>This technical specification should be read alongside these companion documents:</p>
+
+    <h3>Core Concepts</h3>
+    <ul>
+        <li><strong>BOS Principles & Philosophy</strong>
+            <br/><em>Core principle, logic model, semantic flow, and three-signal taxonomy</em>
+        </li>
+        <li><strong>Three-Signal Model Deep Dive</strong>
+            <br/><em>Detailed signal types with concrete examples from capital markets and lending domains</em>
+        </li>
+    </ul>
+
+    <h3>Implementation Guides</h3>
+    <ul>
+        <li><strong>CSV Template Quick Start</strong>
+            <br/><em>Step-by-step guide for Product Owners filling out service templates</em>
+        </li>
+        <li><strong>Field Reference Guide</strong>
+            <br/><em>Complete field specifications for all 8 tables with examples</em>
+        </li>
+    </ul>
+
+    <p style="margin-top: 16px;"><em>Note: Request these companion documents from the BOS team if not already provided.</em></p>
+</section>
+
+    </div>
+
+    <!-- Mermaid.js for Diagrams -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'base',
+            themeVariables: {
+                primaryColor: '#D71E28',
+                primaryTextColor: '#111827',
+                primaryBorderColor: '#D1D5DB',
+                lineColor: '#6B7280',
+                secondaryColor: '#F3F4F6',
+                tertiaryColor: '#DBEAFE',
+                background: '#FFFFFF',
+                mainBkg: '#FFFFFF',
+                secondBkg: '#F9FAFB',
+                fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                fontSize: '18px'
+            }
+        });
+    </script>
+
+    <script>
+        // Navigation functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section, .page-hero');
+
+            // Smooth scroll on navigation click
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+
+                    if (targetSection) {
+                        targetSection.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+
+                        // Update URL hash
+                        history.pushState(null, null, targetId);
+                    }
+                });
+            });
+
+            // Intersection Observer for auto-highlighting current section
+            const observerOptions = {
+                root: null,
+                rootMargin: '-20% 0px -70% 0px',
+                threshold: 0
+            };
+
+            const observerCallback = (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const sectionId = entry.target.getAttribute('id');
+
+                        // Remove active class from all links
+                        navLinks.forEach(link => link.classList.remove('active'));
+
+                        // Add active class to corresponding link
+                        const activeLink = document.querySelector(`.nav-link[href="#${sectionId}"]`);
+                        if (activeLink) {
+                            activeLink.classList.add('active');
+                        }
+
+                        // Update URL hash without scrolling
+                        if (history.replaceState) {
+                            history.replaceState(null, null, `#${sectionId}`);
+                        }
+                    }
+                });
+            };
+
+            const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+            // Observe all sections
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            // Jump to section if URL has hash on page load
+            if (window.location.hash) {
+                setTimeout(() => {
+                    const targetSection = document.querySelector(window.location.hash);
+                    if (targetSection) {
+                        targetSection.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }, 100);
+            }
+
+            // Diagram Click-to-Open-in-New-Tab Functionality
+            const diagramContainers = document.querySelectorAll('.diagram-container');
+            diagramContainers.forEach(container => {
+                const mermaidDiv = container.querySelector('.mermaid');
+                const title = container.querySelector('h4');
+
+                if (mermaidDiv) {
+                    mermaidDiv.addEventListener('click', function() {
+                        // Get the SVG element
+                        const svg = mermaidDiv.querySelector('svg');
+                        if (!svg) return;
+
+                        // Clone SVG and set explicit large dimensions
+                        const svgClone = svg.cloneNode(true);
+
+                        // Get viewBox to calculate aspect ratio
+                        const viewBox = svgClone.getAttribute('viewBox');
+                        if (viewBox) {
+                            const [x, y, width, height] = viewBox.split(/\s+/).map(parseFloat);
+                            const aspectRatio = width / height;
+
+                            // Set explicit large width (3000px) and calculate height
+                            const targetWidth = 3000;
+                            const targetHeight = targetWidth / aspectRatio;
+
+                            svgClone.setAttribute('width', targetWidth + 'px');
+                            svgClone.setAttribute('height', targetHeight + 'px');
+                        } else {
+                            // Fallback if no viewBox
+                            svgClone.setAttribute('width', '2000px');
+                            svgClone.setAttribute('height', 'auto');
+                        }
+
+                        // Serialize the modified SVG
+                        const serializer = new XMLSerializer();
+                        const svgString = serializer.serializeToString(svgClone);
+
+                        // Create standalone HTML with the SVG
+                        const htmlContent = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${title ? title.textContent : 'BOS Diagram'}</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #F3F4F6;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        h1 {
+            color: #D71E28;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+        .diagram-wrapper {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
+            overflow-y: auto;
+        }
+        svg {
+            display: block;
+        }
+    </style>
+
+<!-- Generated: 2025-10-14 14:25:50  | Version: 2.5.4 | Page: bos-data-model -->
+</head>
+<body>
+    ${title ? '<h1>' + title.textContent + '</h1>' : ''}
+    <div class="diagram-wrapper">
+        ${svgString}
+    </div>
+</body>
+</html>`;
+
+                        // Open in new tab
+                        const blob = new Blob([htmlContent], { type: 'text/html' });
+                        const url = URL.createObjectURL(blob);
+                        window.open(url, '_blank');
+
+                        // Clean up the URL after a short delay
+                        setTimeout(() => URL.revokeObjectURL(url), 100);
+                    });
+                }
+            });
+        });
+    </script>
+
+    <script>
+        
+    </script>
+</body>
+</html>
