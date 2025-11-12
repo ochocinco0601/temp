@@ -1,0 +1,3580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="version" content="3.5.1">
+    <title>BOS Data Model v3.5.1 - Technical Reference</title>
+    <style>
+        /* ===== DESIGN TOKENS ===== */
+:root {
+    /* Brand Colors */
+    --color-brand-primary: #D71E28;
+    --color-brand-primary-hover: #B71C24;
+    --color-brand-primary-light: rgba(215, 30, 40, 0.1);
+    --color-brand-primary-ultralight: rgba(215, 30, 40, 0.05);
+
+    /* Semantic Colors */
+    --color-success: #10B981;
+    --color-warning: #F59E0B;
+    --color-info: #3B82F6;
+    --color-info-light: #DBEAFE;
+
+    /* Grayscale */
+    --color-gray-50: #F9FAFB;
+    --color-gray-100: #F3F4F6;
+    --color-gray-200: #E5E7EB;
+    --color-gray-300: #D1D5DB;
+    --color-gray-400: #9CA3AF;
+    --color-gray-500: #6B7280;
+    --color-gray-600: #4B5563;
+    --color-gray-700: #374151;
+
+    /* Text */
+    --color-text-primary: #111827;
+    --color-text-secondary: #374151;
+    --color-text-tertiary: #6B7280;
+    --color-text-inverse: #FFFFFF;
+
+    /* Backgrounds */
+    --color-bg-primary: #FFFFFF;
+    --color-bg-secondary: #F3F4F6;
+    --color-border-default: #D1D5DB;
+    --color-border-light: #E5E7EB;
+
+    /* Typography */
+    --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-monospace: 'Courier New', 'Consolas', monospace;
+    --font-size-xs: 0.75rem;
+    --font-size-sm: 0.875rem;
+    --font-size-base: 1rem;
+    --font-size-lg: 1.125rem;
+    --font-size-xl: 1.25rem;
+    --font-size-2xl: 1.5rem;
+    --font-size-3xl: 2rem;
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    --line-height-normal: 1.5;
+    --line-height-relaxed: 1.6;
+
+    /* Spacing */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 12px;
+    --spacing-lg: 16px;
+    --spacing-xl: 24px;
+    --spacing-2xl: 32px;
+
+    /* Effects */
+    --radius-sm: 0.25rem;
+    --radius-md: 0.375rem;
+    --radius-lg: 0.5rem;
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.15);
+    --shadow-drawer: -4px 0 20px rgba(0, 0, 0, 0.2);
+
+    /* Transitions */
+    --transition-base: 0.2s ease;
+    --transition-slow: 0.3s ease;
+
+    /* Layout Dimensions */
+    --width-drawer: 500px;
+    --width-form-max: 800px;
+    --height-header: 64px;
+    --height-footer: 48px;
+    --height-tab-bar: 60px;
+
+    /* Borders */
+    --border-width-default: 1px;
+    --border-width-thick: 2px;
+    --border-focus: #D71E28;
+
+    /* Z-indexes */
+    --z-index-overlay: 1500;
+    --z-index-drawer: 1600;
+
+    /* Spacing Helpers */
+    --spacing-card-padding: 2rem;
+    --spacing-section-gap: 1.5rem;
+    --spacing-field-padding: 0.75rem 1rem;
+
+    /* Additional Colors */
+    --color-border-focus: #D71E28;
+    --color-purple: #9333EA;
+}
+
+/* ===== RESET & BASE ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-primary);
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+    line-height: var(--line-height-relaxed);
+}
+
+/* ===== STICKY NAVIGATION ===== */
+.sticky-nav {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 260px;
+    height: 100vh;
+    background: var(--color-gray-50);
+    border-right: 1px solid var(--color-gray-200);
+    padding: 24px 0;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.nav-logo {
+    padding: 0 20px 20px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--color-gray-200);
+}
+
+.nav-logo h3 {
+    font-size: 1.125rem;
+    color: var(--color-brand-primary);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: 4px;
+}
+
+.nav-logo .version {
+    display: inline-block;
+    background: var(--color-brand-primary);
+    color: var(--color-text-inverse);
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    margin-left: 8px;
+}
+
+.nav-logo p {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+    line-height: 1.3;
+    margin-top: 8px;
+}
+
+.nav-items {
+    list-style: none;
+}
+
+.nav-item {
+    margin-bottom: 2px;
+}
+
+.nav-link {
+    display: block;
+    padding: 10px 20px;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    border-left: 4px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+    background: var(--color-gray-100);
+    color: var(--color-text-primary);
+}
+
+.nav-link.active {
+    background: var(--color-brand-primary-ultralight);
+    border-left-color: var(--color-brand-primary);
+    color: var(--color-brand-primary);
+    font-weight: var(--font-weight-semibold);
+}
+
+/* ===== MAIN CONTENT ===== */
+.main-content {
+    max-width: 1200px;
+    margin-left: 280px;
+    padding: var(--spacing-2xl);
+}
+
+/* ===== HERO SECTION ===== */
+.page-hero {
+    text-align: center;
+    padding: 40px 0 24px;
+    border-bottom: 2px solid var(--color-gray-200);
+    margin-bottom: var(--spacing-2xl);
+}
+
+.page-hero h1 {
+    font-size: var(--font-size-3xl);
+    color: var(--color-brand-primary);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: -0.02em;
+    margin-bottom: var(--spacing-sm);
+}
+
+.page-hero .subtitle {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-secondary);
+    font-weight: var(--font-weight-medium);
+    margin-bottom: var(--spacing-md);
+}
+
+.page-hero .meta {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-tertiary);
+}
+
+.page-hero .meta strong {
+    color: var(--color-text-secondary);
+}
+
+/* ===== CONTENT SECTIONS ===== */
+section {
+    background: var(--color-bg-primary);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    padding: var(--spacing-2xl);
+    margin-bottom: var(--spacing-xl);
+}
+
+/* ===== TYPOGRAPHY ===== */
+h2 {
+    font-size: var(--font-size-2xl);
+    color: var(--color-text-primary);
+    margin-top: var(--spacing-2xl);
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 2px solid var(--color-gray-200);
+}
+
+h2:first-child {
+    margin-top: 0;
+}
+
+h3 {
+    font-size: var(--font-size-xl);
+    color: var(--color-text-primary);
+    margin-top: var(--spacing-xl);
+    margin-bottom: var(--spacing-md);
+}
+
+h4 {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-secondary);
+    margin-top: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+}
+
+p {
+    margin-bottom: var(--spacing-md);
+    color: var(--color-text-secondary);
+}
+
+ul, ol {
+    margin-left: var(--spacing-xl);
+    margin-bottom: var(--spacing-md);
+}
+
+li {
+    margin-bottom: var(--spacing-sm);
+    color: var(--color-text-secondary);
+}
+
+/* ===== CODE & PRE ===== */
+code {
+    background: var(--color-gray-100);
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-monospace);
+    font-size: 0.9em;
+    color: var(--color-text-primary);
+}
+
+pre {
+    background: var(--color-gray-100);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-md);
+    overflow-x: auto;
+    margin-bottom: var(--spacing-md);
+    border-left: 4px solid var(--color-brand-primary);
+}
+
+pre code {
+    background: none;
+    padding: 0;
+}
+
+/* ===== TABLES ===== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: var(--spacing-lg) 0;
+    font-size: var(--font-size-sm);
+    background: var(--color-bg-primary);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+th {
+    background: var(--color-gray-100);
+    color: var(--color-text-primary);
+    padding: var(--spacing-md);
+    text-align: left;
+    font-weight: var(--font-weight-semibold);
+    border-bottom: 2px solid var(--color-gray-200);
+}
+
+td {
+    padding: var(--spacing-md);
+    border-bottom: 1px solid var(--color-gray-200);
+    color: var(--color-text-secondary);
+}
+
+tbody tr:hover {
+    background: var(--color-gray-50);
+}
+
+/* ===== CALLOUT BOXES ===== */
+.callout {
+    padding: var(--spacing-lg);
+    margin: var(--spacing-lg) 0;
+    border-radius: var(--radius-md);
+    border-left: 4px solid;
+}
+
+.callout-info {
+    background: var(--color-info-light);
+    border-color: var(--color-info);
+}
+
+.callout-warning {
+    background: #FEF3C7;
+    border-color: var(--color-warning);
+}
+
+.callout-important {
+    background: var(--color-brand-primary-light);
+    border-color: var(--color-brand-primary);
+}
+
+.callout strong {
+    color: var(--color-text-primary);
+    display: block;
+    margin-bottom: var(--spacing-sm);
+}
+
+.callout p {
+    margin-bottom: var(--spacing-sm);
+}
+
+.callout p:last-child {
+    margin-bottom: 0;
+}
+
+.callout ul {
+    margin-top: var(--spacing-sm);
+    margin-bottom: 0;
+}
+
+/* ===== BADGES ===== */
+.status-badge {
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+    font-weight: var(--font-weight-semibold);
+    display: inline-block;
+}
+
+.status-verified {
+    background: #D1FAE5;
+    color: #065F46;
+}
+
+.status-gap {
+    background: #FEF3C7;
+    color: #92400E;
+}
+
+/* ===== UTILITIES ===== */
+strong {
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-semibold);
+}
+
+hr {
+    border: none;
+    border-top: 1px solid var(--color-gray-200);
+    margin: var(--spacing-2xl) 0;
+}
+
+/* ===== MERMAID DIAGRAMS ===== */
+.diagram-container {
+    background: var(--color-bg-primary);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-xl);
+    margin: var(--spacing-xl) 0;
+    overflow-x: auto;
+    box-shadow: var(--shadow-sm);
+}
+
+.diagram-container h4 {
+    margin-top: 0;
+    margin-bottom: var(--spacing-lg);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 2px solid var(--color-gray-200);
+}
+
+.diagram-container .mermaid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+}
+
+.diagram-caption {
+    margin-top: var(--spacing-md);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-tertiary);
+    font-style: italic;
+    text-align: center;
+}
+
+.diagram-container .mermaid {
+    cursor: pointer;
+}
+
+.diagram-expand-hint {
+    text-align: center;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+    margin-top: var(--spacing-sm);
+    font-style: italic;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .sticky-nav {
+        position: relative;
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--color-gray-200);
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: var(--spacing-lg);
+    }
+}
+
+        .page-wrapper {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== HEADER ===== */
+        .page-header {
+            background-color: var(--color-brand-primary);
+            color: var(--color-text-inverse);
+            padding: var(--spacing-md) var(--spacing-xl);
+            box-shadow: var(--shadow-md);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: var(--height-header);
+            flex-shrink: 0;
+        }
+
+        .page-header h1 {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-lg);
+        }
+
+        .help-icon {
+            font-size: var(--font-size-xl);
+            cursor: pointer;
+            opacity: 0.9;
+            transition: opacity var(--transition-base);
+            background: none;
+            border: none;
+            color: var(--color-text-inverse);
+            padding: var(--spacing-sm);
+        }
+
+        .help-icon:hover {
+            opacity: 1;
+        }
+
+        .back-to-gallery {
+            background: none;
+            border: none;
+            color: var(--color-text-inverse);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            cursor: pointer;
+            opacity: 0.9;
+            transition: opacity var(--transition-base);
+            display: none;
+            align-items: center;
+            gap: var(--spacing-xs);
+            padding: var(--spacing-sm) var(--spacing-md);
+        }
+
+        .back-to-gallery:hover {
+            opacity: 1;
+        }
+
+        .back-to-gallery.visible {
+            display: flex;
+        }
+
+        /* ===== CONTAINER ===== */
+        .container {
+            flex: 1;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            width: 100%;
+        }
+
+        /* ===== INTRO SECTION ===== */
+        .intro-section {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .intro-section h2 {
+            font-size: 2rem;
+            color: var(--color-text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .intro-section p {
+            font-size: 1.125rem;
+            color: var(--color-text-secondary);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        /* ===== EXAMPLE GRID ===== */
+        .example-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .example-card {
+            background: var(--color-bg-primary);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            padding: 1.5rem;
+            transition: transform var(--transition-base), box-shadow var(--transition-base);
+            border-left: 4px solid var(--color-brand-primary);
+        }
+
+        .example-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .example-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .example-icon {
+            font-size: 2.5rem;
+            flex-shrink: 0;
+        }
+
+        .example-title-section {
+            flex: 1;
+        }
+
+        .complexity-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-semibold);
+            margin-bottom: 0.5rem;
+        }
+
+        .complexity-badge.standard {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+
+        .complexity-badge.complex {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        .example-card h3 {
+            font-size: var(--font-size-lg);
+            color: var(--color-text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .example-card p {
+            color: var(--color-text-secondary);
+            font-size: var(--font-size-sm);
+            margin-bottom: 1.5rem;
+            min-height: 60px;
+        }
+
+        .example-actions {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: var(--spacing-md) var(--spacing-xl);
+            border-radius: var(--radius-md);
+            font-weight: var(--font-weight-semibold);
+            font-size: var(--font-size-sm);
+            cursor: pointer;
+            transition: all var(--transition-base);
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            flex: 1;
+            min-width: 120px;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: var(--color-brand-primary);
+            color: var(--color-text-inverse);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: var(--color-brand-primary-hover);
+        }
+
+        .btn-secondary {
+            background: var(--color-bg-primary);
+            color: var(--color-text-secondary);
+            border: var(--border-width-default) solid var(--color-border-default);
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: var(--color-gray-50);
+            border-color: var(--color-gray-400);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* ===== START SECTION ===== */
+        .start-section {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+        }
+
+        .start-section h3 {
+            font-size: var(--font-size-lg);
+            margin-bottom: 1rem;
+            color: var(--color-text-primary);
+        }
+
+        .start-section p {
+            color: var(--color-text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-large {
+            padding: 0.875rem 2rem;
+            font-size: 1rem;
+        }
+
+        /* ===== FORM VIEW (Hidden initially) ===== */
+        .form-view {
+            display: none;
+            flex-direction: column;
+            min-height: calc(100vh - var(--height-header) - var(--height-footer));
+        }
+
+        .form-view.active {
+            display: flex;
+        }
+
+        /* ===== TAB BAR ===== */
+        .tab-bar {
+            background: var(--color-bg-primary);
+            border-bottom: var(--border-width-thick) solid var(--color-gray-200);
+            display: flex;
+            height: var(--height-tab-bar);
+            align-items: stretch;
+            flex-shrink: 0;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .tab {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            background: var(--color-gray-50);
+            border: none;
+            border-right: var(--border-width-default) solid var(--color-gray-200);
+            cursor: pointer;
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-tertiary);
+            transition: all var(--transition-base);
+            position: relative;
+            padding: var(--spacing-sm);
+        }
+
+        .tab:last-child {
+            border-right: none;
+        }
+
+        .tab:hover:not(.active) {
+            background: var(--color-gray-100);
+            color: var(--color-text-secondary);
+        }
+
+        .tab.active {
+            background: var(--color-bg-primary);
+            color: var(--color-brand-primary);
+            border-bottom: 3px solid var(--color-brand-primary);
+        }
+
+        .tab.completed {
+            color: var(--color-success);
+        }
+
+        .tab-status {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-xs);
+            border: 2px solid currentColor;
+            flex-shrink: 0;
+        }
+
+        .tab.active .tab-status {
+            border-color: var(--color-brand-primary);
+            background: var(--color-brand-primary-light);
+        }
+
+        .tab.completed .tab-status {
+            border-color: var(--color-success);
+            background: var(--color-success);
+            color: white;
+        }
+
+        /* ===== FORM CONTAINER ===== */
+        .form-container {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            justify-content: center;
+            padding: var(--spacing-lg);
+        }
+
+        .form-card {
+            background: var(--color-bg-primary);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            padding: var(--spacing-card-padding);
+            width: 100%;
+            max-width: var(--width-form-max);
+            height: fit-content;
+        }
+
+        /* ===== TAB CONTENT ===== */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* ===== FORM ELEMENTS ===== */
+        .form-group {
+            margin-bottom: var(--spacing-section-gap);
+        }
+
+        .form-label {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-sm);
+            font-size: var(--font-size-sm);
+        }
+
+        .form-label.critical {
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+        }
+
+        .required {
+            color: var(--color-brand-primary);
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: var(--spacing-field-padding);
+            border: var(--border-width-default) solid var(--color-border-default);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-sm);
+            font-family: var(--font-primary);
+            transition: all var(--transition-base);
+            background: var(--color-bg-primary);
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--color-border-focus);
+            box-shadow: 0 0 0 3px var(--color-brand-primary-light);
+        }
+
+        .form-input.critical:focus {
+            border-color: var(--color-brand-primary);
+            box-shadow: 0 0 0 4px var(--color-brand-primary-light);
+        }
+
+        textarea.form-input {
+            resize: vertical;
+            font-family: var(--font-primary);
+        }
+
+        textarea.form-input.short {
+            min-height: 80px;
+        }
+
+        textarea.form-input.medium {
+            min-height: 100px;
+        }
+
+        textarea.form-input.tall {
+            min-height: 160px;
+        }
+
+        textarea.technical {
+            font-family: var(--font-monospace);
+            font-size: var(--font-size-xs);
+            background: var(--color-gray-50);
+        }
+
+        .field-hint {
+            font-size: var(--font-size-xs);
+            color: var(--color-text-tertiary);
+            margin-top: var(--spacing-xs);
+            line-height: var(--line-height-normal);
+        }
+
+        .template-indicator {
+            display: inline-block;
+            font-size: var(--font-size-xs);
+            color: var(--color-info);
+            font-weight: var(--font-weight-medium);
+            margin-left: var(--spacing-sm);
+        }
+
+        /* ===== IMPACT SECTIONS (Tab 4) ===== */
+        .impact-section {
+            margin-bottom: var(--spacing-xl);
+            border: 1px solid var(--color-border-default);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .impact-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-lg);
+            background-color: var(--color-gray-50);
+            cursor: pointer;
+            transition: background-color var(--transition-base);
+        }
+
+        .impact-section-header:hover {
+            background-color: var(--color-gray-100);
+        }
+
+        .impact-section-header h4 {
+            margin: 0;
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+        }
+
+        .expand-icon {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-tertiary);
+            transition: transform var(--transition-base);
+        }
+
+        .expand-icon.expanded {
+            transform: rotate(-180deg);
+        }
+
+        .impact-section-content {
+            padding: var(--spacing-xl);
+            border-top: 1px solid var(--color-border-light);
+        }
+
+        .tab-description {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-xl);
+            line-height: var(--line-height-relaxed);
+        }
+
+        /* ===== NAVIGATION BUTTONS ===== */
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: var(--spacing-md);
+            padding-top: var(--spacing-lg);
+            border-top: var(--border-width-default) solid var(--color-border-light);
+            margin-top: var(--spacing-xl);
+        }
+
+        .progress-indicator {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            font-size: var(--font-size-xs);
+            color: var(--color-text-tertiary);
+        }
+
+        .progress-bar {
+            width: 120px;
+            height: 6px;
+            background: var(--color-gray-200);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--color-brand-primary);
+            transition: width var(--transition-slow);
+        }
+
+        /* ===== QUALITY CHECKLIST (Preview Tab) ===== */
+        .checklist-section {
+            background: var(--color-gray-50);
+            border: var(--border-width-default) solid var(--color-border-light);
+            border-radius: var(--radius-md);
+            margin-top: var(--spacing-xl);
+        }
+
+        .checklist-header {
+            padding: var(--spacing-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .checklist-header h4 {
+            font-size: var(--font-size-base);
+            color: var(--color-text-primary);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .checklist-toggle {
+            font-size: var(--font-size-xs);
+            color: var(--color-text-tertiary);
+            transition: transform var(--transition-base);
+        }
+
+        .checklist-header.expanded .checklist-toggle {
+            transform: rotate(180deg);
+        }
+
+        .checklist-content {
+            display: none;
+            padding: 0 var(--spacing-lg) var(--spacing-lg);
+        }
+
+        .checklist-content.visible {
+            display: block;
+        }
+
+        .checklist-category {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .checklist-category:last-child {
+            margin-bottom: 0;
+        }
+
+        .checklist-category h5 {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-sm);
+            font-size: var(--font-size-sm);
+        }
+
+        .checklist-item .icon {
+            flex-shrink: 0;
+            font-size: var(--font-size-base);
+        }
+
+        /* ===== PREVIEW TAB STYLES ===== */
+        .preview-container {
+            background: var(--color-gray-50);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+        }
+
+        .preview-header {
+            text-align: center;
+            margin-bottom: var(--spacing-xl);
+            padding-bottom: var(--spacing-lg);
+            border-bottom: 2px solid var(--color-gray-200);
+        }
+
+        .preview-header h3 {
+            font-size: var(--font-size-xl);
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .preview-header p {
+            color: var(--color-text-tertiary);
+            font-size: var(--font-size-sm);
+        }
+
+        .preview-card {
+            background: var(--color-bg-primary);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-xl);
+            margin-bottom: var(--spacing-lg);
+            box-shadow: var(--shadow-md);
+        }
+
+        .preview-section-title {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-brand-primary);
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-sm);
+            border-bottom: 2px solid var(--color-brand-primary);
+        }
+
+        .preview-field {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .preview-field:last-child {
+            margin-bottom: 0;
+        }
+
+        .preview-field-label {
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .preview-field-value {
+            font-size: var(--font-size-base);
+            color: var(--color-text-primary);
+            line-height: var(--line-height-relaxed);
+            white-space: pre-wrap;
+        }
+
+        .preview-field-value.code {
+            background: var(--color-gray-100);
+            border: var(--border-width-default) solid var(--color-border-light);
+            border-radius: var(--radius-sm);
+            padding: var(--spacing-md);
+            font-family: var(--font-monospace);
+            font-size: var(--font-size-sm);
+            overflow-x: auto;
+        }
+
+        .preview-field-value.empty {
+            color: var(--color-text-tertiary);
+            font-style: italic;
+        }
+
+        /* User Stories Section */
+        .user-stories-section {
+            margin-top: var(--spacing-xl);
+            padding: var(--spacing-lg);
+            background: var(--color-gray-50);
+            border-radius: var(--radius-md);
+        }
+
+        .user-stories-section h4 {
+            font-size: var(--font-size-lg);
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .user-stories-section > p {
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-lg);
+            font-size: var(--font-size-sm);
+        }
+
+        .story-card {
+            background: var(--color-bg-primary);
+            border: var(--border-width-default) solid var(--color-border-default);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .story-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .story-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .story-id {
+            font-family: var(--font-monospace);
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-gray-600);
+            background: var(--color-gray-100);
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--radius-sm);
+        }
+
+        .story-persona {
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-medium);
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .story-persona.developer {
+            background: #DBEAFE;
+            color: #1E40AF;
+        }
+
+        .story-persona.sre {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        .story-persona.po {
+            background: #DCFCE7;
+            color: #166534;
+        }
+
+        .story-card h5 {
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .story-details {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .story-details p {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .story-details strong {
+            color: var(--color-text-primary);
+            font-weight: var(--font-weight-semibold);
+        }
+
+        .story-dynamic {
+            color: var(--color-brand-primary);
+            font-weight: var(--font-weight-medium);
+            font-style: italic;
+        }
+
+        .acceptance-criteria {
+            background: var(--color-gray-50);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-sm);
+            margin-top: var(--spacing-md);
+        }
+
+        .acceptance-criteria strong {
+            display: block;
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .acceptance-criteria ul {
+            margin-left: var(--spacing-xl);
+            margin-top: var(--spacing-sm);
+        }
+
+        .acceptance-criteria li {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-xs);
+            line-height: var(--line-height-relaxed);
+        }
+
+        .preview-next-steps {
+            background: var(--color-info-light);
+            border-left: 4px solid var(--color-info);
+            border-radius: var(--radius-sm);
+            padding: var(--spacing-lg);
+            margin-top: var(--spacing-xl);
+        }
+
+        .preview-next-steps h4 {
+            font-size: var(--font-size-base);
+            color: var(--color-info);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .preview-next-steps ul {
+            margin-left: var(--spacing-xl);
+        }
+
+        .preview-next-steps li {
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-sm);
+            font-size: var(--font-size-sm);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-semibold);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .badge-complete {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+
+        .badge-incomplete {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        /* ===== MODALS ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: var(--z-index-overlay);
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .modal-overlay.visible {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: var(--radius-lg);
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        }
+
+        .modal-header {
+            background: var(--color-brand-primary);
+            color: white;
+            padding: var(--spacing-xl);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .modal-header h3 {
+            font-size: var(--font-size-lg);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0.9;
+        }
+
+        .modal-close:hover {
+            opacity: 1;
+        }
+
+        .modal-content {
+            padding: var(--spacing-xl);
+        }
+
+        .field-display {
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-lg);
+            border-bottom: 1px solid var(--color-gray-200);
+        }
+
+        .field-display:last-child {
+            border-bottom: none;
+        }
+
+        .field-label {
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-secondary);
+            font-size: var(--font-size-sm);
+            margin-bottom: var(--spacing-sm);
+            display: block;
+        }
+
+        .field-value {
+            color: var(--color-text-primary);
+            font-size: var(--font-size-base);
+            white-space: pre-wrap;
+        }
+
+        .field-value.code {
+            background: var(--color-gray-50);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-sm);
+            font-family: var(--font-monospace);
+            font-size: var(--font-size-sm);
+            overflow-x: auto;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            flex-shrink: 0;
+            padding: var(--spacing-md) var(--spacing-xl);
+            text-align: center;
+            font-size: var(--font-size-xs);
+            color: var(--color-text-tertiary);
+            border-top: var(--border-width-default) solid var(--color-border-light);
+            background: var(--color-bg-primary);
+            height: var(--height-footer);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ===== HELP DRAWER ===== */
+        .guide-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: var(--z-index-overlay);
+        }
+
+        .guide-overlay.visible {
+            display: block;
+        }
+
+        .help-drawer {
+            position: fixed;
+            top: 0;
+            right: -500px;
+            width: var(--width-drawer);
+            height: 100%;
+            background: var(--color-bg-primary);
+            box-shadow: var(--shadow-drawer);
+            z-index: var(--z-index-drawer);
+            transition: right var(--transition-slow);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .help-drawer.visible {
+            right: 0;
+        }
+
+        .drawer-header {
+            background: var(--color-brand-primary);
+            color: var(--color-text-inverse);
+            padding: var(--spacing-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .drawer-header h2 {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-bold);
+        }
+
+        .close-btn {
+            font-size: var(--font-size-2xl);
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: var(--color-text-inverse);
+            line-height: 1;
+            opacity: 0.9;
+            padding: 0;
+        }
+
+        .close-btn:hover {
+            opacity: 1;
+        }
+
+        .drawer-content {
+            padding: var(--spacing-lg);
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .drawer-content h3 {
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+            margin-top: var(--spacing-lg);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .drawer-content h3:first-child {
+            margin-top: 0;
+        }
+
+        .drawer-content p {
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-md);
+            font-size: var(--font-size-sm);
+        }
+
+        .drawer-content ul {
+            margin-left: var(--spacing-xl);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .drawer-content li {
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-sm);
+            font-size: var(--font-size-sm);
+        }
+
+        .example-box {
+            background: var(--color-gray-50);
+            border-left: 4px solid var(--color-brand-primary);
+            padding: var(--spacing-md);
+            margin: var(--spacing-md) 0;
+            font-size: var(--font-size-sm);
+        }
+
+        .example-box strong {
+            display: block;
+            color: var(--color-brand-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .pattern-hint {
+            background: var(--color-info-light);
+            border-left: 3px solid var(--color-info);
+            padding: var(--spacing-md);
+            margin: var(--spacing-sm) 0;
+            font-size: var(--font-size-xs);
+            border-radius: var(--radius-sm);
+        }
+
+        .pattern-hint strong {
+            color: var(--color-info);
+            display: block;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        /* ===== GLOSSARY DRAWER ===== */
+        .glossary-drawer {
+            position: fixed;
+            top: 0;
+            right: -500px;
+            width: var(--width-drawer);
+            height: 100%;
+            background: var(--color-bg-primary);
+            box-shadow: var(--shadow-drawer);
+            z-index: var(--z-index-drawer);
+            transition: right var(--transition-slow);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .glossary-drawer.visible {
+            right: 0;
+        }
+
+        .glossary-search {
+            padding: var(--spacing-md);
+            background: var(--color-gray-50);
+            border-bottom: var(--border-width-default) solid var(--color-border-light);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .glossary-search-input {
+            width: 100%;
+            padding: var(--spacing-md);
+            font-size: var(--font-size-sm);
+            border: var(--border-width-default) solid var(--color-border-default);
+            border-radius: var(--radius-md);
+            font-family: var(--font-primary);
+            transition: border-color var(--transition-base);
+        }
+
+        .glossary-search-input:focus {
+            outline: none;
+            border-color: var(--color-border-focus);
+        }
+
+        .glossary-section {
+            padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-md);
+            border-bottom: var(--border-width-default) solid var(--color-border-light);
+        }
+
+        .glossary-section:last-child {
+            border-bottom: none;
+        }
+
+        .glossary-section h3 {
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-brand-primary);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .glossary-term {
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-lg);
+            border-bottom: var(--border-width-default) solid var(--color-gray-200);
+        }
+
+        .glossary-term:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .term-name {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .term-dual {
+            font-size: var(--font-size-xs);
+            color: var(--color-info);
+            font-style: italic;
+            margin-bottom: var(--spacing-sm);
+            font-weight: var(--font-weight-medium);
+        }
+
+        .term-definition {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            line-height: var(--line-height-relaxed);
+        }
+
+        /* ===== LANDING SCREEN ===== */
+        .landing-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--color-bg-primary);
+            z-index: 2000;
+            overflow-y: auto;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .landing-screen.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        /* ===== STICKY SIDEBAR NAVIGATION ===== */
+        .sidebar-nav {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 220px;
+            height: 100vh;
+            background: var(--color-gray-50);
+            border-right: 1px solid var(--color-gray-200);
+            padding: 24px 0;
+            overflow-y: auto;
+            z-index: 2001;
+        }
+
+        .nav-logo {
+            padding: 0 20px 20px;
+            margin-bottom: 16px;
+            border-bottom: 1px solid var(--color-gray-200);
+        }
+
+        .nav-logo h3 {
+            font-size: 1rem;
+            color: var(--color-brand-primary);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: 4px;
+        }
+
+        .nav-logo p {
+            font-size: 0.6875rem;
+            color: var(--color-text-tertiary);
+            line-height: 1.3;
+        }
+
+        .nav-items {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 2px;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 12px 20px;
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            border-left: 4px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .nav-link:hover {
+            background: var(--color-gray-100);
+            color: var(--color-text-primary);
+        }
+
+        .nav-link.active {
+            background: rgba(215, 30, 40, 0.05);
+            border-left-color: var(--color-brand-primary);
+            color: var(--color-brand-primary);
+            font-weight: var(--font-weight-semibold);
+        }
+
+        .landing-content {
+            max-width: 1200px;
+            margin: 0 auto 0 240px; /* Left margin for sidebar */
+            padding: var(--spacing-2xl);
+        }
+
+        .landing-hero {
+            text-align: center;
+            padding: 40px 0 24px;
+            border-bottom: 2px solid var(--color-border-light);
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .landing-hero h1 {
+            font-size: 2.5rem;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-lg);
+            font-weight: var(--font-weight-bold);
+            line-height: 1.2;
+        }
+
+        .landing-hero .subtitle {
+            font-size: var(--font-size-lg);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .executive-questions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-lg);
+            max-width: 800px;
+            margin: 0 auto var(--spacing-2xl);
+        }
+
+        .exec-question {
+            background: #FEF2F2;
+            border-left: 4px solid var(--color-brand-primary);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-base);
+            color: var(--color-text-primary);
+            font-weight: var(--font-weight-medium);
+        }
+
+        .landing-section {
+            margin-bottom: var(--spacing-2xl);
+            padding: var(--spacing-2xl) 0;
+        }
+
+        .landing-section h2 {
+            font-size: 1.75rem;
+            color: var(--color-brand-primary);
+            margin-bottom: var(--spacing-lg);
+            text-align: center;
+        }
+
+        .landing-section h3 {
+            font-size: 1.25rem;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .landing-section p {
+            font-size: var(--font-size-base);
+            color: var(--color-text-secondary);
+            line-height: var(--line-height-relaxed);
+            margin-bottom: var(--spacing-md);
+        }
+
+        /* Two-Column Comparison Grid - V4 COMPACT */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .comparison-column {
+            background: var(--color-bg-secondary);
+            border: 2px solid var(--color-border-default);
+            border-radius: var(--radius-lg);
+            padding: 10px;
+        }
+
+        .comparison-column h3 {
+            font-size: 1.125rem;
+            margin-bottom: 6px;
+            color: var(--color-text-primary);
+        }
+
+        .subtitle {
+            font-size: 0.8125rem;
+            color: var(--color-text-tertiary);
+            margin-bottom: 14px;
+        }
+
+        .signal-list {
+            font-family: var(--font-monospace);
+            font-size: 0.8125rem;
+            color: var(--color-text-primary);
+            line-height: 1.4;
+            white-space: pre-wrap;
+        }
+
+        .signal-warning {
+            color: #D97706;
+        }
+
+        .signal-ok {
+            color: var(--color-success);
+        }
+
+        .highlight-text {
+            background: #FEF3C7;
+            padding: 1px 3px;
+            border-radius: 2px;
+            font-weight: 600;
+        }
+
+        .tells-us {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid var(--color-gray-200);
+            font-size: 0.8125rem;
+        }
+
+        .tells-us strong {
+            color: var(--color-text-primary);
+        }
+
+        .bos-adds-green {
+            color: var(--color-success);
+            font-weight: 600;
+        }
+
+        .bos-adds-blue {
+            color: var(--color-info);
+            font-weight: 600;
+        }
+
+        /* Signal type definitions */
+        .signal-type-note {
+            font-size: 0.75rem;
+            color: var(--color-text-tertiary);
+            font-style: italic;
+            margin-top: 4px;
+        }
+
+        /* De-emphasized traditional signals */
+        .deemphasized {
+            opacity: 0.4;
+            font-size: 0.75rem;
+        }
+
+        /* Stakeholder context box */
+        .stakeholder-context {
+            background: #F0FDF4;
+            border-left: 3px solid var(--color-success);
+            padding: 6px 8px;
+            margin-bottom: 8px;
+            font-size: 0.8125rem;
+            border-radius: 3px;
+        }
+
+        .stakeholder-context strong {
+            color: var(--color-success);
+        }
+
+        /* BOS Layers - COMPACT */
+        .bos-layer {
+            margin-top: 8px;
+            padding: 6px;
+            border-radius: var(--radius-md);
+            border: 2px solid;
+        }
+
+        .bos-layer.business-health {
+            background: #ECFDF5;
+            border-color: var(--color-success);
+        }
+
+        .bos-layer.business-impact {
+            background: #EFF6FF;
+            border-color: var(--color-info);
+        }
+
+        .layer-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: var(--color-success);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 0.6875rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .layer-label.impact {
+            background: var(--color-info);
+        }
+
+        /* Dimension labels */
+        .dimension {
+            color: var(--color-text-tertiary);
+            font-size: 0.75rem;
+            font-style: italic;
+        }
+
+        /* Bridge Box */
+        .bridge-box {
+            margin-top: 16px;
+            padding: 10px;
+            background: linear-gradient(90deg, var(--color-gray-100) 0%, rgba(16, 185, 129, 0.1) 100%);
+            border: 2px dashed var(--color-success);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .bridge-box-content {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+
+        .bridge-arrow {
+            font-size: 1.5rem;
+            color: var(--color-success);
+            font-weight: bold;
+        }
+
+        /* Summary Bar */
+        .summary-bar {
+            margin-top: 16px;
+            padding: 8px;
+            background: linear-gradient(135deg, #FAF5FF 0%, #EFF6FF 100%);
+            border: 2px solid var(--color-purple);
+            border-radius: var(--radius-lg);
+            text-align: center;
+        }
+
+        .summary-bar strong {
+            font-size: 1.125rem;
+            color: var(--color-purple);
+        }
+
+        .summary-bar .detail {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin-top: 4px;
+        }
+
+        .semantic-flow {
+            background: var(--color-gray-50);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-2xl);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .flow-diagram {
+            font-size: var(--font-size-base);
+            line-height: 2;
+            text-align: center;
+            color: var(--color-text-primary);
+        }
+
+        .flow-diagram .flow-item {
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-brand-primary);
+        }
+
+        .flow-example {
+            margin-top: var(--spacing-xl);
+            padding: var(--spacing-lg);
+            background: var(--color-bg-primary);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-sm);
+            line-height: 1.8;
+        }
+
+        .role-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-xl);
+        }
+
+        .role-card {
+            background: var(--color-bg-primary);
+            border: 2px solid var(--color-border-default);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            text-align: center;
+        }
+
+        .role-card .role-number {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            background: var(--color-brand-primary);
+            color: white;
+            border-radius: 50%;
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .role-card h4 {
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-md);
+            font-size: var(--font-size-lg);
+        }
+
+        .role-card ul {
+            text-align: left;
+            list-style: none;
+            padding: 0;
+        }
+
+        .role-card li {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-sm);
+            padding-left: var(--spacing-lg);
+            position: relative;
+        }
+
+        .role-card li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--color-brand-primary);
+            font-weight: bold;
+        }
+
+        .bridge-message {
+            background: var(--color-info-light);
+            border: 2px solid var(--color-info);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-2xl);
+            margin: var(--spacing-2xl) 0;
+        }
+
+        .bridge-message h3 {
+            color: var(--color-info);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .bridge-formula {
+            background: var(--color-bg-primary);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+            font-family: var(--font-monospace);
+            font-size: var(--font-size-sm);
+            line-height: 1.8;
+            margin: var(--spacing-lg) 0;
+        }
+
+        .bridge-points {
+            list-style: none;
+            padding: 0;
+        }
+
+        .bridge-points li {
+            padding-left: var(--spacing-xl);
+            margin-bottom: var(--spacing-sm);
+            position: relative;
+        }
+
+        .bridge-points li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--color-success);
+            font-weight: bold;
+        }
+
+        .landing-cta {
+            text-align: center;
+            padding: 60px 0;
+        }
+
+        .landing-cta h2 {
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .landing-cta .btn-large {
+            font-size: var(--font-size-lg);
+            padding: var(--spacing-lg) var(--spacing-2xl);
+            border-radius: var(--radius-md);
+            font-weight: var(--font-weight-semibold);
+        }
+
+        /* BOS Title/Branding */
+        .bos-title {
+            font-size: 3rem;
+            color: var(--color-brand-primary);
+            font-weight: var(--font-weight-bold);
+            letter-spacing: -0.02em;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .bos-subtitle {
+            font-size: 1.25rem;
+            color: var(--color-text-secondary);
+            font-weight: var(--font-weight-medium);
+            margin-bottom: 0;
+        }
+
+        .value-proposition {
+            font-size: var(--font-size-lg);
+            color: var(--color-text-secondary);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        /* Traditional Observability Gap */
+        .observability-gap {
+            background: #FEF2F2;
+            border-left: 4px solid var(--color-warning);
+            padding: var(--spacing-xl);
+            max-width: 900px;
+            margin: 0 auto var(--spacing-2xl);
+            border-radius: var(--radius-md);
+        }
+
+        .observability-gap h4 {
+            color: var(--color-warning);
+            font-size: var(--font-size-lg);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .observability-gap p {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            line-height: var(--line-height-relaxed);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .observability-gap .scenario {
+            background: white;
+            padding: var(--spacing-md);
+            border-radius: var(--radius-sm);
+            margin: var(--spacing-md) 0;
+            font-family: var(--font-monospace);
+            font-size: var(--font-size-sm);
+            line-height: 1.8;
+        }
+
+        .observability-gap .scenario strong {
+            color: var(--color-text-primary);
+        }
+
+        .observability-gap p:last-child {
+            margin-bottom: 0;
+            font-weight: var(--font-weight-semibold);
+        }
+
+        /* Business Principle Callout */
+        .business-principle {
+            background: var(--color-gray-50);
+            border-left: 4px solid var(--color-brand-primary);
+            padding: var(--spacing-xl);
+            max-width: 900px;
+            margin: 0 auto var(--spacing-2xl);
+            border-radius: var(--radius-md);
+        }
+
+        .business-principle h4 {
+            color: var(--color-brand-primary);
+            font-size: var(--font-size-lg);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .business-principle p {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            line-height: var(--line-height-relaxed);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .business-principle p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* ===== INCIDENT RESPONSE COMPARISON ===== */
+        .incident-response-comparison {
+            margin-bottom: var(--spacing-2xl);
+            padding: var(--spacing-2xl) 0;
+        }
+
+        .incident-response-comparison h2 {
+            font-size: 1.75rem;
+            color: var(--color-brand-primary);
+            margin-bottom: var(--spacing-xl);
+            text-align: center;
+        }
+
+        .response-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 16px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .response-column {
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            border: 2px solid;
+        }
+
+        .response-column.without-bos {
+            background: #FEF3C7;
+            border-color: var(--color-warning);
+        }
+
+        .response-column.with-bos {
+            background: #ECFDF5;
+            border-color: var(--color-success);
+        }
+
+        .response-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid;
+        }
+
+        .response-column.without-bos .response-header {
+            border-bottom-color: var(--color-warning);
+        }
+
+        .response-column.with-bos .response-header {
+            border-bottom-color: var(--color-success);
+        }
+
+        .response-header .icon {
+            font-size: 1.5rem;
+        }
+
+        .response-header h3 {
+            font-size: 1.125rem;
+            color: var(--color-text-primary);
+            font-weight: var(--font-weight-bold);
+        }
+
+        .response-timeline {
+            margin-bottom: 20px;
+        }
+
+        .timeline-step {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding: 12px;
+            background: white;
+            border-radius: var(--radius-md);
+            border-left: 3px solid;
+        }
+
+        .response-column.without-bos .timeline-step {
+            border-left-color: var(--color-warning);
+        }
+
+        .response-column.with-bos .timeline-step {
+            border-left-color: var(--color-success);
+        }
+
+        .timeline-step .time {
+            font-family: var(--font-monospace);
+            font-size: 0.8125rem;
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+            min-width: 60px;
+            flex-shrink: 0;
+        }
+
+        .timeline-step .event {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+        }
+
+        .exec-questions {
+            margin-top: 8px;
+            padding-left: 12px;
+        }
+
+        .exec-questions li {
+            font-size: 0.8125rem;
+            color: var(--color-text-secondary);
+            margin-bottom: 4px;
+            list-style-type: disc;
+        }
+
+        .signal-types {
+            margin-top: 8px;
+            padding: 8px 12px;
+            background: #F0F9FF;
+            border-radius: var(--radius-sm);
+            font-size: 0.8125rem;
+            line-height: 1.7;
+        }
+
+        .signal-types strong {
+            color: var(--color-text-primary);
+        }
+
+        .signal-types .signal-type {
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .response-cost,
+        .response-benefit {
+            padding: 12px;
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            font-weight: var(--font-weight-semibold);
+            text-align: center;
+        }
+
+        .response-cost {
+            background: white;
+            color: #B45309;
+            border: 2px solid #FCD34D;
+        }
+
+        .response-benefit {
+            background: white;
+            color: #047857;
+            border: 2px solid #6EE7B7;
+        }
+
+        .comparison-insight {
+            margin-top: 24px;
+            padding: 16px;
+            background: #EFF6FF;
+            border: 2px solid var(--color-info);
+            border-radius: var(--radius-lg);
+            text-align: center;
+            font-size: 0.9375rem;
+            color: var(--color-text-secondary);
+            line-height: 1.7;
+        }
+
+        .comparison-insight strong {
+            color: var(--color-info);
+        }
+
+        /* ===== RESPONSIVE DESIGN FOR SIDEBAR NAV ===== */
+        @media (max-width: 768px) {
+            .sidebar-nav {
+                position: relative;
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid var(--color-gray-200);
+            }
+
+            .nav-items {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 4px;
+                padding: 0 12px 12px;
+            }
+
+            .nav-item {
+                margin-bottom: 0;
+            }
+
+            .nav-link {
+                padding: 8px 12px;
+                border-left: none;
+                border-bottom: 3px solid transparent;
+                font-size: 0.8125rem;
+            }
+
+            .nav-link.active {
+                border-left: none;
+                border-bottom-color: var(--color-brand-primary);
+            }
+
+            .landing-content {
+                margin-left: 0;
+                padding: var(--spacing-lg);
+            }
+        }
+
+    </style>
+
+<!-- Generated: 2025-11-12 08:47:39  | Version: 3.5.1 | Page: bos-data-model-reference -->
+</head>
+<body>
+    <!-- Sticky Navigation -->
+    <nav class="sticky-nav">
+        <div class="nav-logo">
+            <h3>BOS Data Model v3.5.1 - Technical Reference</h3>
+            <span class="version-badge">3.5.1</span>
+        </div>
+        <ul class="nav-items">
+<li class="nav-item">
+  <a href="#architecture" class="nav-link">2. Architecture Overview</a>
+</li>
+<li class="nav-item">
+  <a href="#reference-tables" class="nav-link">3. Reference Tables (Tier 2 - Load First)</a>
+</li>
+<li class="nav-item">
+  <a href="#org-products" class="nav-link">4. Organizational Products (Tier 2)</a>
+</li>
+<li class="nav-item">
+  <a href="#core-tables" class="nav-link">5. Core Service Tables (Tier 1 - With Audit)</a>
+</li>
+<li class="nav-item">
+  <a href="#system-tables" class="nav-link">6. System Tables (Tier 3 - No Audit)</a>
+</li>
+<li class="nav-item">
+  <a href="#validation-examples" class="nav-link">7. Validation Rules & Examples</a>
+</li>
+<li class="nav-item">
+  <a href="#bos-data-model-v351---technical-reference" class="nav-link">BOS Data Model v3.5.1 - Technical Reference</a>
+</li>
+</ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <section id="overview">
+    <h2>BOS Data Model v3.5.1 - Technical Reference</h2>
+
+    <p>14 normalized tables for business observability. Load reference tables first to satisfy FK constraints.</p>
+
+    <div class="callout callout-info">
+        <strong>Table Groups (load order):</strong>
+        <ul>
+            <li><strong>Reference (4):</strong> impact_categories, priority_levels, stakeholder_types, lifecycle_statuses</li>
+            <li><strong>Org Products (1):</strong> org_products - L4 Product Lines and L3 Products (flattened pairs)</li>
+            <li><strong>Core (4):</strong> services, signal_definitions, stakeholder_expectations_context, operational_metadata</li>
+            <li><strong>System (5):</strong> signal_history, cmdb_applications, incidents, service_application_mappings, ui_field_metadata</li>
+        </ul>
+    </div>
+
+    <p style="margin-top: var(--spacing-xl); padding-top: var(--spacing-lg); border-top: 1px solid var(--color-gray-200);"><strong>📘 Conceptual Introduction:</strong> For BOS philosophy and "What is BOS" overview, see <a href="../option5-bos-onboarding-complete.html">BOS Onboarding Workflow</a></p>
+</section>
+
+
+<section id="architecture">
+    <h2 id="architecture">2. Architecture Overview</h2>
+
+    <div class="diagram-container">
+        <h4>Entity Relationship Diagram (13 Tables)</h4>
+        <div class="mermaid">
+erDiagram
+    %% Reference Tables (Tier 2 - With Audit)
+    impact_categories {
+        string code PK
+        string name
+        string description
+        string created_by
+        string modified_by
+    }
+
+    priority_levels {
+        string code PK
+        string name
+        int numeric_score
+        string created_by
+        string modified_by
+    }
+
+    stakeholder_types {
+        string code PK
+        string name
+        string description
+        string created_by
+        string modified_by
+    }
+
+    lifecycle_statuses {
+        string code PK
+        string name
+        string description
+        string created_by
+        string modified_by
+    }
+
+    %% Organizational Products (Tier 2 - With Audit)
+    org_products {
+        string org_id PK
+        string l4_code
+        string l4_name
+        string l3_code
+        string l3_name
+        string l3_description
+        bool active
+        string created_by
+        string modified_by
+    }
+
+    %% Core Service Tables (Tier 1 - With Audit)
+    services {
+        string service_id PK
+        string serviceName
+        string displayName
+        string businessPurpose
+        int tierLevel
+        string businessUnit
+        string tags
+        string productOwner
+        string org_id FK
+        string app_id
+        timestamp created_at
+        string created_by
+        timestamp modified_at
+        string modified_by
+        string version
+    }
+
+    signal_definitions {
+        string signal_id PK
+        string service_id FK
+        string signal_name
+        string signal_display_name
+        string signal_type
+        string observability_layer
+        string description_business
+        string description_technical
+        string data_source
+        string data_source_details
+        string technical_owner
+        string query_numerator
+        string query_denominator
+        string query_numerator_description
+        string query_denominator_description
+        string threshold_operator
+        float threshold_value
+        string threshold_unit
+        string impact_category
+        string impact_unit
+        float sloTarget
+        string sloTargetRationale
+        string timeWindow
+        string timeWindowType
+        string budgetingMethod
+        float timeSliceTarget
+        string timeSliceWindow
+        float alertingThreshold
+        float pageThreshold
+        string sloNotes
+        timestamp created_at
+        string created_by
+        timestamp modified_at
+        string modified_by
+        string version
+    }
+
+    stakeholder_expectations_context {
+        string context_id PK
+        string service_id FK
+        string stakeholderType FK
+        string stakeholderGroup
+        string expectationStatement
+        string impactCategory FK
+        string impactDescription
+        string priority FK
+        string created_by
+        string modified_by
+    }
+
+    operational_metadata {
+        string service_id "PK, FK"
+        string status FK
+        string runbookUrl
+        string created_by
+        string modified_by
+    }
+
+    %% System Tables (Tier 3 - NO Audit)
+    signal_history {
+        string signal_id "PK, FK"
+        string timestamp PK
+        string status
+        float measured_value
+    }
+
+    incidents {
+        string incident_id PK
+        string service_id FK
+        string severity
+        string status
+    }
+
+    cmdb_applications {
+        string app_id PK
+        string appName
+        string appType
+    }
+
+    service_application_mappings {
+        string service_id "PK, FK"
+        string application_ids FK
+    }
+
+    %% Relationships
+    org_products ||--o{ services : "org_id"
+
+    services ||--o{ signal_definitions : "service_id"
+    services ||--o{ stakeholder_expectations_context : "service_id"
+    services ||--o| operational_metadata : "service_id"
+    services ||--o| service_application_mappings : "service_id"
+    services ||--o{ incidents : "service_id"
+
+    signal_definitions ||--o{ signal_history : "signal_id"
+
+    stakeholder_expectations_context }o--|| stakeholder_types : "stakeholderType"
+    stakeholder_expectations_context }o--|| impact_categories : "impactCategory"
+    stakeholder_expectations_context }o--|| priority_levels : "priority"
+
+    operational_metadata }o--|| lifecycle_statuses : "status"
+
+    service_application_mappings }o--|| cmdb_applications : "application_ids"
+        </div>
+        <p class="diagram-caption">Reference tables provide governance. org_products stores L4-L3 pairs (flattened structure). stakeholder_expectations_context uses FK joins to reference tables. Audit: Tier 1+2 have created_at/created_by/modified_at/modified_by/version, Tier 3 has no audit overhead.</p>
+        <p class="diagram-expand-hint">💡 Click diagram to open in new tab</p>
+    </div>
+
+    <h3>Table Relationships</h3>
+    <pre><code>Reference Tables (Tier 2 - Load First):
+├── impact_categories (code) [1:N → stakeholder_expectations_context.impactCategory]
+├── priority_levels (code) [1:N → stakeholder_expectations_context.priority]
+├── stakeholder_types (code) [1:N → stakeholder_expectations_context.stakeholderType]
+└── lifecycle_statuses (code) [1:1 → operational_metadata.status]
+
+Organizational Products (Tier 2):
+org_products (org_id) [L4-L3 pairs, flattened structure]
+    └── services (org_id) [N:1 - services link to org_products for L4/L3 names]
+        ├── signal_definitions (service_id) [0..N] Signals + SLO targets
+        │   └── signal_history (signal_id) [0..N] Time-series (use MAX(timestamp) for current values)
+        ├── stakeholder_expectations_context (service_id) [0..N] 3-5 rows typical
+        │   ├── stakeholderType FK → stakeholder_types
+        │   ├── impactCategory FK → impact_categories
+        │   └── priority FK → priority_levels
+        ├── operational_metadata (service_id) [0..1] Optional operational data
+        │   └── status FK → lifecycle_statuses
+        ├── service_application_mappings (service_id) [0..1] CMDB junction
+        │   └── application_ids FK → cmdb_applications
+        └── incidents (service_id) [0..N] Incident annotations
+
+System Tables (Tier 3 - External/Generated):
+├── cmdb_applications (app_id) - External CMDB system
+└── incidents (incident_id) - External incident management</code></pre>
+</section>
+
+
+<section id="reference-tables">
+    <h2 id="reference-tables">3. Reference Tables (Tier 2 - Load First)</h2>
+
+    <p>Standardized governance taxonomies with audit trails. Load before core tables to satisfy FK constraints.</p>
+
+    <h4 id="table-impact-categories">impact_categories - Business Impact Taxonomy</h4>
+    <p><strong>Purpose:</strong> Standardized governance taxonomy for impact classification</p>
+    <p><strong>Relationship:</strong> 1:N → stakeholder_expectations_context.impactCategory (FK)</p>
+    <p><strong>Fields:</strong> 11 (6 core + 5 audit)</p>
+
+    <table>
+        <thead>
+            <tr><th>Column</th><th>Type</th><th>Description</th><th>Example</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>id</td><td>INTEGER PK</td><td>Auto-increment surrogate key</td><td>1</td></tr>
+            <tr><td>code</td><td>VARCHAR(50)</td><td>Unique lowercase identifier</td><td>customer_experience</td></tr>
+            <tr><td>name</td><td>VARCHAR(100)</td><td>Display name</td><td>Customer Experience</td></tr>
+            <tr><td>description</td><td>TEXT</td><td>Business context</td><td>Direct impact on external customers</td></tr>
+            <tr><td>sort_order</td><td>INTEGER</td><td>Display order</td><td>1</td></tr>
+            <tr><td>active</td><td>BOOLEAN</td><td>Active flag</td><td>true</td></tr>
+            <tr><td>created_at</td><td>TIMESTAMP</td><td>Creation timestamp</td><td>2025-10-01T00:00:00Z</td></tr>
+            <tr><td>created_by</td><td>VARCHAR(255)</td><td>Creator email</td><td>system-init@company.com</td></tr>
+            <tr><td>modified_at</td><td>TIMESTAMP</td><td>Last modification timestamp</td><td>2025-10-15T10:30:00Z</td></tr>
+            <tr><td>modified_by</td><td>VARCHAR(255)</td><td>Last modifier email</td><td>system-init@company.com</td></tr>
+            <tr><td>version</td><td>VARCHAR(20)</td><td>Semantic version</td><td>1.0</td></tr>
+        </tbody>
+    </table>
+
+    <h4 id="table-priority-levels">priority_levels - Priority Classification</h4>
+    <p><strong>Purpose:</strong> Standardized priority classification</p>
+    <p><strong>Relationship:</strong> 1:N → stakeholder_expectations_context.priority (FK)</p>
+    <p><strong>Fields:</strong> 12 (7 core + 5 audit)</p>
+
+    <table>
+        <thead>
+            <tr><th>Column</th><th>Type</th><th>Description</th><th>Example</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>id</td><td>INTEGER PK</td><td>Auto-increment surrogate key</td><td>1</td></tr>
+            <tr><td>code</td><td>VARCHAR(20)</td><td>Unique uppercase identifier</td><td>CRITICAL</td></tr>
+            <tr><td>name</td><td>VARCHAR(50)</td><td>Display name</td><td>Critical</td></tr>
+            <tr><td>description</td><td>TEXT</td><td>Priority level description</td><td>Immediate attention required</td></tr>
+            <tr><td>numeric_score</td><td>INTEGER</td><td>Sorting value (1-100)</td><td>100</td></tr>
+            <tr><td>sort_order</td><td>INTEGER</td><td>Display order</td><td>1</td></tr>
+            <tr><td>active</td><td>BOOLEAN</td><td>Active flag</td><td>true</td></tr>
+            <tr><td>created_at</td><td>TIMESTAMP</td><td>Creation timestamp</td><td>2025-10-01T00:00:00Z</td></tr>
+            <tr><td>created_by</td><td>VARCHAR(255)</td><td>Creator email</td><td>system-init@company.com</td></tr>
+            <tr><td>modified_at</td><td>TIMESTAMP</td><td>Last modification timestamp</td><td>2025-10-15T10:30:00Z</td></tr>
+            <tr><td>modified_by</td><td>VARCHAR(255)</td><td>Last modifier email</td><td>system-init@company.com</td></tr>
+            <tr><td>version</td><td>VARCHAR(20)</td><td>Semantic version</td><td>1.0</td></tr>
+        </tbody>
+    </table>
+
+    <h4 id="table-stakeholder-types">stakeholder_types - Stakeholder Taxonomy</h4>
+    <p><strong>Purpose:</strong> Standardized stakeholder classification</p>
+    <p><strong>Relationship:</strong> 1:N → stakeholder_expectations_context.stakeholderType (FK)</p>
+    <p><strong>Fields:</strong> 11 (6 core + 5 audit)</p>
+
+    <table>
+        <thead>
+            <tr><th>Column</th><th>Type</th><th>Description</th><th>Example</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>id</td><td>INTEGER PK</td><td>Auto-increment surrogate key</td><td>1</td></tr>
+            <tr><td>code</td><td>VARCHAR(50)</td><td>Unique lowercase identifier</td><td>customer</td></tr>
+            <tr><td>name</td><td>VARCHAR(100)</td><td>Display name</td><td>External Customer</td></tr>
+            <tr><td>description</td><td>TEXT</td><td>What this type represents</td><td>End users consuming services</td></tr>
+            <tr><td>sort_order</td><td>INTEGER</td><td>Display order</td><td>1</td></tr>
+            <tr><td>active</td><td>BOOLEAN</td><td>Active flag</td><td>true</td></tr>
+            <tr><td>created_at</td><td>TIMESTAMP</td><td>Creation timestamp</td><td>2025-10-01T00:00:00Z</td></tr>
+            <tr><td>created_by</td><td>VARCHAR(255)</td><td>Creator email</td><td>system-init@company.com</td></tr>
+            <tr><td>modified_at</td><td>TIMESTAMP</td><td>Last modification timestamp</td><td>2025-10-15T10:30:00Z</td></tr>
+            <tr><td>modified_by</td><td>VARCHAR(255)</td><td>Last modifier email</td><td>system-init@company.com</td></tr>
+            <tr><td>version</td><td>VARCHAR(20)</td><td>Semantic version</td><td>1.0</td></tr>
+        </tbody>
+    </table>
+
+    <h4 id="table-lifecycle-statuses">lifecycle_statuses - Service Lifecycle States</h4>
+    <p><strong>Purpose:</strong> Service lifecycle state classification</p>
+    <p><strong>Relationship:</strong> 1:1 → operational_metadata.status (FK)</p>
+    <p><strong>Fields:</strong> 11 (6 core + 5 audit)</p>
+
+    <table>
+        <thead>
+            <tr><th>Column</th><th>Type</th><th>Description</th><th>Example</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>id</td><td>INTEGER PK</td><td>Auto-increment surrogate key</td><td>1</td></tr>
+            <tr><td>code</td><td>VARCHAR(50)</td><td>Unique lowercase identifier</td><td>active</td></tr>
+            <tr><td>name</td><td>VARCHAR(100)</td><td>Display name</td><td>Active</td></tr>
+            <tr><td>description</td><td>TEXT</td><td>What this state means</td><td>Service is operational</td></tr>
+            <tr><td>sort_order</td><td>INTEGER</td><td>Display order</td><td>1</td></tr>
+            <tr><td>active</td><td>BOOLEAN</td><td>Active flag</td><td>true</td></tr>
+            <tr><td>created_at</td><td>TIMESTAMP</td><td>Creation timestamp</td><td>2025-10-01T00:00:00Z</td></tr>
+            <tr><td>created_by</td><td>VARCHAR(255)</td><td>Creator email</td><td>system-init@company.com</td></tr>
+            <tr><td>modified_at</td><td>TIMESTAMP</td><td>Last modification timestamp</td><td>2025-10-15T10:30:00Z</td></tr>
+            <tr><td>modified_by</td><td>VARCHAR(255)</td><td>Last modifier email</td><td>system-init@company.com</td></tr>
+            <tr><td>version</td><td>VARCHAR(20)</td><td>Semantic version</td><td>1.0</td></tr>
+        </tbody>
+    </table>
+</section>
+
+
+<section id="org-products">
+    <h2 id="org-products">4. Organizational Products (Tier 2)</h2>
+
+    <p>Flattened L4-L3 product structure. Each row represents one L4 Product Line to L3 Product combination. Services link directly to org_products via org_id FK, enabling single JOIN queries for organizational aggregation.</p>
+
+    <div class="info-callout" style="background: #F3F4F6; border-left: 3px solid #D71E28; padding: 1rem; margin: 1rem 0;">
+        <p style="margin: 0; font-size: 0.875rem;">
+            <strong>Design Pattern:</strong> Flattened structure with each row representing one L4-L3 pair (no parent_org_id FK).
+            Benefit: Simpler queries (single JOIN). Pattern: Services JOIN org_products ON services.org_id = org_products.org_id.
+        </p>
+    </div>
+
+    <h4 id="table-org-products">org_products - L4 Product Lines and L3 Products</h4>
+    <p><strong>Purpose:</strong> L4-L3 product pairs (flattened organizational structure)</p>
+    <p><strong>Relationship:</strong> 1:N → services.org_id</p>
+    <p><strong>Pattern:</strong> Each row = one L4 Product Line to L3 Product mapping</p>
+    <p><strong>Example:</strong> "Home Lending" (L4) → "Home Originations" (L3)</p>
+    <p><strong>Fields:</strong> 12 (7 core + 5 audit)</p>
+
+    <table>
+        <thead>
+            <tr><th>Column</th><th>Type</th><th>Description</th><th>Example</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>org_id</td><td>TEXT PK</td><td>Unique identifier</td><td>ORG005</td></tr>
+            <tr><td>l4_code</td><td>TEXT</td><td>L4 product line code (lowercase-with-hyphens)</td><td>home-lending</td></tr>
+            <tr><td>l4_name</td><td>TEXT</td><td>L4 product line display name</td><td>Home Lending</td></tr>
+            <tr><td>l3_code</td><td>TEXT</td><td>L3 product code (lowercase-with-hyphens)</td><td>home-originations</td></tr>
+            <tr><td>l3_name</td><td>TEXT</td><td>L3 product display name</td><td>Home Originations</td></tr>
+            <tr><td>l3_description</td><td>TEXT</td><td>L3 business purpose</td><td>Processing of new home loan applications</td></tr>
+            <tr><td>active</td><td>BOOLEAN</td><td>Active flag (default true)</td><td>true</td></tr>
+            <tr><td>created_at</td><td>TEXT</td><td>Creation timestamp (ISO8601)</td><td>2025-10-01T00:00:00Z</td></tr>
+            <tr><td>created_by</td><td>TEXT</td><td>Creator email</td><td>system-init</td></tr>
+            <tr><td>modified_at</td><td>TEXT</td><td>Last modification timestamp</td><td>2025-10-01T00:00:00Z</td></tr>
+            <tr><td>modified_by</td><td>TEXT</td><td>Last modifier email</td><td>system-init</td></tr>
+            <tr><td>version</td><td>TEXT</td><td>Semantic version for change tracking</td><td>1.0.0</td></tr>
+        </tbody>
+    </table>
+
+    <p><strong>Load Order:</strong> Load org_products BEFORE services (FK dependency).</p>
+
+    <h4 id="query-patterns">Query Patterns</h4>
+
+    <p><strong>Simple L4/L3 Retrieval (Single JOIN):</strong></p>
+    <pre><code>SELECT
+  s.service_id,
+  s.serviceName,
+  op.l4_name AS l4_product_line,
+  op.l3_name AS l3_product
+FROM services s
+JOIN org_products op ON s.org_id = op.org_id
+WHERE op.l4_code = 'home-lending';</code></pre>
+
+    <p><strong>L4 Aggregation (Service Count by Product Line):</strong></p>
+    <pre><code>SELECT
+  op.l4_name,
+  COUNT(DISTINCT s.service_id) as service_count
+FROM services s
+JOIN org_products op ON s.org_id = op.org_id
+GROUP BY op.l4_name
+ORDER BY service_count DESC;</code></pre>
+
+    <p><strong>L3 Aggregation (Services by Product):</strong></p>
+    <pre><code>SELECT
+  op.l4_name,
+  op.l3_name,
+  COUNT(DISTINCT s.service_id) as service_count
+FROM services s
+JOIN org_products op ON s.org_id = op.org_id
+GROUP BY op.l4_name, op.l3_name
+ORDER BY op.l4_name, op.l3_name;</code></pre>
+
+    <h4 id="data-examples">Data Examples</h4>
+    <table>
+        <thead>
+            <tr><th>org_id</th><th>l4_code</th><th>l4_name</th><th>l3_code</th><th>l3_name</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>ORG001</td><td>home-lending</td><td>Home Lending</td><td>home-originations</td><td>Home Originations</td></tr>
+            <tr><td>ORG002</td><td>home-lending</td><td>Home Lending</td><td>home-servicing</td><td>Home Servicing</td></tr>
+            <tr><td>ORG003</td><td>personal-lending</td><td>Personal Lending</td><td>personal-loans</td><td>Personal Loans</td></tr>
+            <tr><td>ORG004</td><td>personal-lending</td><td>Personal Lending</td><td>student-loans</td><td>Student Loans</td></tr>
+            <tr><td>ORG005</td><td>personal-lending</td><td>Personal Lending</td><td>credit-cards</td><td>Credit Cards</td></tr>
+        </tbody>
+    </table>
+</section>
+
+
+<section id="core-tables">
+    <h2 id="core-tables">5. Core Service Tables (Tier 1 - With Audit)</h2>
+
+    <p>Primary business data with full audit trails. 1 row per service in services table, 0..N child rows in related tables.</p>
+
+    <h4 id="table-services">services - Core Service Information</h4>
+    <p><strong>Purpose:</strong> Core service identification and business context</p>
+    <p><strong>Relationship:</strong> Parent table (1 row per service)</p>
+    <p><strong>Fields:</strong> 17 (9 business + 1 org FK + 1 CMDB + 5 audit + 1 deprecated removed)</p>
+
+    <table>
+        <thead>
+            <tr><th>Column</th><th>Type</th><th>Required</th><th>Description</th><th>Example</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>service_id</td><td>VARCHAR(20) PK</td><td>Yes</td><td>Unique identifier</td><td>SVC002</td></tr>
+            <tr><td>serviceName</td><td>VARCHAR(255)</td><td>Yes</td><td>Technical service name</td><td>credit-check-service</td></tr>
+            <tr><td>displayName</td><td>VARCHAR(255)</td><td>Yes</td><td>Human-readable name</td><td>Credit Check Service</td></tr>
+            <tr><td>businessPurpose</td><td>TEXT</td><td>Yes</td><td>Business function</td><td>Validate borrower creditworthiness</td></tr>
+            <tr><td>tierLevel</td><td>INTEGER</td><td>Yes</td><td>Criticality (1=critical, 6=low)</td><td>2</td></tr>
+            <tr><td>businessUnit</td><td>VARCHAR(255)</td><td>Yes</td><td>Owning organization</td><td>Home Lending</td></tr>
+            <tr><td>tags</td><td>TEXT</td><td>No</td><td>Comma-separated tags</td><td>lending,credit,tier2</td></tr>
+            <tr><td>productOwner</td><td>VARCHAR(255)</td><td>Yes</td><td>Product Owner email</td><td>jane.doe@company.com</td></tr>
+            <tr><td>org_id</td><td>VARCHAR(20) FK</td><td>Yes</td><td>FK to org_products</td><td>ORG005</td></tr>
+            <tr><td>app_id</td><td>VARCHAR(20)</td><td>No</td><td>Optional CMDB Application ID (no FK, free text)</td><td>APP004</td></tr>
+            <tr><td>created_at</td><td>TIMESTAMP</td><td>Yes</td><td>Creation timestamp</td><td>2025-10-01T00:00:00Z</td></tr>
+            <tr><td>created_by</td><td>VARCHAR(255)</td><td>Yes</td><td>Creator email</td><td>jane.doe@company.com</td></tr>
+            <tr><td>modified_at</td><td>TIMESTAMP</td><td>Yes</td><td>Last modification timestamp</td><td>2025-10-15T10:30:00Z</td></tr>
+            <tr><td>modified_by</td><td>VARCHAR(255)</td><td>Yes</td><td>Last modifier email</td><td>jane.doe@company.com</td></tr>
+            <tr><td>version</td><td>VARCHAR(20)</td><td>Yes</td><td>Semantic version</td><td>1.0.0</td></tr>
+        </tbody>
+    </table>
+
+    <p><strong>L4/L3 Data Access:</strong> To retrieve L4 Product Line and L3 Product names, use <code>JOIN org_products ON services.org_id = org_products.org_id</code>. The services table contains only the org_id FK reference.</p>
+
+    <h4 id="table-signal-definitions">signal_definitions - Unified Signal Definitions</h4>
+    <p><strong>Purpose:</strong> Define ALL signals (technical SLIs + business impact measurements + SLO targets)</p>
+    <p><strong>Relationship:</strong> 0..N per service</p>
+    <p><strong>Fields:</strong> 35 (11 universal + 4 ratio + 3 threshold + 2 impact + 10 SLO + 5 audit)</p>
+    <p><strong>Signal Types:</strong> sli_ratio, sli_threshold, business_impact (polymorphic table)</p>
+
+    <table>
+        <thead>
+            <tr><th>Column</th><th>Type</th><th>Req?</th><th>Applies To</th><th>Description</th><th>Example</th></tr>
+        </thead>
+        <tbody>
+            <tr><td colspan="6" style="background: var(--color-gray-100); font-weight: 600;">Universal Fields (All Signal Types)</td></tr>
+            <tr><td>signal_id</td><td>VARCHAR(20) PK</td><td>Yes</td><td>All</td><td>Unique signal identifier</td><td>SIG010</td></tr>
+            <tr><td>service_id</td><td>VARCHAR(20) FK</td><td>Yes</td><td>All</td><td>Foreign key to services</td><td>SVC002</td></tr>
+            <tr><td>signal_name</td><td>VARCHAR(255)</td><td>Yes</td><td>All</td><td>Technical identifier (lowercase-with-hyphens)</td><td>credit-check-success-rate</td></tr>
+            <tr><td>signal_display_name</td><td>VARCHAR(255)</td><td>Yes</td><td>All</td><td>Human-readable name for dashboards</td><td>Credit Check Success Rate</td></tr>
+            <tr><td>signal_type</td><td>VARCHAR(30)</td><td>Yes</td><td>All</td><td>Discriminator: sli_ratio, sli_threshold, business_impact</td><td>sli_ratio</td></tr>
+            <tr><td>observability_layer</td><td>VARCHAR(20)</td><td>No</td><td>All</td><td>Business, Process, or System layer</td><td>Process</td></tr>
+            <tr><td>description_business</td><td>TEXT</td><td>No</td><td>All</td><td>Product Owner definition (what it means)</td><td>Credit check returns valid score</td></tr>
+            <tr><td>description_technical</td><td>TEXT</td><td>No</td><td>All</td><td>Technical implementation (how it works)</td><td>status='SUCCESS' AND score BETWEEN 300 AND 850</td></tr>
+            <tr><td>data_source</td><td>VARCHAR(50)</td><td>No</td><td>All</td><td>Source system: sql, splunk, prometheus, custom</td><td>sql</td></tr>
+            <tr><td>data_source_details</td><td>TEXT</td><td>No</td><td>All</td><td>Connection details or table/index names</td><td>db.credit_checks table</td></tr>
+            <tr><td>technical_owner</td><td>VARCHAR(255)</td><td>No</td><td>All</td><td>Engineering contact for signal</td><td>platform-team@company.com</td></tr>
+
+            <tr><td colspan="6" style="background: var(--color-gray-100); font-weight: 600;">Ratio Metric Fields (sli_ratio only)</td></tr>
+            <tr><td>query_numerator</td><td>TEXT</td><td>Cond*</td><td>sli_ratio</td><td>Query for good events</td><td>COUNT(*) WHERE status='SUCCESS'</td></tr>
+            <tr><td>query_denominator</td><td>TEXT</td><td>Cond*</td><td>sli_ratio</td><td>Query for total events</td><td>COUNT(*) WHERE request_type='CREDIT_CHECK'</td></tr>
+            <tr><td>query_numerator_description</td><td>TEXT</td><td>No</td><td>sli_ratio</td><td>Human explanation of good events</td><td>Successful credit checks</td></tr>
+            <tr><td>query_denominator_description</td><td>TEXT</td><td>No</td><td>sli_ratio</td><td>Human explanation of total events</td><td>All credit check attempts</td></tr>
+
+            <tr><td colspan="6" style="background: var(--color-gray-100); font-weight: 600;">Threshold Metric Fields (sli_threshold only)</td></tr>
+            <tr><td>threshold_operator</td><td>VARCHAR(10)</td><td>Cond*</td><td>sli_threshold</td><td>Comparison: lt, lte, gt, gte, eq</td><td>lte</td></tr>
+            <tr><td>threshold_value</td><td>REAL</td><td>Cond*</td><td>sli_threshold</td><td>Target threshold value</td><td>500</td></tr>
+            <tr><td>threshold_unit</td><td>VARCHAR(20)</td><td>No</td><td>sli_threshold</td><td>Unit of measurement</td><td>milliseconds</td></tr>
+
+            <tr><td colspan="6" style="background: var(--color-gray-100); font-weight: 600;">Business Impact Fields (business_impact only)</td></tr>
+            <tr><td>impact_category</td><td>VARCHAR(50)</td><td>Cond*</td><td>business_impact</td><td>customer_experience, financial, legal_risk, operational</td><td>customer_experience</td></tr>
+            <tr><td>impact_unit</td><td>VARCHAR(50)</td><td>Cond*</td><td>business_impact</td><td>Unit of impact measurement</td><td>customers</td></tr>
+
+            <tr><td colspan="6" style="background: var(--color-gray-100); font-weight: 600;">SLO Target Fields (sli_ratio and sli_threshold only)</td></tr>
+            <tr><td>sloTarget</td><td>DECIMAL(5,2)</td><td>Cond*</td><td>SLIs only</td><td>Target percentage (ratio) or threshold</td><td>99.50</td></tr>
+            <tr><td>sloTargetRationale</td><td>TEXT</td><td>No</td><td>SLIs only</td><td>Why this target was chosen</td><td>Industry standard for credit services</td></tr>
+            <tr><td>timeWindow</td><td>VARCHAR(20)</td><td>No</td><td>SLIs only</td><td>SLO measurement period</td><td>30d</td></tr>
+            <tr><td>timeWindowType</td><td>VARCHAR(20)</td><td>No</td><td>SLIs only</td><td>rolling or calendar</td><td>rolling</td></tr>
+            <tr><td>budgetingMethod</td><td>VARCHAR(30)</td><td>No</td><td>SLIs only</td><td>Occurrences, Timeslices, RatioTimeslices</td><td>Occurrences</td></tr>
+            <tr><td>timeSliceTarget</td><td>DECIMAL(5,2)</td><td>No</td><td>SLIs only</td><td>Target for timeslice budgeting</td><td>99.00</td></tr>
+            <tr><td>timeSliceWindow</td><td>VARCHAR(20)</td><td>No</td><td>SLIs only</td><td>Timeslice interval</td><td>5m</td></tr>
+            <tr><td>alertingThreshold</td><td>DECIMAL(5,2)</td><td>No</td><td>SLIs only</td><td>Warn threshold (% of error budget consumed)</td><td>50.00</td></tr>
+            <tr><td>pageThreshold</td><td>DECIMAL(5,2)</td><td>No</td><td>SLIs only</td><td>Page threshold (% of error budget consumed)</td><td>90.00</td></tr>
+            <tr><td>sloNotes</td><td>TEXT</td><td>No</td><td>SLIs only</td><td>Additional SLO context or exceptions</td><td>Excludes planned maintenance windows</td></tr>
+
+            <tr><td colspan="6" style="background: var(--color-gray-100); font-weight: 600;">Audit Fields (Tier 1 - All Signals)</td></tr>
+            <tr><td>created_at</td><td>TIMESTAMP</td><td>Yes</td><td>All</td><td>Creation timestamp (auto-generated)</td><td>2025-10-01T00:00:00Z</td></tr>
+            <tr><td>created_by</td><td>VARCHAR(255)</td><td>Yes</td><td>All</td><td>Creator email</td><td>platform-engineering-team</td></tr>
+            <tr><td>modified_at</td><td>TIMESTAMP</td><td>Yes</td><td>All</td><td>Last modification timestamp (auto-updated)</td><td>2025-10-15T10:30:00Z</td></tr>
+            <tr><td>modified_by</td><td>VARCHAR(255)</td><td>Yes</td><td>All</td><td>Last modifier email</td><td>platform-engineering-team</td></tr>
+            <tr><td>version</td><td>VARCHAR(20)</td><td>Yes</td><td>All</td><td>Semantic version for change tracking</td><td>1.0.0</td></tr>
+        </tbody>
+    </table>
+
+    <p><strong>*Conditional Requirements:</strong> Certain fields are required based on signal_type. See validation rules in Section 7.</p>
+    <p><strong>Polymorphic Design:</strong> ~40% null density by design. Each row uses 10-25 fields depending on signal_type.</p>
+
+    <h4 id="table-stakeholder-context">stakeholder_expectations_context - Stakeholder Context</h4>
+    <p><strong>Purpose:</strong> Qualitative business context (who cares, what could break)</p>
+    <p><strong>Relationship:</strong> 0..N per service (typical: 3-5 rows per service)</p>
+    <p><strong>Fields:</strong> 13 (8 core + 5 audit)</p>
+
+    <table>
+        <thead>
+            <tr><th>Column</th><th>Type</th><th>Required</th><th>Description</th><th>Example</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>context_id</td><td>VARCHAR(20) PK</td><td>Yes</td><td>Unique context identifier</td><td>CTX001</td></tr>
+            <tr><td>service_id</td><td>VARCHAR(20) FK</td><td>Yes</td><td>Foreign key to services</td><td>SVC002</td></tr>
+            <tr><td>stakeholderType</td><td>VARCHAR(50) FK</td><td>Yes</td><td>FK to stakeholder_types</td><td>customer</td></tr>
+            <tr><td>stakeholderGroup</td><td>VARCHAR(200)</td><td>Yes</td><td>Specific group name</td><td>loan applicants</td></tr>
+            <tr><td>expectationStatement</td><td>TEXT</td><td>Yes</td><td>What stakeholder expects</td><td>Credit checks return valid scores</td></tr>
+            <tr><td>impactCategory</td><td>VARCHAR(50) FK</td><td>Yes</td><td>FK to impact_categories</td><td>customer_experience</td></tr>
+            <tr><td>impactDescription</td><td>TEXT</td><td>Yes</td><td>What breaks if expectation not met</td><td>Applicants unable to proceed</td></tr>
+            <tr><td>priority</td><td>VARCHAR(20) FK</td><td>Yes</td><td>FK to priority_levels</td><td>HIGH</td></tr>
+            <tr><td>created_at</td><td>TIMESTAMP</td><td>Yes</td><td>Creation timestamp</td><td>2025-10-01T00:00:00Z</td></tr>
+            <tr><td>created_by</td><td>VARCHAR(255)</td><td>Yes</td><td>Creator email</td><td>jane.doe@company.com</td></tr>
+            <tr><td>modified_at</td><td>TIMESTAMP</td><td>Yes</td><td>Last modification timestamp</td><td>2025-10-15T10:30:00Z</td></tr>
+            <tr><td>modified_by</td><td>VARCHAR(255)</td><td>Yes</td><td>Last modifier email</td><td>jane.doe@company.com</td></tr>
+            <tr><td>version</td><td>VARCHAR(20)</td><td>Yes</td><td>Semantic version</td><td>1.0</td></tr>
+        </tbody>
+    </table>
+
+    <p><strong>Pattern:</strong> "As [stakeholderType: stakeholderGroup], I expect [expectationStatement]. If broken: [impactCategory]: [impactDescription]."</p>
+
+    <h4 id="table-operational-metadata">operational_metadata - Lifecycle and Operations</h4>
+    <p><strong>Purpose:</strong> Track deployment, lifecycle, and operational procedures</p>
+    <p><strong>Relationship:</strong> 0..1 per service (optional, recommended for production)</p>
+    <p><strong>Fields:</strong> 14 (9 core + 5 audit)</p>
+
+    <table>
+        <thead>
+            <tr><th>Column</th><th>Type</th><th>Required</th><th>Description</th><th>Example</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>service_id</td><td>VARCHAR(20) PK-FK</td><td>Yes</td><td>Foreign key to services</td><td>SVC002</td></tr>
+            <tr><td>alertNotificationTargets</td><td>TEXT</td><td>No</td><td>Alert notification targets (JSON)</td><td>["pagerduty://team", "email://oncall@company.com"]</td></tr>
+            <tr><td>dashboardUrl</td><td>TEXT</td><td>No</td><td>Primary dashboard URL</td><td>https://grafana/d/credit-check</td></tr>
+            <tr><td>runbookUrl</td><td>TEXT</td><td>No</td><td>Incident response guide</td><td>https://wiki/credit-check-runbook</td></tr>
+            <tr><td>alertingConfigured</td><td>BOOLEAN</td><td>No</td><td>Alerting configured flag</td><td>true</td></tr>
+            <tr><td>lastValidated</td><td>DATE</td><td>No</td><td>Last validation date</td><td>2025-10-15</td></tr>
+            <tr><td>status</td><td>VARCHAR(30) FK</td><td>No</td><td>FK to lifecycle_statuses</td><td>active</td></tr>
+            <tr><td>reviewDate</td><td>DATE</td><td>No</td><td>Next review date</td><td>2025-12-01</td></tr>
+            <tr><td>notes</td><td>TEXT</td><td>No</td><td>Operational notes</td><td>Review alerting rules quarterly</td></tr>
+            <tr><td>created_at</td><td>TIMESTAMP</td><td>Yes</td><td>Creation timestamp</td><td>2025-10-01T00:00:00Z</td></tr>
+            <tr><td>created_by</td><td>VARCHAR(255)</td><td>Yes</td><td>Creator email</td><td>jane.doe@company.com</td></tr>
+            <tr><td>modified_at</td><td>TIMESTAMP</td><td>Yes</td><td>Last modification timestamp</td><td>2025-10-15T10:30:00Z</td></tr>
+            <tr><td>modified_by</td><td>VARCHAR(255)</td><td>Yes</td><td>Last modifier email</td><td>jane.doe@company.com</td></tr>
+            <tr><td>version</td><td>VARCHAR(20)</td><td>Yes</td><td>Semantic version</td><td>1.0</td></tr>
+        </tbody>
+    </table>
+</section>
+
+
+<section id="system-tables">
+    <h2 id="system-tables">6. System Tables (Tier 3 - No Audit)</h2>
+
+    <p>System-generated or external data. No audit fields (created_by, modified_by).</p>
+
+    <h4 id="table-signal-history">signal_history - Time-Series Signal Data</h4>
+    <p><strong>Purpose:</strong> Historical signal measurements for sparklines, trend analysis, and current signal status (use MAX(timestamp) for latest values)</p>
+    <p><strong>Relationship:</strong> N:1 → signal_definitions.signal_id (FK)</p>
+    <p><strong>Fields:</strong> 5</p>
+
+    <table>
+        <thead>
+            <tr><th>Column</th><th>Type</th><th>Description</th><th>Example</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>signal_id</td><td>TEXT PK-FK</td><td>FK to signal_definitions</td><td>SIG010</td></tr>
+            <tr><td>service_id</td><td>TEXT FK</td><td>FK to services (denormalized)</td><td>SVC002</td></tr>
+            <tr><td>timestamp</td><td>TEXT PK</td><td>Timestamp (composite PK with signal_id)</td><td>2025-10-17T08:00:00Z</td></tr>
+            <tr><td>status</td><td>TEXT</td><td>Health status [OK, WARNING, CRITICAL, UNKNOWN]</td><td>OK</td></tr>
+            <tr><td>measured_value</td><td>REAL</td><td>Current measurement</td><td>99.2</td></tr>
+        </tbody>
+    </table>
+
+    <p><strong>Time-Series Pattern:</strong> 192 points per signal (48 hours × 4 points/hour at 15-min intervals). Used for sparklines.</p>
+
+    <h4 id="table-incidents">incidents - Incident History</h4>
+    <p><strong>Purpose:</strong> Track incidents for dashboard annotations and trend analysis</p>
+    <p><strong>Relationship:</strong> 0..N per service (optional FK)</p>
+    <p><strong>Fields:</strong> 9</p>
+
+    <table>
+        <thead>
+            <tr><th>Column</th><th>Type</th><th>Description</th><th>Example</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>incident_id</td><td>VARCHAR(50) PK</td><td>Unique incident identifier</td><td>INC001</td></tr>
+            <tr><td>service_id</td><td>VARCHAR(20) FK</td><td>FK to services (optional for org-level incidents)</td><td>SVC002</td></tr>
+            <tr><td>severity</td><td>VARCHAR(20)</td><td>Severity level [SEV1, SEV2, SEV3, SEV4]</td><td>SEV2</td></tr>
+            <tr><td>status</td><td>VARCHAR(30)</td><td>Current status [ACTIVE, RESOLVED]</td><td>RESOLVED</td></tr>
+            <tr><td>title</td><td>TEXT</td><td>Incident title</td><td>Credit check service degradation</td></tr>
+            <tr><td>description</td><td>TEXT</td><td>Incident description</td><td>Response time degraded to 5s (target: 500ms)</td></tr>
+            <tr><td>created_at</td><td>TIMESTAMP</td><td>Incident start time</td><td>2025-10-14T10:15:00Z</td></tr>
+            <tr><td>resolved_at</td><td>TIMESTAMP</td><td>Incident resolution time</td><td>2025-10-14T10:45:00Z</td></tr>
+            <tr><td>assigned_to</td><td>VARCHAR(255)</td><td>Assigned engineer email</td><td>engineer@company.com</td></tr>
+        </tbody>
+    </table>
+
+    <h4 id="table-cmdb-applications">cmdb_applications - CMDB Applications</h4>
+    <p><strong>Purpose:</strong> Catalog of technical applications supporting business services</p>
+    <p><strong>Relationship:</strong> Independent table (linked via service_application_mappings)</p>
+    <p><strong>Fields:</strong> 9</p>
+
+    <table>
+        <thead>
+            <tr><th>Column</th><th>Type</th><th>Description</th><th>Example</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>app_id</td><td>VARCHAR(20) PK</td><td>Unique application identifier</td><td>APP004</td></tr>
+            <tr><td>app_name</td><td>VARCHAR(255)</td><td>Application name</td><td>equifax-api-gateway</td></tr>
+            <tr><td>description</td><td>TEXT</td><td>Application description</td><td>Gateway for Equifax credit bureau API</td></tr>
+            <tr><td>owner_team</td><td>VARCHAR(100)</td><td>Owning team</td><td>platform-integration-team</td></tr>
+            <tr><td>technical_owner</td><td>VARCHAR(255)</td><td>Technical owner email</td><td>tech.owner@company.com</td></tr>
+            <tr><td>business_owner</td><td>VARCHAR(255)</td><td>Business owner email</td><td>biz.owner@company.com</td></tr>
+            <tr><td>lifecycle_status</td><td>VARCHAR(30)</td><td>Lifecycle status [active, deprecated, sunset]</td><td>active</td></tr>
+            <tr><td>criticality</td><td>VARCHAR(20)</td><td>Business criticality [critical, high, medium, low]</td><td>critical</td></tr>
+            <tr><td>last_sync</td><td>TIMESTAMP</td><td>Last sync from CMDB</td><td>2025-10-20T12:00:00Z</td></tr>
+        </tbody>
+    </table>
+
+    <h4 id="table-service-application-mappings">service_application_mappings - Service to Application Mapping</h4>
+    <p><strong>Purpose:</strong> Links business services to supporting technical applications</p>
+    <p><strong>Relationship:</strong> N:M relationship (junction table)</p>
+    <p><strong>Fields:</strong> 3 (composite PK: service_id + app_id)</p>
+
+    <table>
+        <thead>
+            <tr><th>Column</th><th>Type</th><th>Description</th><th>Example</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>service_id</td><td>VARCHAR(20) PK-FK</td><td>FK to services (composite PK)</td><td>SVC002</td></tr>
+            <tr><td>app_id</td><td>VARCHAR(20) PK-FK</td><td>FK to cmdb_applications (composite PK)</td><td>APP004</td></tr>
+            <tr><td>relationship_type</td><td>VARCHAR(50)</td><td>How the app supports the service</td><td>primary-dependency</td></tr>
+        </tbody>
+    </table>
+
+    <h4 id="table-ui-field-metadata">ui_field_metadata - UI Field Metadata</h4>
+    <p><strong>Purpose:</strong> Field metadata for BOS onboarding UI (labels, help text, schema mappings)</p>
+    <p><strong>Relationship:</strong> Independent table (links to schema tables via TEXT references)</p>
+    <p><strong>Fields:</strong> 20</p>
+
+    <table>
+        <thead>
+            <tr><th>Column</th><th>Type</th><th>Description</th><th>Example</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>field_id</td><td>TEXT PK</td><td>Unique field identifier (matches HTML input id)</td><td>serviceName</td></tr>
+            <tr><td>screen_id</td><td>TEXT NOT NULL</td><td>Screen reference (e.g., 02-service-basics)</td><td>02-service-basics</td></tr>
+            <tr><td>screen_name</td><td>TEXT NOT NULL</td><td>Human-readable screen name</td><td>Service Basics</td></tr>
+            <tr><td>field_order</td><td>INTEGER NOT NULL</td><td>Display order within screen (1, 2, 3...)</td><td>1</td></tr>
+            <tr><td>ui_label</td><td>TEXT</td><td>Field label displayed in UI</td><td>Service Name</td></tr>
+            <tr><td>help_text</td><td>TEXT</td><td>Help text shown below field</td><td>What do you call this service?</td></tr>
+            <tr><td>example_text</td><td>TEXT</td><td>Example value for placeholder</td><td>e.g., Treasury Order Funding Service</td></tr>
+            <tr><td>field_type</td><td>TEXT NOT NULL</td><td>Input type [text, textarea, select, checkbox]</td><td>text</td></tr>
+            <tr><td>schema_table</td><td>TEXT</td><td>Target database table name</td><td>services</td></tr>
+            <tr><td>schema_field</td><td>TEXT</td><td>Target database column name</td><td>serviceName</td></tr>
+            <tr><td>schema_type</td><td>TEXT</td><td>Database column type</td><td>VARCHAR(255)</td></tr>
+            <tr><td>is_required</td><td>BOOLEAN NOT NULL</td><td>Field is required (1 = yes, 0 = no)</td><td>1</td></tr>
+            <tr><td>fk_reference_table</td><td>TEXT</td><td>For dropdowns: FK table reference</td><td>org_products</td></tr>
+            <tr><td>fk_reference_field</td><td>TEXT</td><td>For dropdowns: FK field name</td><td>org_id</td></tr>
+            <tr><td>fk_display_fields</td><td>TEXT</td><td>For dropdowns: Comma-separated display fields</td><td>l4_name,l3_name</td></tr>
+            <tr><td>is_auto_generated</td><td>BOOLEAN NOT NULL</td><td>Field auto-generated by system (1 = yes)</td><td>0</td></tr>
+            <tr><td>is_ui_only</td><td>BOOLEAN NOT NULL</td><td>Field for UI guidance only (not saved to DB)</td><td>0</td></tr>
+            <tr><td>notes</td><td>TEXT</td><td>Internal notes for developers</td><td>Auto-generated from serviceName</td></tr>
+            <tr><td>created_at</td><td>TIMESTAMP NOT NULL</td><td>Record creation timestamp</td><td>2025-11-11T14:30:00Z</td></tr>
+            <tr><td>modified_at</td><td>TIMESTAMP NOT NULL</td><td>Last modification timestamp</td><td>2025-11-11T14:30:00Z</td></tr>
+        </tbody>
+    </table>
+
+    <p><strong>Usage Pattern:</strong> Build system queries this table at build time to inject field labels, help text, and validation rules into HTML forms. Single source of truth for UI metadata (eliminates JSON-HTML drift).</p>
+
+    <p><strong>Workflow:</strong> Update field metadata using SQL UPDATE statements. Example: <code>UPDATE ui_field_metadata SET help_text = 'New help text' WHERE field_id = 'serviceName'</code>.</p>
+</section>
+
+
+<section id="validation-examples">
+    <h2 id="validation-examples">7. Validation Rules & Examples</h2>
+
+    <h3>Signal Type Dependencies</h3>
+    <pre><code>IF signal_definitions.signal_type = 'sli_ratio' THEN
+    query_numerator IS NOT NULL
+    AND query_denominator IS NOT NULL
+    AND query_numerator_description IS NOT NULL
+    AND query_denominator_description IS NOT NULL
+    AND sloTarget IS NOT NULL  -- SLO targets required for technical SLIs
+
+IF signal_definitions.signal_type = 'sli_threshold' THEN
+    query_numerator IS NOT NULL
+    AND threshold_operator IS NOT NULL
+    AND threshold_value IS NOT NULL
+    AND sloTarget IS NOT NULL  -- SLO targets required for technical SLIs
+
+IF signal_definitions.signal_type = 'business_impact' THEN
+    query_numerator IS NOT NULL
+    AND impact_category IS NOT NULL
+    AND impact_unit IS NOT NULL
+    AND sloTarget IS NULL  -- Business impacts measure consequences, not health (no SLO)</code></pre>
+
+    <h3>Cardinality Rules</h3>
+    <pre><code>-- Each service can have 0 to many signals (signals contain SLO targets):
+COUNT(signal_definitions WHERE service_id = X) BETWEEN 0 AND N
+-- Typical: 2-8 signals per service (mix of technical SLIs + business impacts)
+
+-- Each service can have 0 or 1 row in these tables:
+COUNT(operational_metadata WHERE service_id = X) BETWEEN 0 AND 1
+
+-- Each service can have 0 to many stakeholder context rows (unified table):
+COUNT(stakeholder_expectations_context WHERE service_id = X) BETWEEN 0 AND N
+-- Recommended: 3-5 context rows per service (forces prioritization for orientation purpose)
+-- Each row combines stakeholder expectation + impact in unified story format</code></pre>
+
+    <h3>Referential Integrity</h3>
+    <pre><code>-- All service_id foreign keys must exist in services table:
+signal_definitions.service_id IN (SELECT service_id FROM services)
+stakeholder_expectations_context.service_id IN (SELECT service_id FROM services)
+operational_metadata.service_id IN (SELECT service_id FROM services)
+service_application_mappings.service_id IN (SELECT service_id FROM services)
+
+-- All signals have signal_id primary key with FK to signal_history:
+signal_definitions.signal_id = signal_history.signal_id
+
+-- Reference table FK constraints (load reference tables FIRST):
+stakeholder_expectations_context.stakeholderType IN (SELECT code FROM stakeholder_types WHERE active=true)
+stakeholder_expectations_context.impactCategory IN (SELECT code FROM impact_categories WHERE active=true)
+stakeholder_expectations_context.priority IN (SELECT code FROM priority_levels WHERE active=true)
+operational_metadata.status IN (SELECT code FROM lifecycle_statuses WHERE active=true)
+
+-- Organizational products FK constraints:
+services.org_id IN (SELECT org_id FROM org_products) -- Services link to org_products (L4-L3 pairs)
+-- Each org_products row represents one L4 Product Line to L3 Product mapping
+-- Flattened structure: no self-referential FK, each row is one L4-L3 pair
+
+-- Time-series integrity:
+signal_history.signal_id IN (SELECT signal_id FROM signal_definitions)</code></pre>
+
+    <h3>Audit Field Requirements</h3>
+    <pre><code>-- Tier 1 (Core Tables) - REQUIRED audit fields:
+services: created_by, modified_by NOT NULL
+signal_definitions: created_by, modified_by NOT NULL
+stakeholder_expectations_context: created_by, modified_by NOT NULL
+operational_metadata: created_by, modified_by NOT NULL
+
+-- Tier 2 (Reference + Org) - REQUIRED audit fields:
+impact_categories, priority_levels, stakeholder_types, lifecycle_statuses: created_by, modified_by NOT NULL
+org_products: created_by, modified_by NOT NULL
+
+-- Tier 3 (System Tables) - NO audit fields:
+signal_history, incidents, cmdb_applications, service_application_mappings: NO audit overhead</code></pre>
+
+    <h3>Complete Service Example - SVC002</h3>
+
+    <p><strong>services.csv - 1 row:</strong></p>
+    <pre><code>service_id,serviceName,displayName,businessPurpose,tierLevel,businessUnit,tags,productOwner,org_id,app_id
+SVC002,credit-check-service,Credit Check Service,Validate borrower creditworthiness for loan approval,2,Home Lending,lending|credit|tier2,jane.doe@company.com,ORG005,APP004</code></pre>
+    <p><em>Note: org_id=ORG005 maps to "Home Lending" (L4) → "Home Originations" (L3) in org_products table.</em></p>
+
+    <p><strong>signal_definitions.csv - 6 signals (2 technical SLIs + 4 business impacts):</strong></p>
+    <pre><code>-- SIG010: Technical SLI (Ratio with SLO target)
+signal_id,service_id,signal_name,signal_display_name,signal_type,description_business,description_technical,data_source,query_numerator,query_denominator,sloTarget
+SIG010,SVC002,credit-check-success-rate,Credit Check Success Rate,sli_ratio,Credit check returns valid score,status='SUCCESS' AND score BETWEEN 300 AND 850,sql,COUNT(*) WHERE status='SUCCESS' AND score BETWEEN 300 AND 850,COUNT(*) WHERE request_type='CREDIT_CHECK',99.5
+
+-- SIG012: Technical SLI (Threshold with SLO target)
+signal_id,service_id,signal_name,signal_display_name,signal_type,description_technical,data_source,query_numerator,threshold_operator,threshold_value,sloTarget
+SIG012,SVC002,response-time,Response Time,sli_threshold,AVG(response_time_ms),sql,AVG(response_time_ms),<=,500,500
+
+-- SIG023: Business Impact (Customer experience, no SLO)
+signal_id,service_id,signal_name,signal_display_name,signal_type,description_business,description_technical,data_source,query_numerator,impact_category,impact_unit
+SIG023,SVC002,customers-blocked,Customers Blocked,business_impact,Count of loan applicants unable to proceed,COUNT(DISTINCT applicant_id) WHERE credit_score IS NULL,sql,COUNT(DISTINCT applicant_id) WHERE credit_score IS NULL AND status='BLOCKED',customer_experience,customers
+
+-- SIG024: Business Impact (Financial, no SLO)
+SIG024,SVC002,revenue-at-risk,Revenue at Risk,business_impact,Estimated loan revenue opportunity lost,SUM(loan_amount) WHERE status='BLOCKED',sql,SUM(loan_amount) WHERE status='BLOCKED',financial,USD
+
+-- SIG025: Business Impact (Legal/Risk, no SLO)
+SIG025,SVC002,compliance-cases,Compliance Cases,business_impact,Loan applications requiring manual review,COUNT(*) WHERE requires_manual_review=true,sql,COUNT(*) WHERE requires_manual_review=true,legal_risk,cases
+
+-- SIG026: Business Impact (Operational, no SLO)
+SIG026,SVC002,manual-processing,Manual Processing Volume,business_impact,Loan applications requiring manual credit check,COUNT(*) WHERE workaround='MANUAL',sql,COUNT(*) WHERE workaround='MANUAL',operational,applications</code></pre>
+
+    <p><strong>stakeholder_expectations_context.csv - 4 context rows:</strong></p>
+    <pre><code>service_id,context_id,stakeholderType,stakeholderGroup,expectationStatement,impactCategory,impactDescription,priority
+SVC002,CTX001,customer,loan applicants,Credit checks return valid scores within acceptable timeframe,customer_experience,Loan applicants unable to proceed with application,HIGH
+SVC002,CTX002,company,Home Lending,Credit checks complete successfully without failures,financial,Lost loan origination revenue opportunity,HIGH
+SVC002,CTX003,company,Risk Management,Credit checks maintain data quality for compliance,legal_risk,Loan applications requiring manual compliance review,MEDIUM
+SVC002,CTX004,internal,loan processors,Credit checks complete successfully without manual intervention,operational,Manual workarounds reduce processing capacity,MEDIUM</code></pre>
+
+    <p><strong>signal_history.csv - 960 rows (48h x 20 signals):</strong></p>
+    <pre><code>signal_id,service_id,timestamp,status,measured_value
+SIG010,SVC002,2025-10-14T14:30:00Z,OK,99.2
+SIG010,SVC002,2025-10-14T14:15:00Z,OK,99.3
+SIG010,SVC002,2025-10-14T14:00:00Z,OK,99.1
+...
+# 48 rows per signal for sparklines (192 total for SVC002)
+# Use MAX(timestamp) to get current values</code></pre>
+
+    <h3>Common Query Patterns</h3>
+
+    <p><strong>1. Get all signals for a service with current values:</strong></p>
+    <pre><code>SELECT
+    sd.signal_id,
+    sd.signal_name,
+    sd.signal_type,
+    sd.sloTarget,
+    sh.measured_value AS currentValue,
+    sh.status
+FROM signal_definitions sd
+LEFT JOIN signal_history sh ON sd.signal_id = sh.signal_id
+    AND sh.timestamp = (SELECT MAX(timestamp) FROM signal_history WHERE signal_id = sd.signal_id)
+WHERE sd.service_id = 'SVC002'
+ORDER BY sd.signal_type, sd.signal_name;</code></pre>
+
+    <p><strong>2. Get business impact signals only:</strong></p>
+    <pre><code>SELECT
+    sd.signal_id,
+    sd.signal_display_name,
+    sd.impact_category,
+    sd.impact_unit,
+    sh.measured_value AS currentValue
+FROM signal_definitions sd
+LEFT JOIN signal_history sh ON sd.signal_id = sh.signal_id
+    AND sh.timestamp = (SELECT MAX(timestamp) FROM signal_history WHERE signal_id = sd.signal_id)
+WHERE sd.service_id = 'SVC002'
+  AND sd.signal_type = 'business_impact';</code></pre>
+
+    <p><strong>3. Join stakeholder context to reference tables:</strong></p>
+    <pre><code>SELECT
+    s.displayName,
+    sec.stakeholderGroup,
+    st.name AS stakeholder_type_name,
+    sec.expectationStatement,
+    ic.name AS impact_category_name,
+    ic.display_color,
+    sec.impactDescription,
+    pl.name AS priority_name
+FROM stakeholder_expectations_context sec
+JOIN services s ON sec.service_id = s.service_id
+JOIN stakeholder_types st ON sec.stakeholderType = st.code
+JOIN impact_categories ic ON sec.impactCategory = ic.code
+JOIN priority_levels pl ON sec.priority = pl.code
+WHERE sec.service_id = 'SVC002';</code></pre>
+
+    <p><strong>4. Get L4/L3 names for services (single JOIN):</strong></p>
+    <pre><code>SELECT
+    s.service_id,
+    s.displayName,
+    op.l4_name,
+    op.l3_name,
+    op.org_id
+FROM services s
+JOIN org_products op ON s.org_id = op.org_id
+ORDER BY op.l4_name, op.l3_name;</code></pre>
+
+    <p><strong>5. Current signal status with 48-hour sparkline history:</strong></p>
+    <pre><code>WITH latest_signal_values AS (
+    SELECT sh.signal_id, sh.measured_value, sh.status
+    FROM signal_history sh
+    INNER JOIN (
+        SELECT signal_id, MAX(timestamp) as max_ts
+        FROM signal_history
+        GROUP BY signal_id
+    ) latest ON sh.signal_id = latest.signal_id AND sh.timestamp = latest.max_ts
+)
+SELECT
+    sd.signal_display_name,
+    lsv.measured_value AS currentValue,
+    lsv.status,
+    json_group_array(
+        json_object(
+            'timestamp', sh.timestamp,
+            'value', sh.measured_value,
+            'status', sh.status
+        ) ORDER BY sh.timestamp
+    ) AS sparkline_data
+FROM signal_definitions sd
+LEFT JOIN latest_signal_values lsv ON sd.signal_id = lsv.signal_id
+LEFT JOIN signal_history sh ON sd.signal_id = sh.signal_id
+WHERE sd.service_id = 'SVC002'
+  AND sh.timestamp >= datetime('now', '-48 hours')
+GROUP BY sd.signal_id;</code></pre>
+</section>
+
+    </div>
+
+    <!-- Mermaid.js for Diagrams -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'base',
+            themeVariables: {
+                primaryColor: '#D71E28',
+                primaryTextColor: '#111827',
+                primaryBorderColor: '#D1D5DB',
+                lineColor: '#6B7280',
+                secondaryColor: '#F3F4F6',
+                tertiaryColor: '#DBEAFE',
+                background: '#FFFFFF',
+                mainBkg: '#FFFFFF',
+                secondBkg: '#F9FAFB',
+                fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                fontSize: '18px'
+            }
+        });
+    </script>
+
+    <script>
+        // Navigation functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section, .page-hero');
+
+            // Smooth scroll on navigation click
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+
+                    if (targetSection) {
+                        targetSection.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+
+                        // Update URL hash
+                        history.pushState(null, null, targetId);
+                    }
+                });
+            });
+
+            // Intersection Observer for auto-highlighting current section
+            const observerOptions = {
+                root: null,
+                rootMargin: '-20% 0px -70% 0px',
+                threshold: 0
+            };
+
+            const observerCallback = (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const sectionId = entry.target.getAttribute('id');
+
+                        // Remove active class from all links
+                        navLinks.forEach(link => link.classList.remove('active'));
+
+                        // Add active class to corresponding link
+                        const activeLink = document.querySelector(`.nav-link[href="#${sectionId}"]`);
+                        if (activeLink) {
+                            activeLink.classList.add('active');
+                        }
+
+                        // Update URL hash without scrolling
+                        if (history.replaceState) {
+                            history.replaceState(null, null, `#${sectionId}`);
+                        }
+                    }
+                });
+            };
+
+            const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+            // Observe all sections
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            // Jump to section if URL has hash on page load
+            if (window.location.hash) {
+                setTimeout(() => {
+                    const targetSection = document.querySelector(window.location.hash);
+                    if (targetSection) {
+                        targetSection.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }, 100);
+            }
+
+            // Diagram Click-to-Open-in-New-Tab Functionality
+            const diagramContainers = document.querySelectorAll('.diagram-container');
+            diagramContainers.forEach(container => {
+                const mermaidDiv = container.querySelector('.mermaid');
+                const title = container.querySelector('h4');
+
+                if (mermaidDiv) {
+                    mermaidDiv.addEventListener('click', function() {
+                        // Get the SVG element
+                        const svg = mermaidDiv.querySelector('svg');
+                        if (!svg) return;
+
+                        // Clone SVG and set explicit large dimensions
+                        const svgClone = svg.cloneNode(true);
+
+                        // Get viewBox to calculate aspect ratio
+                        const viewBox = svgClone.getAttribute('viewBox');
+                        if (viewBox) {
+                            const [x, y, width, height] = viewBox.split(/\s+/).map(parseFloat);
+                            const aspectRatio = width / height;
+
+                            // Set explicit large width (3000px) and calculate height
+                            const targetWidth = 3000;
+                            const targetHeight = targetWidth / aspectRatio;
+
+                            svgClone.setAttribute('width', targetWidth + 'px');
+                            svgClone.setAttribute('height', targetHeight + 'px');
+                        } else {
+                            // Fallback if no viewBox
+                            svgClone.setAttribute('width', '2000px');
+                            svgClone.setAttribute('height', 'auto');
+                        }
+
+                        // Serialize the modified SVG
+                        const serializer = new XMLSerializer();
+                        const svgString = serializer.serializeToString(svgClone);
+
+                        // Create standalone HTML with the SVG
+                        const htmlContent = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${title ? title.textContent : 'BOS Diagram'}</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #F3F4F6;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        h1 {
+            color: #D71E28;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+        .diagram-wrapper {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
+            overflow-y: auto;
+        }
+        svg {
+            display: block;
+        }
+    </style>
+
+<!-- Generated: 2025-11-12 08:47:39  | Version: 3.5.1 | Page: bos-data-model-reference -->
+</head>
+<body>
+    ${title ? '<h1>' + title.textContent + '</h1>' : ''}
+    <div class="diagram-wrapper">
+        ${svgString}
+    </div>
+</body>
+</html>`;
+
+                        // Open in new tab
+                        const blob = new Blob([htmlContent], { type: 'text/html' });
+                        const url = URL.createObjectURL(blob);
+                        window.open(url, '_blank');
+
+                        // Clean up the URL after a short delay
+                        setTimeout(() => URL.revokeObjectURL(url), 100);
+                    });
+                }
+            });
+        });
+    </script>
+
+    <script>
+        
+    </script>
+</body>
+</html>
