@@ -1,0 +1,2451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FMEA Lightweight Adoption Package</title>
+  <style>
+    /* Enterprise CSS Variables */
+    :root {
+      --wf-red: #D71E28;
+      --wf-red-dark: #B91C1C;
+      --wf-gray-50: #F9FAFB;
+      --wf-gray-100: #F3F4F6;
+      --wf-gray-200: #E5E7EB;
+      --wf-gray-300: #D1D5DB;
+      --wf-gray-500: #6B7280;
+      --wf-gray-700: #374151;
+      --wf-gray-800: #1F2937;
+      --wf-gray-900: #111827;
+      --wf-white: #FFFFFF;
+      --wf-green: #10B981;
+      --wf-green-light: #D1FAE5;
+      --wf-amber: #F59E0B;
+      --wf-amber-light: #FEF3C7;
+      --wf-blue: #3B82F6;
+      --wf-blue-light: #DBEAFE;
+      --wf-red-light: #FEE2E2;
+    }
+
+    /* Reset */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* Base */
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--wf-gray-700);
+      background-color: var(--wf-gray-100);
+    }
+
+    /* Layout */
+    .app-container { display: flex; min-height: 100vh; }
+
+    /* Sidebar Navigation */
+    .sidebar {
+      width: 280px;
+      background: var(--wf-white);
+      border-right: 1px solid var(--wf-gray-200);
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      overflow-y: auto;
+      z-index: 100;
+    }
+
+    .sidebar-header {
+      background: var(--wf-red);
+      color: var(--wf-white);
+      padding: 20px;
+    }
+
+    .sidebar-header h1 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .sidebar-header p {
+      font-size: 12px;
+      opacity: 0.9;
+    }
+
+    .nav-section {
+      padding: 16px 0;
+      border-bottom: 1px solid var(--wf-gray-200);
+    }
+
+    .nav-section-title {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--wf-gray-500);
+      padding: 0 20px;
+      margin-bottom: 8px;
+    }
+
+    .nav-link {
+      display: block;
+      padding: 10px 20px;
+      color: var(--wf-gray-700);
+      text-decoration: none;
+      font-size: 14px;
+      transition: all 0.15s;
+      border-left: 3px solid transparent;
+    }
+
+    .nav-link:hover {
+      background: var(--wf-gray-50);
+      color: var(--wf-red);
+    }
+
+    .nav-link.active {
+      background: var(--wf-red-light);
+      color: var(--wf-red);
+      border-left-color: var(--wf-red);
+      font-weight: 600;
+    }
+
+    .nav-link-icon {
+      display: inline-block;
+      width: 20px;
+      margin-right: 8px;
+      text-align: center;
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      margin-left: 280px;
+      padding: 32px 48px;
+      max-width: 1000px;
+    }
+
+    /* Page Sections */
+    .page-section {
+      display: none;
+    }
+
+    .page-section.active {
+      display: block;
+    }
+
+    /* Typography */
+    h1 { font-size: 28px; font-weight: 700; color: var(--wf-gray-900); margin-bottom: 8px; }
+    h2 { font-size: 22px; font-weight: 700; color: var(--wf-gray-800); margin-top: 32px; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid var(--wf-red); }
+    h3 { font-size: 18px; font-weight: 600; color: var(--wf-red); margin-top: 24px; margin-bottom: 12px; }
+    h4 { font-size: 16px; font-weight: 600; color: var(--wf-gray-700); margin-top: 20px; margin-bottom: 10px; }
+    h5 { font-size: 14px; font-weight: 600; color: var(--wf-gray-700); margin-top: 16px; margin-bottom: 8px; }
+
+    p { margin-bottom: 16px; }
+
+    .subtitle {
+      font-size: 16px;
+      color: var(--wf-gray-500);
+      margin-bottom: 24px;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--wf-white);
+      border: 1px solid var(--wf-gray-200);
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      margin-bottom: 24px;
+    }
+
+    .card-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--wf-gray-200);
+    }
+
+    .card-header h3 {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .card-body {
+      padding: 20px;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    th {
+      background: var(--wf-gray-50);
+      color: var(--wf-red);
+      font-weight: 600;
+      text-align: left;
+      padding: 12px 16px;
+      border-bottom: 2px solid var(--wf-red);
+    }
+
+    td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--wf-gray-200);
+      vertical-align: top;
+    }
+
+    tr:hover td {
+      background: var(--wf-gray-50);
+    }
+
+    /* Lists */
+    ul, ol {
+      margin-bottom: 16px;
+      padding-left: 24px;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    ul ul, ol ol, ul ol, ol ul {
+      margin-top: 8px;
+      margin-bottom: 8px;
+    }
+
+    /* Callout Boxes */
+    .callout {
+      padding: 16px 20px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      border-left: 4px solid;
+    }
+
+    .callout-info {
+      background: var(--wf-blue-light);
+      border-color: var(--wf-blue);
+    }
+
+    .callout-success {
+      background: var(--wf-green-light);
+      border-color: var(--wf-green);
+    }
+
+    .callout-warning {
+      background: var(--wf-amber-light);
+      border-color: var(--wf-amber);
+    }
+
+    .callout-danger {
+      background: var(--wf-red-light);
+      border-color: var(--wf-red);
+    }
+
+    .callout strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .badge-green { background: var(--wf-green-light); color: #065F46; }
+    .badge-amber { background: var(--wf-amber-light); color: #92400E; }
+    .badge-red { background: var(--wf-red-light); color: #991B1B; }
+    .badge-blue { background: var(--wf-blue-light); color: #1E40AF; }
+    .badge-gray { background: var(--wf-gray-200); color: var(--wf-gray-700); }
+
+    /* Checklist */
+    .checklist {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .checklist li {
+      position: relative;
+      padding-left: 28px;
+    }
+
+    .checklist li::before {
+      content: "☐";
+      position: absolute;
+      left: 0;
+      color: var(--wf-gray-500);
+    }
+
+    /* Code/Monospace */
+    code {
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 13px;
+      background: var(--wf-gray-100);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    pre {
+      background: var(--wf-gray-800);
+      color: var(--wf-gray-100);
+      padding: 16px;
+      border-radius: 6px;
+      overflow-x: auto;
+      font-size: 13px;
+      margin-bottom: 20px;
+    }
+
+    pre code {
+      background: transparent;
+      padding: 0;
+      color: inherit;
+    }
+
+    /* Blockquote */
+    blockquote {
+      border-left: 4px solid var(--wf-gray-300);
+      padding-left: 20px;
+      margin: 20px 0;
+      color: var(--wf-gray-600);
+      font-style: italic;
+    }
+
+    /* HR */
+    hr {
+      border: none;
+      border-top: 1px solid var(--wf-gray-200);
+      margin: 32px 0;
+    }
+
+    /* Quick Reference Box */
+    .quick-ref {
+      background: linear-gradient(135deg, var(--wf-red) 0%, var(--wf-red-dark) 100%);
+      color: var(--wf-white);
+      padding: 24px;
+      border-radius: 8px;
+      margin-bottom: 24px;
+    }
+
+    .quick-ref h3 {
+      color: var(--wf-white);
+      margin-top: 0;
+    }
+
+    .quick-ref ul {
+      margin-bottom: 0;
+    }
+
+    .quick-ref li {
+      margin-bottom: 6px;
+    }
+
+    /* Two Column Layout */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    /* Print Styles */
+    @media print {
+      .sidebar { display: none; }
+      .main-content { margin-left: 0; padding: 20px; }
+      .page-section { display: block !important; page-break-before: always; }
+      .page-section:first-child { page-break-before: avoid; }
+      h2 { page-break-after: avoid; }
+      table { page-break-inside: avoid; }
+    }
+
+    /* Internal Links */
+    a.internal-link {
+      color: var(--wf-red);
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 1px solid var(--wf-red-light);
+      transition: all 0.15s;
+      cursor: pointer;
+    }
+
+    a.internal-link:hover {
+      color: var(--wf-red-dark);
+      border-bottom-color: var(--wf-red);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .sidebar { width: 100%; height: auto; position: relative; }
+      .main-content { margin-left: 0; padding: 20px; }
+      .two-col { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <h1>FMEA Package</h1>
+        <p>Lightweight Adoption Guide</p>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-title">Getting Started</div>
+        <a href="#start-here" class="nav-link active" onclick="showSection('start-here')">
+          <span class="nav-link-icon">🚀</span>Start Here
+        </a>
+        <a href="#fmea-guide" class="nav-link" onclick="showSection('fmea-guide')">
+          <span class="nav-link-icon">📖</span>FMEA Guide
+        </a>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-title">Session Resources</div>
+        <a href="#facilitation" class="nav-link" onclick="showSection('facilitation')">
+          <span class="nav-link-icon">🎯</span>Facilitation Scripts
+        </a>
+        <a href="#templates" class="nav-link" onclick="showSection('templates')">
+          <span class="nav-link-icon">📋</span>Templates
+        </a>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-title">Tracking & Reporting</div>
+        <a href="#action-tracking" class="nav-link" onclick="showSection('action-tracking')">
+          <span class="nav-link-icon">✅</span>Action Tracking
+        </a>
+        <a href="#executive-template" class="nav-link" onclick="showSection('executive-template')">
+          <span class="nav-link-icon">📊</span>Executive Template
+        </a>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-title">Program Management</div>
+        <a href="#program-guide" class="nav-link" onclick="showSection('program-guide')">
+          <span class="nav-link-icon">🏢</span>Program Guide
+        </a>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-title">Advanced Reference</div>
+        <a href="#full-methodology" class="nav-link" onclick="showSection('full-methodology')">
+          <span class="nav-link-icon">📚</span>Full Methodology
+        </a>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+      <!-- START HERE SECTION -->
+      <section id="start-here" class="page-section active">
+        <h1>FMEA: Start Here</h1>
+        <p class="subtitle">Your 1-page guide to getting started</p>
+
+        <div class="quick-ref">
+          <h3>What is FMEA?</h3>
+          <p>Failure Mode Effects Analysis is a structured <strong>2-hour session</strong> where your team identifies where your system could fail and takes action on the <strong>top 3 highest-risk items</strong>.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><h3>What You'll Produce</h3></div>
+          <div class="card-body">
+            <table>
+              <thead>
+                <tr><th>Output</th><th>Description</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>Top 3 Actions</strong></td><td>Specific improvements to reduce risk (alerts, runbooks, code changes)</td></tr>
+                <tr><td><strong>Owners & Deadlines</strong></td><td>Named person responsible, 30-day completion window</td></tr>
+                <tr><td><strong>Documented Failure Points</strong></td><td>Reference for faster incident response</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><h3>Time Commitment</h3></div>
+          <div class="card-body">
+            <table>
+              <thead>
+                <tr><th>Phase</th><th>Duration</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Preparation</td><td>30-60 minutes (review guides, gather data)</td></tr>
+                <tr><td>FMEA Session</td><td>2 hours (team meeting)</td></tr>
+                <tr><td>Action Implementation</td><td>Varies (depends on what you discover)</td></tr>
+                <tr><td>30-Day Follow-Up</td><td>15 minutes</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <h2>Where to Start</h2>
+
+        <h4>Step 1: Read the FMEA Guide</h4>
+        <p>Navigate to the <a class="internal-link" onclick="showSection('fmea-guide')">FMEA Guide</a> - Everything you need to run your first session</p>
+
+        <h4>Step 2: Get the Template</h4>
+        <p>Use the 8-column Rapid FMEA Template for your first FMEA. See the <a class="internal-link" onclick="showSection('templates')">Templates</a> section.</p>
+
+        <h4>Step 3: Schedule Your Session</h4>
+        <ul>
+          <li>Book 2 hours with your team (5-8 people)</li>
+          <li>Invite: Product Owner, Tech Lead, SRE/Ops, Developer</li>
+        </ul>
+
+        <h4>Step 4: Run the Session</h4>
+        <p>Follow the facilitation scripts if you need step-by-step support. See <a class="internal-link" onclick="showSection('facilitation')">Facilitation Scripts</a>.</p>
+
+        <div class="callout callout-warning">
+          <strong>Scope Guidance: Pick End-to-End Flows</strong>
+          Focus on flows across tech stacks, not single components:
+          <ul style="margin-top: 8px; margin-bottom: 0;">
+            <li>✅ Good: Client → API → Database → Response</li>
+            <li>✅ Good: Batch process → File transfer → Database → API exposure</li>
+            <li>❌ Avoid: Single API analysis or single process analysis</li>
+          </ul>
+        </div>
+
+        <h2>Quick Links</h2>
+        <table>
+          <thead>
+            <tr><th>Document</th><th>Use When</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><a class="internal-link" onclick="showSection('fmea-guide')">FMEA Guide</a></td><td>Running your first FMEA</td></tr>
+            <tr><td><a class="internal-link" onclick="showSection('facilitation')">Facilitation Scripts</a></td><td>Leading the session</td></tr>
+            <tr><td><a class="internal-link" onclick="showSection('action-tracking')">Action Tracking</a></td><td>Tracking your team's actions</td></tr>
+          </tbody>
+        </table>
+
+        <h2>Where to Get Help</h2>
+        <p><strong>Contact your PE</strong> for:</p>
+        <ul>
+          <li>Methodology questions</li>
+          <li>Edge cases not covered in the guides</li>
+          <li>Escalations or feedback</li>
+        </ul>
+      </section>
+
+      <!-- FMEA GUIDE SECTION -->
+      <section id="fmea-guide" class="page-section">
+        <h1>FMEA Guide</h1>
+        <p class="subtitle">Lightweight Adoption Package — Get started with Failure Mode Effects Analysis in one 2-hour session</p>
+
+        <h2>Part 1: What is FMEA? (The 3-Minute Overview)</h2>
+
+        <h3>What Problem Does It Solve?</h3>
+        <p>Most production incidents happen at <strong>predictable failure points</strong> that we could have identified and mitigated before they caused customer impact. FMEA is a structured 2-hour session where your team:</p>
+        <ol>
+          <li><strong>Identifies</strong> where your system could fail</li>
+          <li><strong>Scores</strong> the risk of each failure point</li>
+          <li><strong>Takes action</strong> on the top 3 highest-risk items</li>
+        </ol>
+
+        <h3>When to Conduct FMEA</h3>
+        <table>
+          <thead><tr><th>Trigger</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td><strong>New feature or application</strong></td><td>Identify risks before production (ideally part of architecture review)</td></tr>
+            <tr><td><strong>After high-severity incident</strong></td><td>Prevent recurrence, find related failure points</td></tr>
+            <tr><td><strong>Major infrastructure change</strong></td><td>Migration, new vendor, technology swap introduces new risks</td></tr>
+            <tr><td><strong>Periodic refresh</strong></td><td>Quarterly review for critical systems (RTO 0-4)</td></tr>
+            <tr><td><strong>New client/integration</strong></td><td>External access points create new failure scenarios</td></tr>
+          </tbody>
+        </table>
+
+        <h3>The Lightweight Approach</h3>
+        <ul>
+          <li>✅ <strong>Two flows per team</strong> this quarter (your choice of critical flows)</li>
+          <li>✅ <strong>2-hour facilitated session</strong> (not multi-day effort)</li>
+          <li>✅ <strong>Simple template</strong> (8 columns, not 17)</li>
+          <li>✅ <strong>Top 3 actions</strong> (30-day deadline for quick wins)</li>
+          <li>✅ <strong>Self-service</strong> with optional support</li>
+        </ul>
+
+        <div class="callout callout-warning">
+          <strong>Scope Guidance: Pick End-to-End Flows</strong>
+          Focus on flows across tech stacks, not single components:
+          <ul style="margin-top: 8px; margin-bottom: 0;">
+            <li>✅ Good: Client → API → Database → Response</li>
+            <li>✅ Good: Batch process → File transfer → Database → API exposure</li>
+            <li>❌ Avoid: Single API analysis or single process analysis</li>
+          </ul>
+        </div>
+
+        <h3>Expected Outcomes</h3>
+        <ul>
+          <li><strong>Tangible improvements delivered</strong> (alerts, runbooks, circuit breakers, contingencies)</li>
+          <li><strong>3-5 actionable items</strong> with owners and deadlines</li>
+          <li><strong>Documented failure points</strong> for faster incident response</li>
+          <li><strong>Team alignment</strong> on highest-risk areas</li>
+        </ul>
+
+        <h3>Why Improvements Matter (Outcome Mapping)</h3>
+        <table>
+          <thead><tr><th>Improvement Type</th><th>How It Drives Business Outcomes</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Alert</strong></td><td>Faster detection → Lower TTR</td></tr>
+            <tr><td><strong>Runbook</strong></td><td>Faster diagnosis → Lower TTR, less human intervention</td></tr>
+            <tr><td><strong>Circuit Breaker</strong></td><td>Auto-recovery → Fewer incidents, lower customer impact</td></tr>
+            <tr><td><strong>Contingency</strong></td><td>Manual fallback → Lower customer impact during outages</td></tr>
+            <tr><td><strong>Observability</strong></td><td>Faster root cause → Lower TTR</td></tr>
+          </tbody>
+        </table>
+
+        <hr>
+
+        <h2>Part 2: How to Run a 2-Hour FMEA Session</h2>
+
+        <h3>Before the Meeting (3 Days Prior)</h3>
+        <p><strong>Send to all attendees:</strong></p>
+        <ul class="checklist">
+          <li>Link to Rapid FMEA Template (Excel file)</li>
+          <li>Link to this FMEA Guide</li>
+          <li>Meeting agenda</li>
+          <li>Pre-work: "Come prepared to discuss: What are the 5 most likely failure points in [your flow]?"</li>
+        </ul>
+
+        <p><strong>Who to invite (5-8 people):</strong></p>
+        <ul>
+          <li>Product Owner (business context)</li>
+          <li>Tech Lead (architecture knowledge)</li>
+          <li>SRE/Operations (incident history)</li>
+          <li>Developer (code/integration details)</li>
+          <li>Optional: Vendor rep (if relevant to the flow)</li>
+        </ul>
+
+        <h3>During the Meeting (2 Hours)</h3>
+
+        <h4>Segment 1: Introduction (15 minutes)</h4>
+        <ul>
+          <li>Facilitator explains FMEA purpose and Rapid Template</li>
+          <li>Team identifies the <strong>scope</strong>: Which flow/system are we analyzing?</li>
+          <li>Draw simple diagram: "What are the major components in this flow?"</li>
+        </ul>
+
+        <h4>Segment 2: Identify Failure Points (60 minutes)</h4>
+        <p><strong>Key Focus Areas Checklist:</strong></p>
+        <table>
+          <thead><tr><th>Focus Area</th><th>What to Examine</th><th>Check</th></tr></thead>
+          <tbody>
+            <tr><td><strong>External Dependencies</strong></td><td>Vendor APIs, third-party services, downstream systems</td><td>☐</td></tr>
+            <tr><td><strong>Data Quality</strong></td><td>Validation errors, missing fields, format issues, corruption</td><td>☐</td></tr>
+            <tr><td><strong>Capacity/Scale</strong></td><td>Connection pools, queue depth, throughput limits</td><td>☐</td></tr>
+            <tr><td><strong>Timeouts & Latency</strong></td><td>API timeouts, slow queries, network delays</td><td>☐</td></tr>
+            <tr><td><strong>Batch Processing</strong></td><td>Job failures, partial completion, retry handling</td><td>☐</td></tr>
+            <tr><td><strong>Configuration</strong></td><td>Environment drift, feature flags, secrets expiration</td><td>☐</td></tr>
+            <tr><td><strong>Human Touchpoints</strong></td><td>Manual steps, approvals, handoffs between teams</td><td>☐</td></tr>
+            <tr><td><strong>Legacy Systems</strong></td><td>Monoliths, outdated tech, undocumented behavior</td><td>☐</td></tr>
+            <tr><td><strong>SME Concentration</strong></td><td>Single point of knowledge (what if key person is unavailable?)</td><td>☐</td></tr>
+            <tr><td><strong>Incident History</strong></td><td>Repeat failures, known weak points, past outages</td><td>☐</td></tr>
+            <tr><td><strong>Observability Gaps</strong></td><td>Missing logs, dashboards, alerts for this flow</td><td>☐</td></tr>
+            <tr><td><strong>Recovery Procedures</strong></td><td>Are failover/restart procedures documented and tested?</td><td>☐</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-info">
+          <strong>Facilitator tip:</strong> Walk through each focus area explicitly. Teams often miss Legacy Systems, SME Concentration, and Recovery Procedures.
+        </div>
+
+        <p>For each component in your flow, brainstorm:</p>
+        <ul>
+          <li><strong>"What could go wrong?"</strong> (API timeout, database connection failure, data corruption, etc.)</li>
+          <li><strong>"What's the customer impact?"</strong> (transaction fails, incorrect data, delay, etc.)</li>
+          <li><strong>"How likely is it?"</strong> (Rate 1-5: 1=rare, 5=happens frequently)</li>
+          <li><strong>"How bad would it be?"</strong> (Rate 1-5: 1=minor inconvenience, 5=critical outage)</li>
+        </ul>
+        <p><strong>Goal:</strong> Identify 10-15 potential failure points</p>
+
+        <h4>Segment 3: Prioritize Top 3 (30 minutes)</h4>
+        <ul>
+          <li>Review RPN (auto-calculated in template: Likelihood x Severity)</li>
+          <li>Sort by highest RPN</li>
+          <li>Select <strong>Top 3</strong> failure points to address</li>
+          <li>For each, define <strong>one action</strong> that would reduce the risk</li>
+          <li><strong>Assign owner and 30-day deadline</strong> for each action</li>
+        </ul>
+
+        <h3>Strategic Questions Checklist (Validate Your Top 3)</h3>
+        <table>
+          <thead><tr><th>Question</th><th>Why It Matters</th><th>Check</th></tr></thead>
+          <tbody>
+            <tr><td><strong>How will we detect this failure?</strong></td><td>No detection = no response</td><td>☐</td></tr>
+            <tr><td><strong>Who gets alerted and how quickly?</strong></td><td>Right people, right time</td><td>☐</td></tr>
+            <tr><td><strong>What's the documented response procedure?</strong></td><td>Runbook exists and is current</td><td>☐</td></tr>
+            <tr><td><strong>Who makes decisions if escalation needed?</strong></td><td>Decision authority is clear</td><td>☐</td></tr>
+            <tr><td><strong>What's the business contingency if tech fix fails?</strong></td><td>Manual workaround exists</td><td>☐</td></tr>
+            <tr><td><strong>Who are the stakeholders to notify?</strong></td><td>Communication plan exists</td><td>☐</td></tr>
+            <tr><td><strong>Has this failed before? What did we learn?</strong></td><td>Don't repeat past mistakes</td><td>☐</td></tr>
+            <tr><td><strong>Can we test/simulate this failure safely?</strong></td><td>Validate before production</td><td>☐</td></tr>
+            <tr><td><strong>What's the recovery time objective?</strong></td><td>Know the target</td><td>☐</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-danger">
+          <strong>Important:</strong> If you can't answer these for a Top 3 item, your action should address the gap.
+        </div>
+
+        <h4>Segment 4: Wrap-Up (15 minutes)</h4>
+        <ul>
+          <li>Summarize Top 3 actions and owners</li>
+          <li>Schedule 30-day follow-up (15 min check-in)</li>
+          <li>Facilitator saves completed template to shared folder</li>
+          <li><strong>Add actions to team backlog</strong></li>
+        </ul>
+
+        <hr>
+
+        <h2>Part 3: How to Fill Out the Template</h2>
+
+        <h3>Template Layout: 8 Columns (Simple & Fast)</h3>
+        <table>
+          <thead><tr><th>Column</th><th>Description</th><th>How to Fill It</th></tr></thead>
+          <tbody>
+            <tr><td><strong>A. Failure Point</strong></td><td>What could break/fail?</td><td>Be specific: "Hogan API timeout" not "API issues"</td></tr>
+            <tr><td><strong>B. Customer Impact</strong></td><td>What happens to customer?</td><td>Describe: "Transaction fails, customer sees error message"</td></tr>
+            <tr><td><strong>C. Likelihood (1-5)</strong></td><td>How often could this happen?</td><td>Use dropdown: 1=Rare to 5=Frequent</td></tr>
+            <tr><td><strong>D. Severity (1-5)</strong></td><td>How bad is the impact?</td><td>Use dropdown: 1=Minimal to 5=Critical</td></tr>
+            <tr><td><strong>E. RPN</strong></td><td>Risk Priority Number</td><td>AUTO-CALCULATED (Likelihood x Severity)</td></tr>
+            <tr><td><strong>F. Top Action</strong></td><td>What will reduce the risk?</td><td>Be specific: "Add BigPanda alert for timeout, update runbook"</td></tr>
+            <tr><td><strong>G. Owner</strong></td><td>Who's responsible?</td><td>Name, not team</td></tr>
+            <tr><td><strong>H. Due Date</strong></td><td>When will it be done?</td><td>30 days from today</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Scoring Guide</h3>
+        <div class="two-col">
+          <div>
+            <h4>Likelihood Scale (1-5)</h4>
+            <table>
+              <thead><tr><th>Score</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td><span class="badge badge-green">1</span></td><td><strong>Rare</strong> - Unlikely to occur</td></tr>
+                <tr><td><span class="badge badge-green">2</span></td><td><strong>Unlikely</strong> - Could occur occasionally</td></tr>
+                <tr><td><span class="badge badge-amber">3</span></td><td><strong>Occasional</strong> - Moderate chance</td></tr>
+                <tr><td><span class="badge badge-amber">4</span></td><td><strong>Likely</strong> - Happens regularly</td></tr>
+                <tr><td><span class="badge badge-red">5</span></td><td><strong>Frequent</strong> - Almost certain</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <h4>Severity Scale (1-5)</h4>
+            <table>
+              <thead><tr><th>Score</th><th>Customer Impact</th></tr></thead>
+              <tbody>
+                <tr><td><span class="badge badge-green">1</span></td><td><strong>Minimal</strong> - No customer impact</td></tr>
+                <tr><td><span class="badge badge-green">2</span></td><td><strong>Minor</strong> - Barely noticeable</td></tr>
+                <tr><td><span class="badge badge-amber">3</span></td><td><strong>Moderate</strong> - Temporary inconvenience</td></tr>
+                <tr><td><span class="badge badge-amber">4</span></td><td><strong>Major</strong> - Transaction fails</td></tr>
+                <tr><td><span class="badge badge-red">5</span></td><td><strong>Critical</strong> - Data loss, breach, or outage</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <h4>RPN Risk Levels</h4>
+        <table>
+          <thead><tr><th>RPN Range</th><th>Color</th><th>Priority</th></tr></thead>
+          <tbody>
+            <tr><td><strong>15-25</strong></td><td><span class="badge badge-red">🔴 Red</span></td><td><strong>HIGH RISK</strong> - Must address in 30 days</td></tr>
+            <tr><td><strong>10-14</strong></td><td><span class="badge badge-amber">🟡 Yellow</span></td><td><strong>MEDIUM RISK</strong> - Plan for next quarter</td></tr>
+            <tr><td><strong>1-9</strong></td><td><span class="badge badge-green">🟢 Green</span></td><td><strong>LOW RISK</strong> - Monitor, no immediate action</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Common Pitfalls to Avoid</h3>
+        <ul>
+          <li>❌ <strong>"Don't analyze everything"</strong> → Focus on 10-15 most critical failure points</li>
+          <li>❌ <strong>"Don't debate scores for 20 minutes"</strong> → If team is split between 3 and 4, pick the higher number and move on</li>
+          <li>❌ <strong>"Don't create vague actions"</strong> → "Improve monitoring" is bad; "Add Splunk alert for error code XYZ" is good</li>
+          <li>❌ <strong>"Don't set unrealistic timelines"</strong> → If action takes >30 days, break it into smaller first step</li>
+        </ul>
+
+        <hr>
+
+        <h2>Part 4: How to Pick Top 3 Actions (Prioritization Guide)</h2>
+
+        <h3>Step 1: Calculate RPN for All Failure Points</h3>
+        <p>The template auto-calculates: <strong>RPN = Likelihood × Severity</strong></p>
+
+        <h3>Step 2: Sort by RPN (Highest First)</h3>
+        <p>Focus on items with <strong>RPN ≥ 12</strong> (High risk)</p>
+
+        <h3>Step 3: Apply the "30-Day Filter"</h3>
+        <p>For each high-RPN item, ask:</p>
+        <ul>
+          <li><strong>"Can we make meaningful progress in 30 days?"</strong></li>
+          <li>✅ Yes → Include in Top 3</li>
+          <li>❌ No (requires 6 months/major investment) → Escalate separately, pick next item</li>
+        </ul>
+
+        <h3>Step 4: Balance Quick Wins vs. Impact</h3>
+        <p><strong>Ideal Top 3 mix:</strong></p>
+        <ol>
+          <li><strong>One "easy win"</strong> (low effort, fast implementation) → Builds momentum</li>
+          <li><strong>One "medium lift"</strong> (requires coordination, 2-3 weeks) → Demonstrates commitment</li>
+          <li><strong>One "high impact"</strong> (addresses biggest risk, may take full 30 days) → Delivers value</li>
+        </ol>
+
+        <h3>Examples of Good 30-Day Actions</h3>
+        <table>
+          <thead><tr><th>Failure Point</th><th>Good Action (30 days)</th><th>Poor Action (avoid)</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Database connection pool exhaustion</td>
+              <td>Add Grafana alert for pool utilization >80%, update runbook with scaling steps</td>
+              <td>Redesign entire connection pooling architecture</td>
+            </tr>
+            <tr>
+              <td>No business contingency for vendor outage</td>
+              <td>Document manual workaround, train 2 ops team members</td>
+              <td>Build fully automated backup vendor integration</td>
+            </tr>
+            <tr>
+              <td>Missing observability for batch job failures</td>
+              <td>Add Splunk alert for job failure, create ServiceNow auto-ticket</td>
+              <td>Implement full batch job orchestration platform</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <hr>
+
+        <h2>Part 5: 30-Day Follow-Up: Did It Work?</h2>
+
+        <h3>Success Criteria Validation</h3>
+        <table>
+          <thead><tr><th>Question</th><th>How to Validate</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Is the improvement deployed?</strong></td><td>Check production: alert exists, runbook published, code merged</td></tr>
+            <tr><td><strong>Is it working as designed?</strong></td><td>Alert fired correctly in test? Runbook followed by on-call?</td></tr>
+            <tr><td><strong>Has RPN decreased?</strong></td><td>Re-score: Is the failure less likely or less severe now?</td></tr>
+            <tr><td><strong>Evidence of value?</strong></td><td>Any incidents avoided, faster response, or issues caught?</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Re-Scoring RPN</h3>
+        <p>For each completed action:</p>
+        <ol>
+          <li>Re-assess <strong>Likelihood</strong> - Has the chance of failure decreased?</li>
+          <li>Re-assess <strong>Severity</strong> - Would impact be lower now? (e.g., faster detection)</li>
+          <li>Calculate new RPN</li>
+          <li>Document % reduction</li>
+        </ol>
+
+        <hr>
+
+        <h2>Quick Reference Card</h2>
+        <div class="quick-ref">
+          <h3>The 5-Step FMEA Process</h3>
+          <ol>
+            <li><strong>Scope:</strong> Pick one critical flow to analyze</li>
+            <li><strong>Identify:</strong> List 10-15 potential failure points</li>
+            <li><strong>Score:</strong> Rate likelihood (1-5) and severity (1-5) for each</li>
+            <li><strong>Prioritize:</strong> Focus on Top 3 highest RPN items</li>
+            <li><strong>Act:</strong> Define actions, assign owners, 30-day deadline</li>
+          </ol>
+        </div>
+
+        <h3>Success Formula</h3>
+        <ul>
+          <li>✅ Right people in the session (product, tech, SRE, dev)</li>
+          <li>✅ Focus on failure points, not theory</li>
+          <li>✅ Don't debate scores—go with team gut feel</li>
+          <li>✅ Be specific in actions (not "improve monitoring")</li>
+          <li>✅ Track progress and categorize improvements delivered</li>
+          <li>✅ Point at what exists now that didn't exist before</li>
+        </ul>
+
+        <h2>FAQs</h2>
+        <p><strong>Q: How long should this take?</strong><br>
+        A: Initial FMEA session: 2 hours. Template fill-out happens during the session.</p>
+
+        <p><strong>Q: What if we have more than 15 failure points?</strong><br>
+        A: Focus on the most critical 10-15. You can always do another FMEA on the same flow later.</p>
+
+        <p><strong>Q: What if all our RPNs are low (&lt;10)?</strong><br>
+        A: Great! That means you have good controls. Document it anyway—useful for incident response and onboarding.</p>
+
+        <p><strong>Q: What if our Top 3 action takes longer than 30 days?</strong><br>
+        A: Break it into a smaller first step. Example: Full circuit breaker implementation might take 60 days, but "Add retry logic for one API call" could be done in 30.</p>
+      </section>
+
+      <!-- FACILITATION SCRIPTS SECTION -->
+      <section id="facilitation" class="page-section">
+        <h1>FMEA Facilitation Guide</h1>
+        <p class="subtitle">For Session Leaders: How to Run a Successful 2-Hour FMEA</p>
+
+        <h2>Your Role as Facilitator</h2>
+        <p>Your job is to structure and guide the group through this analysis session. Keep the discussion moving, make sure everyone contributes, and help the group reach decisions.</p>
+
+        <p><strong>Your responsibilities:</strong></p>
+        <ul>
+          <li>✅ Keep the session on track (follow the agenda, timebox discussions)</li>
+          <li>✅ Make sure all voices are heard (bring in quieter people, don't let one person dominate)</li>
+          <li>✅ Keep scoring practical (push for clarity, move forward when good enough)</li>
+          <li>✅ Capture ideas in the template as the group discusses</li>
+          <li>✅ Focus on actionable outcomes (decisions people can commit to and deliver in 30 days)</li>
+        </ul>
+
+        <hr>
+
+        <h2>Pre-Session Checklist (3 Days Before)</h2>
+
+        <h3>1. Confirm Attendees (5-8 people)</h3>
+        <p><strong>Required roles:</strong></p>
+        <ul class="checklist">
+          <li>Product Owner (business context, customer impact)</li>
+          <li>Tech Lead (architecture, design decisions)</li>
+          <li>SRE/Operations (incident history, current alerting)</li>
+          <li>Developer (code, integrations, data flow)</li>
+        </ul>
+
+        <p><strong>Optional (invite if relevant):</strong></p>
+        <ul class="checklist">
+          <li>Vendor Representative (if third-party integration)</li>
+        </ul>
+
+        <div class="callout callout-warning">
+          <strong>Important:</strong> If you're missing product + tech + operations perspectives, the analysis will be incomplete. Reschedule to ensure you have all three dimensions represented.
+        </div>
+
+        <h3>2. Send Pre-Work Email (Template)</h3>
+        <p><strong>Subject:</strong> FMEA Session for [Flow Name] - Pre-Work Required</p>
+        <blockquote>
+          Hi team,<br><br>
+          We're conducting an FMEA (Failure Mode Effects Analysis) for <strong>[Flow Name]</strong> on <strong>[Date/Time]</strong>.<br><br>
+          <strong>What to bring to the session:</strong><br>
+          - List 3-5 potential failure points in this flow<br>
+          - Recent incident history<br>
+          - Current monitoring/alerting overview<br><br>
+          <strong>Meeting Agenda:</strong><br>
+          - 15 min: Intro & scope definition<br>
+          - 60 min: Identify & score failure points<br>
+          - 30 min: Prioritize top 3 actions<br>
+          - 15 min: Assign owners & wrap-up<br><br>
+          See you there!
+        </blockquote>
+
+        <h3>3. Prepare Materials</h3>
+        <ul class="checklist">
+          <li>Open Rapid FMEA Template (Excel file)</li>
+          <li>Have Quick Start Guide open for reference</li>
+          <li>Set up screen share (you'll capture notes in template during session)</li>
+          <li>Prepare simple diagram of the flow</li>
+        </ul>
+
+        <hr>
+
+        <h2>During the Session: Minute-by-Minute Guide</h2>
+
+        <h3>Minutes 0-15: Introduction & Scope Definition</h3>
+
+        <h4>Opening (5 min)</h4>
+        <p><strong>Your script:</strong></p>
+        <blockquote>
+          "Thanks everyone for joining. Our goal is to identify where [Flow Name] could realistically fail and commit to action on the highest-impact items. This is about continuous improvement, not blame—we're building on what the team already knows about this system."<br><br>
+          "By the end of this session, we'll have identified 10-15 potential failure points and committed to 3 concrete actions with owners and 30-day deadlines."
+        </blockquote>
+
+        <h4>Define Scope (10 min)</h4>
+        <div class="callout callout-info">
+          <strong>Key principle:</strong> Focus on end-to-end functional flows across tech stacks, not single components.
+        </div>
+
+        <p><strong>Questions to ask:</strong></p>
+        <ol>
+          <li>"What exactly are we analyzing today?"
+            <ul>
+              <li>✅ Good: "ACH payment processing flow, from customer submission to bank confirmation"</li>
+              <li>❌ Bad: "The entire payment platform" (too broad)</li>
+            </ul>
+          </li>
+          <li>"Can someone draw/show the flow at a high level?"</li>
+          <li>"What are the boundaries?" (in scope vs out of scope)</li>
+        </ol>
+
+        <h3>Minutes 15-75: Identify & Score Failure Points</h3>
+
+        <h4>Part A: Brainstorm Failure Points (30 min)</h4>
+        <p><strong>Your script:</strong></p>
+        <blockquote>
+          "Let's walk through the flow component by component. For each part, ask: What could go wrong? Don't filter—just capture ideas. We'll prioritize later."
+        </blockquote>
+
+        <p><strong>Facilitator technique: "Walk the Flow"</strong></p>
+        <ul>
+          <li>Point to first box in diagram: "What could fail here?"</li>
+          <li>Capture each idea as a row in template</li>
+          <li>Move to next component, repeat</li>
+        </ul>
+
+        <p><strong>Failure node focus areas:</strong></p>
+        <table>
+          <thead><tr><th>Focus Area</th><th>Prompt Questions</th></tr></thead>
+          <tbody>
+            <tr><td><strong>External Dependencies</strong></td><td>"What if [vendor/API] is down or slow?"</td></tr>
+            <tr><td><strong>Data Quality</strong></td><td>"What if data is malformed or missing?"</td></tr>
+            <tr><td><strong>Capacity/Scale</strong></td><td>"What breaks under 10x load?"</td></tr>
+            <tr><td><strong>Timeouts & Latency</strong></td><td>"What if response takes too long?"</td></tr>
+            <tr><td><strong>Batch Processing</strong></td><td>"What if the job fails halfway?"</td></tr>
+            <tr><td><strong>Configuration</strong></td><td>"What if config is wrong or stale?"</td></tr>
+            <tr><td><strong>Human Touchpoints</strong></td><td>"What manual steps could fail?"</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-success">
+          <strong>Facilitation tips:</strong>
+          <ul style="margin-bottom: 0;">
+            <li><strong>Push for clarity:</strong> If answers stay too generic, probe for specifics</li>
+            <li><strong>Draw out quieter voices:</strong> Direct questions to people who haven't spoken much</li>
+            <li><strong>Park tangents:</strong> Redirect solution debates: "Let's capture the failure point first"</li>
+          </ul>
+        </div>
+
+        <h4>Part B: Score Likelihood & Severity (30 min)</h4>
+        <p><strong>Your script:</strong></p>
+        <blockquote>
+          "Now we'll score each failure. Likelihood: How often could this happen (1-5)? Severity: How bad is customer impact (1-5)?"
+        </blockquote>
+
+        <p><strong>For EACH row:</strong></p>
+        <ol>
+          <li>Read the Failure Point and Customer Impact</li>
+          <li>Ask: "What's the likelihood?"</li>
+          <li>Team discusses briefly (2 min max)</li>
+          <li>Ask for consensus: "I'm hearing 3 and 4—let's say 4 to be safe. Anyone strongly disagree?"</li>
+          <li>Enter scores, RPN auto-calculates</li>
+        </ol>
+
+        <h3>Minutes 75-105: Prioritize Top 3 Actions</h3>
+
+        <h4>Part A: Sort & Identify High-Risk Items (5 min)</h4>
+        <ul>
+          <li>Click filter arrow on Column E (RPN)</li>
+          <li>Sort Z→A (highest first)</li>
+          <li>Highlight rows with RPN ≥ 12</li>
+        </ul>
+
+        <h4>Part B: Define Actions for Top 3 (20 min)</h4>
+        <p><strong>For each high-RPN item:</strong></p>
+        <ol>
+          <li>"What ONE action would reduce the risk here?" (5 min discussion)</li>
+          <li>"Can we complete it in 30 days?"
+            <ul>
+              <li>✅ Yes → Capture in template</li>
+              <li>❌ No → "What's a smaller first step we can do in 30 days?"</li>
+            </ul>
+          </li>
+        </ol>
+
+        <p><strong>Good action examples:</strong></p>
+        <ul>
+          <li>"Add Splunk alert: error code 500 from Hogan API, threshold >10/min"</li>
+          <li>"Update runbook section 3.2 with failover steps"</li>
+          <li>"Implement 3-retry logic with exponential backoff"</li>
+          <li>"Document manual workaround for vendor outage, train 2 ops team members"</li>
+        </ul>
+
+        <h3>Minutes 105-120: Wrap-Up & Next Steps</h3>
+
+        <h4>Summarize (5 min)</h4>
+        <p><strong>Your script:</strong></p>
+        <blockquote>
+          "Great session! Let's recap what we committed to:"<br><br>
+          - Flow analyzed: [Name]<br>
+          - Failure points identified: [Number]<br>
+          - Top 3 actions:<br>
+          &nbsp;&nbsp;1. [Action] - [Owner] - [Due Date]<br>
+          &nbsp;&nbsp;2. [Action] - [Owner] - [Due Date]<br>
+          &nbsp;&nbsp;3. [Action] - [Owner] - [Due Date]
+        </blockquote>
+
+        <h4>Assign Follow-Up Actions (5 min)</h4>
+        <ul class="checklist">
+          <li><strong>You (facilitator):</strong> Save completed FMEA to shared folder</li>
+          <li><strong>Tech Lead:</strong> Create 3 Jira tickets for actions</li>
+          <li><strong>All owners:</strong> Accept Jira tickets, add to sprint</li>
+          <li><strong>Product Owner:</strong> Schedule 30-day follow-up</li>
+        </ul>
+
+        <hr>
+
+        <h2>Scenarios You May Encounter</h2>
+
+        <h3>Scenario 1: "We don't have time for this"</h3>
+        <p><strong>Reframe:</strong></p>
+        <blockquote>
+          "I understand—everyone's busy. Consider this a 2-hour investment to surface and prevent incidents that typically cost 10+ hours to resolve."
+        </blockquote>
+
+        <h3>Scenario 2: "Everything feels high-risk"</h3>
+        <p><strong>Approach:</strong></p>
+        <blockquote>
+          "That's actually valuable insight. Let's apply a practical filter: Of these 10 high-risk items, which 3 can we meaningfully improve in the next 30 days?"
+        </blockquote>
+
+        <h3>Scenario 3: The group debates a score for 10+ minutes</h3>
+        <p><strong>Move forward:</strong></p>
+        <blockquote>
+          "I'm hearing good arguments on both sides. Let's go with the conservative [higher] score to be safe—we can adjust if actual incident data tells us otherwise."
+        </blockquote>
+
+        <h3>Scenario 4: Someone gets defensive</h3>
+        <p><strong>Redirect with respect:</strong></p>
+        <blockquote>
+          "I appreciate you owning this—your expertise is exactly why you're here. Every system has failure points; the best teams document them proactively so they can improve."
+        </blockquote>
+
+        <hr>
+
+        <h2>Facilitator Checklist</h2>
+
+        <h3>Before Session:</h3>
+        <ul class="checklist">
+          <li>Confirmed attendees (product, tech, ops)</li>
+          <li>Sent pre-work email (3 days prior)</li>
+          <li>Opened template, ready to screen share</li>
+          <li>Prepared flow diagram</li>
+        </ul>
+
+        <h3>During Session:</h3>
+        <ul class="checklist">
+          <li>Introduced FMEA purpose & agenda (15 min)</li>
+          <li>Defined scope & boundaries</li>
+          <li>Captured 10-15 failure points (30 min)</li>
+          <li>Described customer impact for each</li>
+          <li>Scored likelihood & severity (30 min)</li>
+          <li>Prioritized top 3 actions (20 min)</li>
+          <li>Assigned owners & 30-day deadlines</li>
+          <li>Summarized & scheduled 30-day follow-up (15 min)</li>
+        </ul>
+
+        <h3>After Session:</h3>
+        <ul class="checklist">
+          <li>Saved FMEA file to shared repository</li>
+          <li>Sent summary email with link</li>
+          <li>Shared completion status with PE/manager</li>
+          <li>Created calendar invite for 30-day check-in</li>
+        </ul>
+      </section>
+
+      <!-- TEMPLATES SECTION -->
+      <section id="templates" class="page-section">
+        <h1>FMEA Templates</h1>
+        <p class="subtitle">Ready-to-use templates for your FMEA sessions</p>
+
+        <div class="card">
+          <div class="card-header"><h3>Template Selection Guide</h3></div>
+          <div class="card-body">
+            <table>
+              <thead><tr><th>Template</th><th>When to Use</th><th>Columns</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>Rapid FMEA Template</strong></td>
+                  <td>Default for most teams - simple, fast</td>
+                  <td>8 columns</td>
+                </tr>
+                <tr>
+                  <td><strong>Comprehensive Template</strong></td>
+                  <td>Critical systems, regulatory requirements, chaos engineering</td>
+                  <td>21 fields</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <hr>
+
+        <h2>Rapid FMEA Template (8-Column)</h2>
+        <p><strong>Default template for most teams</strong></p>
+
+        <h3>Instructions</h3>
+        <p>Fill out one row for each failure point identified during your FMEA session. Aim for 10-15 failure points per flow analyzed.</p>
+
+        <h3>Template Structure</h3>
+        <div style="overflow-x: auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>Failure Point</th>
+                <th>Customer Impact</th>
+                <th>Likelihood (1-5)</th>
+                <th>Severity (1-5)</th>
+                <th>RPN</th>
+                <th>Top Action</th>
+                <th>Owner</th>
+                <th>Due Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><em>Specific component that could fail</em></td>
+                <td><em>What happens to customer</em></td>
+                <td><em>1=Rare, 5=Frequent</em></td>
+                <td><em>1=Minor, 5=Critical</em></td>
+                <td><em>Auto: L x S</em></td>
+                <td><em>One specific action</em></td>
+                <td><em>Name</em></td>
+                <td><em>30 days</em></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Column Definitions</h3>
+        <table>
+          <thead><tr><th>Column</th><th>What to Enter</th><th>Example</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Failure Point</strong></td><td>Specific component/step that could fail</td><td>"Vegan API call timeout"</td></tr>
+            <tr><td><strong>Customer Impact</strong></td><td>What happens to customer if this fails</td><td>"Account update fails, customer sees error"</td></tr>
+            <tr><td><strong>Likelihood</strong></td><td>How often could this happen? (1-5)</td><td>3</td></tr>
+            <tr><td><strong>Severity</strong></td><td>How bad is customer impact? (1-5)</td><td>4</td></tr>
+            <tr><td><strong>RPN</strong></td><td>Risk Priority Number (Likelihood x Severity)</td><td>12</td></tr>
+            <tr><td><strong>Top Action</strong></td><td>One thing to reduce risk</td><td>"Add BigPanda alert, update runbook"</td></tr>
+            <tr><td><strong>Owner</strong></td><td>Name of person responsible</td><td>"J. Smith"</td></tr>
+            <tr><td><strong>Due Date</strong></td><td>30 days from session</td><td>"2/22/2026"</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Scoring Scales</h3>
+        <div class="two-col">
+          <div>
+            <h4>Likelihood (1-5)</h4>
+            <ul>
+              <li><strong>1 - Rare:</strong> No history, highly unlikely</li>
+              <li><strong>2 - Unlikely:</strong> Happened once in past year</li>
+              <li><strong>3 - Occasional:</strong> Happens a few times per year</li>
+              <li><strong>4 - Likely:</strong> Happens monthly</li>
+              <li><strong>5 - Frequent:</strong> Happens weekly or more</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Severity (1-5)</h4>
+            <ul>
+              <li><strong>1 - Minimal:</strong> No customer impact, internal only</li>
+              <li><strong>2 - Minor:</strong> Customer notices, but can complete task</li>
+              <li><strong>3 - Moderate:</strong> Customer delayed/blocked temporarily</li>
+              <li><strong>4 - Major:</strong> Transaction fails, customer must retry/call support</li>
+              <li><strong>5 - Critical:</strong> Data loss, security breach, or complete service outage</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3>Example Completed Entry</h3>
+        <div style="overflow-x: auto;">
+          <table>
+            <thead>
+              <tr><th>Failure Point</th><th>Customer Impact</th><th>L</th><th>S</th><th>RPN</th><th>Top Action</th><th>Owner</th><th>Due</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Hogan API timeout >5sec</td>
+                <td>Account update fails, customer sees error, must retry</td>
+                <td>4</td>
+                <td>4</td>
+                <td><span class="badge badge-red">16</span></td>
+                <td>Add BigPanda alert for timeout, update runbook with failover steps</td>
+                <td>J. Smith</td>
+                <td>2/15/2026</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>After the Session</h3>
+        <ol>
+          <li>Sort by RPN (highest first)</li>
+          <li>Select <strong>Top 3</strong> items for action</li>
+          <li>Ensure each has an <strong>owner</strong> and <strong>30-day deadline</strong></li>
+          <li>Add actions to team backlog as high-priority items</li>
+          <li>Schedule 30-day follow-up meeting</li>
+        </ol>
+
+        <hr>
+
+        <h2>Comprehensive FMEA Template (21-Field)</h2>
+        <p><strong>For critical systems requiring deep analysis</strong></p>
+
+        <div class="callout callout-warning">
+          <strong>When to Use This Template</strong>
+          <ul style="margin-bottom: 0;">
+            <li>Analyzing critical/high-risk systems</li>
+            <li>Regulatory or compliance requirements demand detailed documentation</li>
+            <li>Planning chaos engineering initiatives</li>
+            <li>Deep analysis of complex failure scenarios</li>
+          </ul>
+        </div>
+
+        <h3>Template Fields</h3>
+        <p>For each node/component in your flow, document the following:</p>
+
+        <h4>Node Identification</h4>
+        <table>
+          <thead><tr><th>Field</th><th>Description</th><th>Example</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Node Description</strong></td><td>Application flow, database, server, network node</td><td>Kafka subscriber app xyz</td></tr>
+            <tr><td><strong>Functional Description</strong></td><td>Describe the function of the node</td><td>Processes incoming payment transactions</td></tr>
+          </tbody>
+        </table>
+
+        <h4>Risk Assessment</h4>
+        <table>
+          <thead><tr><th>Field</th><th>Description</th><th>Example</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Failure Scenarios</strong></td><td>Scenario when the node will fail</td><td>Partition rebalancing, broker failure</td></tr>
+            <tr><td><strong>Occurrence Rating</strong></td><td>1-10 scale (1 = likely, 10 = unlikely)</td><td>2</td></tr>
+            <tr><td><strong>Severity Rating</strong></td><td>1-10 scale (1 = low, 10 = high)</td><td>7</td></tr>
+            <tr><td><strong>Detection Rating</strong></td><td>1-10 scale (1 = likely detected, 10 = unlikely)</td><td>3</td></tr>
+            <tr><td><strong>Risk Priority Number</strong></td><td>RPN = Severity x Occurrence x Detection</td><td>42</td></tr>
+          </tbody>
+        </table>
+
+        <h4>Impact & Root Cause</h4>
+        <table>
+          <thead><tr><th>Field</th><th>Description</th><th>Example</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Impacts</strong></td><td>Customer/business impact</td><td>Missed transactions, delayed settlements</td></tr>
+            <tr><td><strong>Anticipated Root Causes</strong></td><td>Known causes</td><td>Unhealthy JVMs, network partitions</td></tr>
+          </tbody>
+        </table>
+
+        <h4>Detection & Monitoring</h4>
+        <table>
+          <thead><tr><th>Field</th><th>Description</th><th>Example</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Failure Diagnosis Procedure</strong></td><td>Steps to diagnose</td><td>Self-healing restart, check offset values</td></tr>
+            <tr><td><strong>Alerting Detection Mechanism</strong></td><td>How failures are detected</td><td>BigPanda alerts, ServiceNow tickets</td></tr>
+            <tr><td><strong>HealthCheck Dashboards</strong></td><td>Where to monitor</td><td>Splunk dashboard: payment-kafka-health</td></tr>
+            <tr><td><strong>Active Control Framework</strong></td><td>Ongoing monitoring</td><td>Monitor JVM health, TPS, consumer lag</td></tr>
+          </tbody>
+        </table>
+
+        <h4>Response & Recovery</h4>
+        <table>
+          <thead><tr><th>Field</th><th>Description</th><th>Example</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Business Contingencies Workflows</strong></td><td>Manual fallback procedures</td><td>Manual processing by call centers</td></tr>
+            <tr><td><strong>Playbook Task and Ownership</strong></td><td>Remediation task and responsible team</td><td>Restart consumer - Platform SRE</td></tr>
+          </tbody>
+        </table>
+
+        <h4>Stakeholders</h4>
+        <table>
+          <thead><tr><th>Field</th><th>Description</th><th>Example</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Stakeholders for Communication</strong></td><td>Who to notify during incidents</td><td>payment-ops-oncall@company.com</td></tr>
+            <tr><td><strong>Stakeholders for Key Decisions</strong></td><td>Who approves major recovery decisions</td><td>Product Owner, VP of Payments</td></tr>
+          </tbody>
+        </table>
+
+        <h4>Improvements</h4>
+        <table>
+          <thead><tr><th>Field</th><th>Description</th><th>Example</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Control Framework Deficiency</strong></td><td>Gaps in current monitoring</td><td>Missing real-time offset storage</td></tr>
+            <tr><td><strong>Chaos Testing Recommendation</strong></td><td>Chaos engineering scenarios</td><td>Simulate broker failure</td></tr>
+            <tr><td><strong>Recommended Actions</strong></td><td>Specific improvements</td><td>Add real-time offset to global cache</td></tr>
+            <tr><td><strong>Action Item Ownership</strong></td><td>Team responsible</td><td>App dev team</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Blank Template Form</h3>
+        <p>Copy and fill out for each node:</p>
+        <pre><code>## Node: [Name]
+
+### Node Identification
+- **Node Description:**
+- **Functional Description:**
+
+### Risk Assessment
+- **Failure Scenarios:**
+- **Occurrence Rating (1-10):**
+- **Severity Rating (1-10):**
+- **Detection Rating (1-10):**
+- **RPN (S x O x D):**
+
+### Impact & Root Cause
+- **Impacts:**
+- **Anticipated Root Causes:**
+
+### Detection & Monitoring
+- **Failure Diagnosis Procedure:**
+- **Alerting Detection Mechanism:**
+- **HealthCheck Dashboards:**
+- **Active Control Framework:**
+
+### Response & Recovery
+- **Business Contingencies Workflows:**
+- **Playbook Task and Ownership:**
+
+### Stakeholders
+- **Stakeholders for Communication:**
+- **Stakeholders for Key Decisions:**
+
+### Improvements
+- **Control Framework Deficiency:**
+- **Chaos Testing Recommendation:**
+- **Recommended Actions:**
+- **Action Item Ownership:**</code></pre>
+
+        <h3>RPN Calculation (3-Factor)</h3>
+        <p><strong>RPN = Severity x Occurrence x Detection</strong></p>
+
+        <table>
+          <thead><tr><th>Factor</th><th>Scale</th><th>Low End</th><th>High End</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Severity</strong></td><td>1-10</td><td>1 = Low severity</td><td>10 = High severity</td></tr>
+            <tr><td><strong>Occurrence</strong></td><td>1-10</td><td>1 = Likely to occur</td><td>10 = Unlikely</td></tr>
+            <tr><td><strong>Detection</strong></td><td>1-10</td><td>1 = Likely to be detected</td><td>10 = Unlikely to be detected</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-info">
+          <strong>Note:</strong> This differs from the Rapid FMEA template which uses 2-factor (Likelihood x Severity on 1-5 scales). The 3-factor approach adds "Detection" to capture how likely failures will be caught before customer impact.
+        </div>
+
+        <h3>After Analysis</h3>
+        <ol>
+          <li>Prioritize by RPN (highest first)</li>
+          <li>Identify Top 3 actions for immediate focus</li>
+          <li>Create Jira/backlog items for each recommended action</li>
+          <li>Schedule chaos testing for high-severity nodes</li>
+          <li>Update runbooks and dashboards based on findings</li>
+          <li>Plan 30-day follow-up to verify improvements</li>
+        </ol>
+      </section>
+
+      <!-- ACTION TRACKING SECTION -->
+      <section id="action-tracking" class="page-section">
+        <h1>FMEA Action Tracker</h1>
+        <p class="subtitle">Track progress on FMEA action items</p>
+
+        <div class="card">
+          <div class="card-header"><h3>Who This Guide Is For</h3></div>
+          <div class="card-body">
+            <table>
+              <thead><tr><th>Audience</th><th>What to Read</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Teams tracking their own actions</strong></td><td>Excel Template Structure, How to Update, Status Values</td></tr>
+                <tr><td><strong>Program leads tracking across teams</strong></td><td>Monthly Rollup section + <a class="internal-link" onclick="showSection('program-guide')">Program Guide</a></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <h2>Purpose</h2>
+        <p>This tracker helps you monitor:</p>
+        <ul>
+          <li>Which FMEA actions are in progress</li>
+          <li>Who owns each action</li>
+          <li>When items are due</li>
+          <li>What tangible improvements were delivered (alerts, runbooks, code changes, etc.)</li>
+          <li>Overall program outcomes</li>
+        </ul>
+
+        <h2>Tool Options</h2>
+        <table>
+          <thead><tr><th>Option</th><th>Best For</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Excel in SharePoint</strong></td><td>1-15 teams</td><td>Easy multi-user editing with Office 365</td></tr>
+            <tr><td><strong>Jira Dashboard</strong></td><td>16+ teams</td><td>Integration with existing backlog tracking</td></tr>
+            <tr><td><strong>ServiceNow Table</strong></td><td>Enterprise</td><td>Formal audit trail and executive reporting</td></tr>
+          </tbody>
+        </table>
+
+        <hr>
+
+        <h2>Excel Template Structure</h2>
+
+        <h3>Tab 1: Action Tracker</h3>
+        <table>
+          <thead><tr><th>Column</th><th>Description</th><th>Example</th></tr></thead>
+          <tbody>
+            <tr><td><strong>A. Team Name</strong></td><td>Platform team that owns the flow</td><td>Payments API Team</td></tr>
+            <tr><td><strong>B. Flow/System Name</strong></td><td>What was analyzed</td><td>ACH Payment Processing</td></tr>
+            <tr><td><strong>C. FMEA Date</strong></td><td>When session was completed</td><td>1/15/2026</td></tr>
+            <tr><td><strong>D. Failure Point</strong></td><td>Specific failure mode</td><td>Hogan API timeout >5sec</td></tr>
+            <tr><td><strong>E. Original RPN</strong></td><td>Risk score before action</td><td>16</td></tr>
+            <tr><td><strong>F. Action Description</strong></td><td>What will be done</td><td>Add BigPanda alert, update runbook</td></tr>
+            <tr><td><strong>G. Owner</strong></td><td>Person responsible</td><td>J. Smith</td></tr>
+            <tr><td><strong>H. Due Date</strong></td><td>30 days from FMEA date</td><td>2/15/2026</td></tr>
+            <tr><td><strong>I. Status</strong></td><td>Progress indicator</td><td>In Progress</td></tr>
+            <tr><td><strong>J. Completion Date</strong></td><td>When action was finished</td><td>2/10/2026</td></tr>
+            <tr><td><strong>K. New RPN</strong></td><td>Risk score after action</td><td>8</td></tr>
+            <tr><td><strong>L. % Reduction</strong></td><td>Impact measurement</td><td>50%</td></tr>
+            <tr><td><strong>M. Improvement Type</strong></td><td>Category of outcome</td><td>Alert</td></tr>
+            <tr><td><strong>N. Notes</strong></td><td>Additional context</td><td>Alert deployed 2/10</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Improvement Type Values (Column M)</h3>
+        <table>
+          <thead><tr><th>Value</th><th>Description</th><th>Examples</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Alert</strong></td><td>Monitoring/alerting improvement</td><td>BigPanda alert, Splunk alert</td></tr>
+            <tr><td><strong>Runbook</strong></td><td>Documentation improvement</td><td>Failover procedure, diagnosis steps</td></tr>
+            <tr><td><strong>Code Change</strong></td><td>Application code improvement</td><td>Retry logic, timeout config</td></tr>
+            <tr><td><strong>Circuit Breaker</strong></td><td>Resiliency pattern</td><td>Hystrix breaker, graceful degradation</td></tr>
+            <tr><td><strong>Observability</strong></td><td>Visibility improvement</td><td>Dashboard, logging, tracing</td></tr>
+            <tr><td><strong>Contingency</strong></td><td>Business process backup</td><td>Manual workaround, fallback</td></tr>
+            <tr><td><strong>Architecture</strong></td><td>Structural change</td><td>Redundancy, decomposition</td></tr>
+          </tbody>
+        </table>
+
+        <hr>
+
+        <h2>Status Values</h2>
+        <table>
+          <thead><tr><th>Status</th><th>Meaning</th><th>When to Use</th></tr></thead>
+          <tbody>
+            <tr><td><span class="badge badge-gray">Not Started</span></td><td>Action hasn't begun yet</td><td>Due date still >1 week away</td></tr>
+            <tr><td><span class="badge badge-amber">In Progress</span></td><td>Actively being worked</td><td>Owner has started implementation</td></tr>
+            <tr><td><span class="badge badge-red">Blocked</span></td><td>Cannot proceed</td><td>Waiting on another team, tool, or approval</td></tr>
+            <tr><td><span class="badge badge-green">Completed</span></td><td>Action finished and deployed</td><td>Implementation live in production</td></tr>
+            <tr><td><span class="badge badge-blue">Deferred</span></td><td>Postponed to future sprint</td><td>Couldn't complete in 30 days</td></tr>
+            <tr><td><span class="badge badge-gray">Cancelled</span></td><td>No longer needed</td><td>Risk mitigated by other means</td></tr>
+          </tbody>
+        </table>
+
+        <hr>
+
+        <h2>How to Update the Tracker</h2>
+
+        <h3>Weekly Update Process (5 minutes)</h3>
+        <p><strong>For each active action:</strong></p>
+        <ol>
+          <li>Check work tracking system or contact owner directly</li>
+          <li>Update Status column</li>
+          <li>If blocked, capture blocker in Notes column</li>
+          <li>If overdue, highlight and escalate</li>
+        </ol>
+
+        <h3>30-Day Follow-Up Process</h3>
+        <p><strong>After team completes 30-day check-in meeting:</strong></p>
+        <ol>
+          <li>Update Completion Date (Column J)</li>
+          <li>Enter New RPN (Column K) based on re-scoring</li>
+          <li>% Reduction auto-calculates (Column L)</li>
+          <li>Change Status to "Completed"</li>
+          <li>Copy row to "Completed Actions" tab for historical record</li>
+        </ol>
+
+        <hr>
+
+        <h2>Escalation Triggers</h2>
+
+        <h3>Escalate to Manager</h3>
+        <ul>
+          <li>Action is >7 days overdue with no status update</li>
+          <li>Action marked "Blocked" for >2 weeks</li>
+          <li>Owner says "Can't complete" without proposing alternative</li>
+        </ul>
+
+        <h3>Escalate to Leadership</h3>
+        <ul>
+          <li>High RPN action (≥18) blocked for >30 days</li>
+          <li>Multiple teams have similar blocked actions (systemic issue)</li>
+          <li>Action requires funding/staffing decision beyond team level</li>
+        </ul>
+
+        <hr>
+
+        <h2>Sample Entries</h2>
+        <div style="overflow-x: auto;">
+          <table>
+            <thead>
+              <tr><th>Team</th><th>Flow</th><th>Failure Point</th><th>RPN</th><th>Action</th><th>Owner</th><th>Status</th><th>% Red</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Payments API</td>
+                <td>ACH Processing</td>
+                <td>Hogan API timeout</td>
+                <td>16→8</td>
+                <td>Add BigPanda alert</td>
+                <td>J. Smith</td>
+                <td><span class="badge badge-green">Completed</span></td>
+                <td>50%</td>
+              </tr>
+              <tr>
+                <td>Deposits</td>
+                <td>Check Image</td>
+                <td>MongoDB pool exhaustion</td>
+                <td>15</td>
+                <td>Add Grafana alert</td>
+                <td>K. Jones</td>
+                <td><span class="badge badge-amber">In Progress</span></td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>Lending</td>
+                <td>Loan Origination</td>
+                <td>Kafka consumer lag</td>
+                <td>12</td>
+                <td>Add Splunk alert</td>
+                <td>L. Brown</td>
+                <td><span class="badge badge-red">Blocked</span></td>
+                <td>-</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- EXECUTIVE TEMPLATE SECTION -->
+      <section id="executive-template" class="page-section">
+        <h1>FMEA Executive Summary Template</h1>
+        <p class="subtitle">Monthly Leadership Update Format</p>
+
+        <h2>SLIDE 1: Executive Summary</h2>
+
+        <div class="card">
+          <div class="card-header"><h3>FMEA Program - [Month] Results</h3></div>
+          <div class="card-body">
+            <p><strong>Program Goal:</strong> Proactively identify and mitigate critical failure points before they cause customer-impacting incidents, using a lightweight 2-hour structured analysis.</p>
+
+            <h4>Outcomes Delivered This Month (What You Can Point At)</h4>
+            <table>
+              <thead><tr><th>Improvement Type</th><th>This Month</th><th>Cumulative</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Alerts deployed</strong></td><td>[#]</td><td>[#]</td></tr>
+                <tr><td><strong>Runbooks created/updated</strong></td><td>[#]</td><td>[#]</td></tr>
+                <tr><td><strong>Code improvements</strong></td><td>[#]</td><td>[#]</td></tr>
+                <tr><td><strong>Resiliency patterns</strong></td><td>[#]</td><td>[#]</td></tr>
+                <tr><td><strong>Observability improvements</strong></td><td>[#]</td><td>[#]</td></tr>
+                <tr><td><strong>Business contingencies</strong></td><td>[#]</td><td>[#]</td></tr>
+              </tbody>
+            </table>
+
+            <h4>Business Impact</h4>
+            <table>
+              <thead><tr><th>Metric</th><th>Value</th><th>Trend</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Incidents prevented</strong> (estimate)</td><td>[#]</td><td>📈 📉 ➡️</td></tr>
+                <tr><td><strong>TTR improvement</strong></td><td>[evidence]</td><td>📈 📉 ➡️</td></tr>
+                <tr><td><strong>Customer impact avoided</strong></td><td>[evidence]</td><td>📈 📉 ➡️</td></tr>
+              </tbody>
+            </table>
+
+            <h4>Participation (Secondary)</h4>
+            <table>
+              <thead><tr><th>Metric</th><th>This Month</th><th>YTD</th></tr></thead>
+              <tbody>
+                <tr><td>Teams engaged</td><td>[#] of [total]</td><td>[#]</td></tr>
+                <tr><td>Actions completed</td><td>[#] of [#] defined</td><td>[#]</td></tr>
+              </tbody>
+            </table>
+
+            <h4>Program Status: <span class="badge badge-green">🟢 Green</span></h4>
+            <p><strong>Rationale:</strong> [Brief explanation - what outcomes were delivered, business impact evidence, any blockers]</p>
+
+            <h4>Next Steps:</h4>
+            <ul>
+              <li>[Primary action item for next month]</li>
+              <li>[Secondary action item]</li>
+              <li>[Escalation needs, if any]</li>
+            </ul>
+          </div>
+        </div>
+
+        <hr>
+
+        <h2>SLIDE 2: Detailed Results & Top Wins</h2>
+
+        <h3>Outcomes by Team</h3>
+        <table>
+          <thead><tr><th>Team Name</th><th>Flow Analyzed</th><th>Improvements Delivered</th><th>Types</th></tr></thead>
+          <tbody>
+            <tr><td>[Team 1]</td><td>[Flow name]</td><td>[#]</td><td>Alert, Runbook</td></tr>
+            <tr><td>[Team 2]</td><td>[Flow name]</td><td>[#]</td><td>Code Change, Observability</td></tr>
+            <tr><td>[Team 3]</td><td>[Flow name]</td><td>[#]</td><td>Circuit Breaker, Contingency</td></tr>
+            <tr><td><strong>Total</strong></td><td><strong>[#]</strong></td><td><strong>[#]</strong></td><td></td></tr>
+          </tbody>
+        </table>
+
+        <h3>Top 3 Wins This Month</h3>
+
+        <div class="card">
+          <div class="card-header"><h3>🏆 Win #1: [Team Name] - [Flow Name]</h3></div>
+          <div class="card-body">
+            <p><strong>Failure Point Addressed:</strong> [Specific failure mode]</p>
+            <p><strong>Action Taken:</strong> [What they did]</p>
+            <p><strong>Impact:</strong></p>
+            <ul>
+              <li>RPN reduced from <strong>[X]</strong> to <strong>[Y]</strong> (<strong>[%] reduction</strong>)</li>
+              <li><strong>Business Value:</strong> [Incident prevented, faster recovery time, customer impact avoided]</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="callout callout-success">
+          <strong>Example:</strong> "Payments API team added BigPanda alert for Hogan timeout and updated runbook. Reduced RPN from 16 to 8 (50% reduction). This prevented 2 potential incidents in first week after deployment."
+        </div>
+
+        <hr>
+
+        <h2>SLIDE 3: Trends, Challenges & Path Forward</h2>
+
+        <h3>Challenges & Blockers</h3>
+        <table>
+          <thead><tr><th>Challenge</th><th>Impact</th><th>Mitigation Plan</th><th>Owner</th></tr></thead>
+          <tbody>
+            <tr><td>[Challenge 1]</td><td>[# actions blocked]</td><td>[What we're doing]</td><td>[Name]</td></tr>
+            <tr><td>[Challenge 2]</td><td>[# teams affected]</td><td>[What we're doing]</td><td>[Name]</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Path Forward - Next Month Goals</h3>
+        <h4>Outcome Goals</h4>
+        <ul class="checklist">
+          <li>Deliver [#] new alerts, [#] runbooks, [#] resiliency improvements</li>
+          <li>Engage [#] additional teams</li>
+        </ul>
+
+        <h4>High-Priority Escalations</h4>
+        <p><strong>Items needing executive decision/funding:</strong></p>
+        <ol>
+          <li>[High-impact improvement needing investment] - business impact: [description]</li>
+          <li>[Systemic issue affecting multiple teams] - [# teams], blocker: [description]</li>
+        </ol>
+
+        <h3>Program Maturity Roadmap</h3>
+        <table>
+          <thead><tr><th>Phase</th><th>Status</th><th>Target</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Lightweight Pilot</strong></td><td><span class="badge badge-green">Current</span></td><td>5-8 teams, self-service model</td></tr>
+            <tr><td><strong>Scaled Adoption</strong></td><td><span class="badge badge-blue">Next</span></td><td>All Platform teams, monthly review board</td></tr>
+            <tr><td><strong>Mature Program</strong></td><td><span class="badge badge-gray">Future</span></td><td>Embedded in SDLC, formal training</td></tr>
+          </tbody>
+        </table>
+
+        <hr>
+
+        <h2>How to Use This Template</h2>
+
+        <h3>Before Creating the Deck</h3>
+        <ol>
+          <li><strong>Pull data from <a class="internal-link" onclick="showSection('action-tracking')">Action Tracker</a>:</strong> Export outcomes by type, identify top 3 wins, list challenges/blockers</li>
+          <li><strong>Gather quotes:</strong> Ask participating teams for testimonials</li>
+          <li><strong>Update charts:</strong> Create/update trend charts</li>
+        </ol>
+
+        <h3>Customization Tips</h3>
+        <table>
+          <thead><tr><th>Use Case</th><th>Focus On</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Monthly Updates</strong></td><td>Slides 1-2 (summary and results)</td></tr>
+            <tr><td><strong>Quarterly Business Review</strong></td><td>All 3 slides + appendices, deeper trend analysis</td></tr>
+            <tr><td><strong>Leadership 1:1</strong></td><td>Slide 1 only + escalations/decisions needed</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Tone & Messaging</h3>
+        <div class="two-col">
+          <div class="callout callout-success">
+            <strong>✅ Do emphasize:</strong>
+            <ul style="margin-bottom: 0;">
+              <li>Tangible outcomes</li>
+              <li>Business impact</li>
+              <li>Team engagement</li>
+              <li>What exists now that didn't before</li>
+            </ul>
+          </div>
+          <div class="callout callout-danger">
+            <strong>❌ Don't:</strong>
+            <ul style="margin-bottom: 0;">
+              <li>Get too technical</li>
+              <li>Make excuses</li>
+              <li>Oversell progress</li>
+              <li>Hide problems</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROGRAM GUIDE SECTION -->
+      <section id="program-guide" class="page-section">
+        <h1>FMEA Program Guide</h1>
+        <p class="subtitle">For LOB/Program Leads Tracking Value Across Teams</p>
+
+        <h2>Purpose</h2>
+        <p>This guide is for leaders responsible for:</p>
+        <ul>
+          <li>Tracking FMEA adoption across multiple teams</li>
+          <li>Reporting aggregate outcomes to leadership</li>
+          <li>Making decisions about program expansion</li>
+          <li>Understanding governance structures as adoption scales</li>
+        </ul>
+
+        <div class="callout callout-info">
+          <strong>For teams executing FMEAs:</strong> See <a class="internal-link" onclick="showSection('start-here')">Start Here</a> or <a class="internal-link" onclick="showSection('fmea-guide')">FMEA Guide</a> sections instead.
+        </div>
+
+        <hr>
+
+        <h2>Current State: What Exists Now</h2>
+
+        <h3>PE Support Model (Decentralized)</h3>
+        <ul>
+          <li>PE community created and owns this methodology</li>
+          <li>Teams execute independently using guides and templates</li>
+          <li>Support is peer-driven: contact your PE for questions</li>
+          <li>No formal coordination structures required</li>
+        </ul>
+
+        <hr>
+
+        <h2>What is the Lightweight Approach?</h2>
+
+        <p><strong>The Lightweight Approach</strong> is designed to prove FMEA value with minimal overhead before full-scale adoption.</p>
+
+        <h3>Key Characteristics</h3>
+        <ul>
+          <li>✅ <strong>Self-service first:</strong> Teams use templates and guides independently</li>
+          <li>✅ <strong>Optional support:</strong> Facilitation available but not mandatory</li>
+          <li>✅ <strong>Lightweight governance:</strong> Minimal bureaucracy</li>
+          <li>✅ <strong>Focus on learning:</strong> Iterate based on pilot results</li>
+          <li>✅ <strong>30-day action cycles:</strong> Quick wins to build momentum</li>
+        </ul>
+
+        <h3>Not in Lightweight (deferred)</h3>
+        <ul>
+          <li>❌ Formal training and certification</li>
+          <li>❌ Approval gates and review boards</li>
+          <li>❌ Mandatory integration with all processes</li>
+          <li>❌ Complex tooling and automation</li>
+          <li>❌ Audit/compliance framework</li>
+        </ul>
+
+        <hr>
+
+        <h2>Example Pilot Timeline</h2>
+
+        <h3>Overview: Example 12-Week Structure</h3>
+
+        <table>
+          <thead><tr><th>Phase</th><th>Weeks</th><th>What Happens</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Pilot Kickoff</strong></td><td>1-2</td><td>Team onboarding, FMEA session scheduling</td></tr>
+            <tr><td><strong>FMEA Sessions</strong></td><td>3-6</td><td>Teams conduct 2-hour sessions, identify Top 3 actions</td></tr>
+            <tr><td><strong>Action Implementation</strong></td><td>7-10</td><td>Teams implement actions, 30-day follow-ups</td></tr>
+            <tr><td><strong>Decision Point</strong></td><td>12</td><td>Results evaluation and expansion decision</td></tr>
+          </tbody>
+        </table>
+
+        <hr>
+
+        <h2>What Success Looks Like</h2>
+
+        <h3>Tangible Improvements (What You Can Point At)</h3>
+        <p>The real measure of FMEA success is <strong>what exists now that didn't exist before</strong>:</p>
+
+        <table>
+          <thead><tr><th>Improvement Type</th><th>What It Looks Like</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Alerts deployed</strong></td><td>New BigPanda/Splunk alerts that catch failures before customer impact</td></tr>
+            <tr><td><strong>Runbooks created/updated</strong></td><td>Faster diagnosis steps, documented failover procedures</td></tr>
+            <tr><td><strong>Code improvements</strong></td><td>Retry logic, circuit breakers, timeout configuration</td></tr>
+            <tr><td><strong>Business contingencies</strong></td><td>Manual workarounds documented for vendor outages</td></tr>
+            <tr><td><strong>Observability improvements</strong></td><td>Dashboards showing end-to-end flow health</td></tr>
+            <tr><td><strong>Architecture patterns</strong></td><td>Graceful degradation, redundancy, auto-scaling</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-warning">
+          <strong>Key insight:</strong> Completing an FMEA and assigning RPN scores is not the finish line. The finish line is when you can demonstrate concrete improvements exist.
+        </div>
+
+        <h3>Business Impact (What Leadership Cares About)</h3>
+        <table>
+          <thead><tr><th>Outcome</th><th>Measured By</th></tr></thead>
+          <tbody>
+            <tr><td>Lower TTR (Time to Resolve)</td><td>Duration of incidents</td></tr>
+            <tr><td>Fewer incidents</td><td>Number of incidents</td></tr>
+            <tr><td>Lower customer impact</td><td>Number of customers impacted</td></tr>
+            <tr><td>Less human intervention</td><td>Time saved</td></tr>
+          </tbody>
+        </table>
+
+        <hr>
+
+        <h2>Pilot Investment & Expected ROI</h2>
+
+        <h3>Per-Team Time Investment</h3>
+        <table>
+          <thead><tr><th>Activity</th><th>Time</th></tr></thead>
+          <tbody>
+            <tr><td>FMEA session</td><td><strong>2 hours</strong></td></tr>
+            <tr><td>Preparation (review guides, gather data)</td><td>30 minutes - 1 hour</td></tr>
+            <tr><td>30-day follow-up meeting</td><td>15 minutes</td></tr>
+            <tr><td><strong>Session total</strong></td><td><strong>~3 hours per team</strong></td></tr>
+          </tbody>
+        </table>
+
+        <h3>Variable Time (Depends on Findings)</h3>
+        <table>
+          <thead><tr><th>Action Type</th><th>Typical Effort</th><th>Examples</th></tr></thead>
+          <tbody>
+            <tr><td>Quick win</td><td>2-4 hours</td><td>Alert creation, runbook update</td></tr>
+            <tr><td>Small project</td><td>1-3 days</td><td>Dashboard, retry logic</td></tr>
+            <tr><td>Medium project</td><td>1-2 weeks</td><td>Circuit breaker, graceful degradation</td></tr>
+            <tr><td>Large project</td><td>1+ months</td><td>Architecture change, new service</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Financial Cost</h3>
+        <ul>
+          <li>Tooling: <strong>$0</strong> (using existing Microsoft Teams, Outlook, Excel, SharePoint)</li>
+          <li>External resources: <strong>$0</strong></li>
+          <li><strong>Total: $0</strong></li>
+        </ul>
+
+        <h3>ROI Estimate</h3>
+        <ul>
+          <li><strong>Conservative:</strong> 1:1 (pilot pays for itself)</li>
+          <li><strong>Realistic:</strong> 2:1 to 3:1 (2-3x return on time invested)</li>
+          <li><strong>Optimistic:</strong> 5:1+ (if multiple high-impact incidents prevented)</li>
+        </ul>
+
+        <hr>
+
+        <h2>Roles & Responsibilities</h2>
+
+        <h3>PE Community (Methodology Owners)</h3>
+        <p><strong>Who:</strong> Principal Engineers who created and own this methodology</p>
+        <p><strong>Responsibilities:</strong></p>
+        <ul>
+          <li>Maintain the FMEA templates, guides, and documentation</li>
+          <li>Review feedback and iterate on the approach</li>
+          <li>Support escalations when teams need guidance</li>
+          <li>Decide when/how to advance to scaled adoption</li>
+        </ul>
+
+        <h3>Teams (Self-Executing)</h3>
+        <p><strong>Who:</strong> Any Platform team with critical flows</p>
+        <p><strong>Time Commitment:</strong> ~8 hours per FMEA cycle (6-week cycle)</p>
+
+        <table>
+          <thead><tr><th>Role</th><th>Responsibilities</th><th>Who</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Session Owner</strong></td><td>Schedules meeting, sends pre-work, ensures attendance</td><td>Tech Lead or Product Owner</td></tr>
+            <tr><td><strong>Scribe</strong></td><td>Fills out template during session</td><td>Developer or SRE</td></tr>
+            <tr><td><strong>Domain Experts</strong></td><td>Provide technical/business context, score likelihood/severity</td><td>All attendees</td></tr>
+            <tr><td><strong>Action Owners</strong></td><td>Commit to implementing Top 3 actions in 30 days</td><td>Assigned during session</td></tr>
+          </tbody>
+        </table>
+
+        <hr>
+
+        <h2>Pilot Success Criteria</h2>
+
+        <h3>Phase 1: Prove Value</h3>
+        <table>
+          <thead><tr><th>Category</th><th>Criteria</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Outcome Goals (Primary)</strong></td><td>
+              <ul style="margin: 0;">
+                <li>✅ Tangible improvements delivered across multiple categories</li>
+                <li>✅ 1+ documented incident prevented</li>
+                <li>✅ Teams can demonstrate "this exists because of FMEA"</li>
+              </ul>
+            </td></tr>
+            <tr><td><strong>Participation Goals (Secondary)</strong></td><td>
+              <ul style="margin: 0;">
+                <li>✅ 5+ teams engaged</li>
+                <li>✅ Teams successfully use guides and templates</li>
+              </ul>
+            </td></tr>
+            <tr><td><strong>Qualitative Feedback</strong></td><td>
+              <ul style="margin: 0;">
+                <li>✅ Teams report value in identifying blind spots</li>
+                <li>✅ Process was practical and not burdensome</li>
+              </ul>
+            </td></tr>
+          </tbody>
+        </table>
+
+        <h3>Phase 2: Scale & Iterate</h3>
+        <table>
+          <thead><tr><th>Category</th><th>Criteria</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Outcome Goals (Primary)</strong></td><td>
+              <ul style="margin: 0;">
+                <li>✅ Continued improvement delivery</li>
+                <li>✅ 3+ documented incidents prevented</li>
+                <li>✅ Growing portfolio of tangible improvements</li>
+              </ul>
+            </td></tr>
+            <tr><td><strong>Participation Goals (Secondary)</strong></td><td>
+              <ul style="margin: 0;">
+                <li>✅ 10+ teams engaged</li>
+                <li>✅ Peer facilitators emerging</li>
+              </ul>
+            </td></tr>
+          </tbody>
+        </table>
+
+        <hr>
+
+        <h2>Optional Enhancements for Future</h2>
+
+        <p>If the lightweight approach proves successful, consider these enhancements:</p>
+
+        <table>
+          <thead><tr><th>Enhancement</th><th>When Needed</th><th>What It Adds</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Program Coordinator Role</strong></td><td>10+ teams</td><td>Templates maintenance, communication, progress tracking</td></tr>
+            <tr><td><strong>Dedicated Dashboard</strong></td><td>Many teams, leadership visibility</td><td>Excel scorecard, PowerBI, or dedicated tool</td></tr>
+            <tr><td><strong>Formal Facilitator Training</strong></td><td>Standardizing approach</td><td>4-hour workshop, optional certification</td></tr>
+            <tr><td><strong>Architecture Review Integration</strong></td><td>Making FMEA standard practice</td><td>Required FMEA for new flows or significant redesigns</td></tr>
+            <tr><td><strong>Incident Response Integration</strong></td><td>Using FMEA to inform RCA</td><td>Check FMEA during incidents, close feedback loop</td></tr>
+          </tbody>
+        </table>
+
+        <hr>
+
+        <h2>FAQ for Program Leads</h2>
+
+        <p><strong>Q: Is FMEA mandatory in the lightweight approach?</strong><br>
+        A: No, this is a voluntary pilot. We're asking teams to try it and provide feedback.</p>
+
+        <p><strong>Q: Who decides which flow we analyze?</strong><br>
+        A: Each team decides. We recommend starting with critical flows or ones with repeat incidents.</p>
+
+        <p><strong>Q: What if teams don't have 2 hours for a session?</strong><br>
+        A: Consider splitting across 2 sessions, or doing a focused rapid FMEA (1 hour) on top 3 known failure points.</p>
+
+        <p><strong>Q: Can teams self-run or do they need a facilitator?</strong><br>
+        A: Either works! Follow the guides. A facilitator is helpful for first-time teams.</p>
+
+        <p><strong>Q: What if teams can't complete actions in 30 days?</strong><br>
+        A: Communicate early! Let your PE or manager know if blocked or timeline is unrealistic.</p>
+
+        <p><strong>Q: What happens to completed FMEAs?</strong><br>
+        A: Saved in shared folder for reference. Used to update runbooks and inform future architecture decisions.</p>
+      </section>
+
+      <!-- FULL METHODOLOGY REFERENCE SECTION -->
+      <section id="full-methodology" class="page-section">
+        <h1>Full FMEA Methodology Reference</h1>
+        <p class="subtitle">PE Reference Document — Complete FMEA theory, extended categories, and detailed examples</p>
+
+        <div class="callout callout-warning">
+          <strong>When to Use This Reference</strong>
+          <ul style="margin-bottom: 0;">
+            <li>RTO 0-4 critical systems requiring comprehensive analysis</li>
+            <li>Audit/compliance documentation requirements</li>
+            <li>Planning chaos engineering initiatives</li>
+            <li>Post-incident deep analysis</li>
+            <li>Teams wanting deeper FMEA methodology understanding</li>
+          </ul>
+        </div>
+
+        <hr>
+
+        <h2>FMEA Introduction</h2>
+        <p>FMEA methodology is used for identifying failure points in applications. By analyzing systemic points of failure in an application and/or data flow, it helps in risk reduction and helps application/platform teams in prioritizing focus on key failure nodes in case of production incidents.</p>
+
+        <p><strong>FMEA helps to:</strong></p>
+        <ul>
+          <li>Identify potential failure modes</li>
+          <li>Assess the effects of those failures</li>
+          <li>Determine the causes of failures</li>
+          <li>Prioritize risks</li>
+          <li>Recommend actions to mitigate risk(s)</li>
+        </ul>
+
+        <h3>Benefits of FMEA in Software Development</h3>
+        <ul>
+          <li>Improved software reliability and quality</li>
+          <li>Reduced development costs</li>
+          <li>Enhanced customer satisfaction</li>
+          <li>Better risk management</li>
+          <li>Increased understanding of the system</li>
+        </ul>
+
+        <p>Failure mode analysis can be applied at any level in application design: architecture, application, data, network and/or hardware component level.</p>
+
+        <hr>
+
+        <h2>Broader FMEA Classification</h2>
+        <table>
+          <thead><tr><th>Type</th><th>Focus</th></tr></thead>
+          <tbody>
+            <tr><td><strong>System FMEA</strong></td><td>Analyzes failures at the system level</td></tr>
+            <tr><td><strong>Design FMEA</strong></td><td>Analyzes failures related to the design of a product or system</td></tr>
+            <tr><td><strong>Process FMEA</strong></td><td>Analyzes failures related to manufacturing or business processes</td></tr>
+            <tr><td><strong>Service FMEA</strong></td><td>Analyzes failures related to service delivery</td></tr>
+          </tbody>
+        </table>
+
+        <hr>
+
+        <h2>Extended Key Focus Areas</h2>
+        <p>When developing a new feature/application or evaluating an existing application, focus on potential failure nodes in terms of business/data/architect and application flows. Factors determining the likelihood of failure:</p>
+
+        <div class="two-col">
+          <div>
+            <h4>Business & Impact</h4>
+            <ul>
+              <li>Business Impact</li>
+              <li>Customer Impact</li>
+              <li>NFR Implementation</li>
+              <li>Production Incident history</li>
+            </ul>
+
+            <h4>Technology & Architecture</h4>
+            <ul>
+              <li>Legacy Technologies / Monolithic applications</li>
+              <li>Connectivity protocols (REST, SOAP/XML)</li>
+              <li>ETL Jobs structure/dependencies</li>
+              <li>Data Models</li>
+              <li>Legacy tools (eg. Cron vs Autosys)</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Observability & Operations</h4>
+            <ul>
+              <li>Observability tools</li>
+              <li>Logging</li>
+              <li>Error Traceability</li>
+              <li>SME knowledge (single SME risk)</li>
+            </ul>
+
+            <h4>Resilience & Scale</h4>
+            <ul>
+              <li>Resiliency Pattern</li>
+              <li>Scalability (vertical vs horizontal)</li>
+              <li>Vendor Integration</li>
+            </ul>
+          </div>
+        </div>
+
+        <hr>
+
+        <h2>Strategic Questions Driving FMEA Evaluation</h2>
+        <p>Key questions to consider when performing FMEA on each node of the flow:</p>
+
+        <div class="two-col">
+          <div>
+            <h4>Detection & Response</h4>
+            <ul>
+              <li>Failure Detection Mechanism</li>
+              <li>Alert Generation</li>
+              <li>Alert Recipients</li>
+              <li>Documented Actionable Response for Alerts</li>
+              <li>Observability tools and/or health dashboard availability</li>
+              <li>Problem diagnosis prerequisites</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Impact & Stakeholders</h4>
+            <ul>
+              <li>Contingency planning</li>
+              <li>Functional Impact</li>
+              <li>Customer/End user Impact</li>
+              <li>Quantification of Impact</li>
+              <li>Key Decision Makers for Contingencies</li>
+              <li>Key Stakeholders for Impact awareness</li>
+            </ul>
+          </div>
+        </div>
+
+        <h4>Documentation & Communication</h4>
+        <ul>
+          <li>Actions undertaken by key stakeholders</li>
+          <li>Comprehensive response documented in playbook</li>
+          <li>Incident communication</li>
+          <li>Business continuity workflows</li>
+        </ul>
+
+        <div class="callout callout-info">
+          <strong>Note:</strong> These questions are not exhaustive, but baseline questions that need to be answered.
+        </div>
+
+        <hr>
+
+        <h2>FMEA Analysis: When to Conduct</h2>
+        <p>FMEA analysis should be done in the following situations:</p>
+        <table>
+          <thead><tr><th>Situation</th><th>Details</th></tr></thead>
+          <tbody>
+            <tr><td><strong>New feature/application</strong></td><td>Ideally part of Architecture review (PIR)</td></tr>
+            <tr><td><strong>High severity production incidents</strong></td><td>For RTO 0-4 applications</td></tr>
+            <tr><td><strong>Existing business critical flows</strong></td><td>For RTO 0-4 applications</td></tr>
+            <tr><td><strong>New Client Access</strong></td><td>To Microservices</td></tr>
+            <tr><td><strong>Major infrastructure changes</strong></td><td>Case-by-case basis (e.g., SFTP to MFN migration, mainframe to Redis)</td></tr>
+          </tbody>
+        </table>
+
+        <hr>
+
+        <h2>FMEA Process: Step-by-Step Guide</h2>
+
+        <h3>1. Define the Scope and Objectives</h3>
+        <p>Clearly define the scope of the FMEA. What system, process, or component will be analyzed? What are the objectives?</p>
+        <ul>
+          <li>List the functions of the system or process being analyzed. What is it supposed to do?</li>
+          <li>For each function, identify the ways in which it could fail. What could go wrong?</li>
+          <li>For each failure mode, identify the effects on the system, customer, and environment</li>
+          <li>Assign a severity rating (1-10 scale, where 1 is minor and 10 is catastrophic)</li>
+        </ul>
+
+        <h3>2. Identify Root Causes</h3>
+        <p>For each failure mode, identify the root causes. Why would this failure occur?</p>
+        <ul>
+          <li>Assign a likelihood rating (1-10 scale, where 1 is unlikely and 10 is very likely)</li>
+          <li>Identify any existing controls that prevent or detect failure modes</li>
+          <li>Assign a detection rating (1-10 scale, where 1 is easy to detect and 10 is very unlikely to detect)</li>
+        </ul>
+
+        <h3>3. Calculate RPN</h3>
+        <p>Calculate the Risk Priority Number for each failure mode:</p>
+        <div class="callout callout-danger">
+          <strong>RPN = Severity × Likelihood × Detection</strong>
+        </div>
+
+        <h3>4. Prioritize and Act</h3>
+        <p>Analyze the FMEA to identify the most critical priorities. Assign scores to each node, and focus on nodes with high scores.</p>
+
+        <hr>
+
+        <h2>Corrective Actions</h2>
+        <p>For critical failure modes (high RPN), corrective action is urgent. After identifying nodes with high scores, publish an action plan and take corrective action.</p>
+
+        <p><strong>Corrective actions can include:</strong></p>
+        <table>
+          <thead><tr><th>Action Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><strong>New alerts</strong></td><td>Set up alerts to notify the concerned team in case of failure</td></tr>
+            <tr><td><strong>DR/BCP Playbook</strong></td><td>Create a playbook for disaster recovery and business continuity</td></tr>
+            <tr><td><strong>Additional Runbooks</strong></td><td>Create runbooks for the operations team to handle failures</td></tr>
+            <tr><td><strong>Methodology Update</strong></td><td>Update the methodology to prevent future failures</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Validating the Risk and Solution</h3>
+        <p>After corrective action, validate the risk to ensure it has been reduced to an acceptable level.</p>
+
+        <hr>
+
+        <h2>Setting Up the FMEA Process</h2>
+        <table>
+          <thead><tr><th>Step</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Assemble the Team</strong></td><td>Gather a cross-functional team with diverse expertise related to the system or process being analyzed</td></tr>
+            <tr><td><strong>Define the Scope</strong></td><td>Clearly define what system, process, or component will be analyzed and what functions will be analyzed</td></tr>
+            <tr><td><strong>Document the Functions</strong></td><td>List all the functions of the software, system, or component being analyzed</td></tr>
+            <tr><td><strong>Document the FMEA</strong></td><td>Document the FMEA in a clear and concise manner using a template to ensure consistency</td></tr>
+          </tbody>
+        </table>
+
+        <hr>
+
+        <h2>Full FMEA Template (10-Column)</h2>
+        <p>The complete FMEA template structure:</p>
+        <div style="overflow-x: auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Environment</th>
+                <th>Function</th>
+                <th>Failure Mode</th>
+                <th>Effects of Failure</th>
+                <th>Severity (S)</th>
+                <th>Cause(s)</th>
+                <th>Occurrence (O)</th>
+                <th>Current Controls</th>
+                <th>Detection (D)</th>
+                <th>RPN</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><em>Row #</em></td>
+                <td><em>Batch/API/etc.</em></td>
+                <td><em>What it does</em></td>
+                <td><em>How it fails</em></td>
+                <td><em>Impact</em></td>
+                <td><em>1-10</em></td>
+                <td><em>Root cause</em></td>
+                <td><em>1-10</em></td>
+                <td><em>Controls in place</em></td>
+                <td><em>1-10</em></td>
+                <td><em>S×O×D</em></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Example: Data Replication Process FMEA</h3>
+        <div style="overflow-x: auto;">
+          <table>
+            <thead>
+              <tr><th>#</th><th>Env</th><th>Function</th><th>Failure Mode</th><th>Effects</th><th>S</th><th>Cause</th><th>O</th><th>Controls</th><th>D</th><th>RPN</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td>Batch</td><td>Load data into Staging</td><td>Malformed/Null File</td><td>Data unavailable for reconciliation</td><td>5</td><td>Data Source</td><td>2</td><td>None</td><td>4</td><td>40</td></tr>
+              <tr><td>2</td><td>Batch</td><td>Load data into Staging</td><td>File missing</td><td>Data unavailable for reconciliation</td><td>5</td><td>Data Source</td><td>2</td><td>Monitoring alert</td><td>4</td><td>40</td></tr>
+              <tr><td>3</td><td>Batch</td><td>Load data into Staging</td><td>File format change</td><td>File rejected, data unavailable</td><td>5</td><td>Data Source</td><td>1</td><td>None</td><td>5</td><td>25</td></tr>
+              <tr><td>4</td><td>Batch</td><td>Load data into Staging</td><td>Latency</td><td>Files not in sync or delayed</td><td>4</td><td>Upstream delay</td><td>1</td><td>File watcher</td><td>5</td><td>20</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Example: User Authentication Module FMEA</h3>
+        <div style="overflow-x: auto;">
+          <table>
+            <thead>
+              <tr><th>Component</th><th>Failure Mode</th><th>Effect</th><th>S</th><th>Cause</th><th>O</th><th>Controls</th><th>D</th><th>RPN</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>User Auth</td><td>Incorrect password</td><td>User cannot log in</td><td>6</td><td>User enters wrong password</td><td>3</td><td>Password validation, lockout</td><td>2</td><td>36</td></tr>
+              <tr><td>User Auth</td><td>System timeout</td><td>User cannot log in</td><td>7</td><td>Auth service timeout</td><td>2</td><td>Timeout handling, retry</td><td>4</td><td>56</td></tr>
+              <tr><td>User Auth</td><td>Account compromise</td><td>Unauthorized access</td><td>9</td><td>Weak password, phishing</td><td>4</td><td>Password complexity</td><td>4</td><td>144</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <hr>
+
+        <h2>Monitoring and Error Handling</h2>
+
+        <h3>Alerts and Severity Levels</h3>
+        <p>Define alert thresholds and severity levels to ensure timely detection and response to failures.</p>
+        <ul>
+          <li><strong>Severity 1:</strong> Critical issues requiring immediate attention</li>
+          <li><strong>Severity 2/3:</strong> Issues that can be addressed by Ops team, with escalation as needed</li>
+        </ul>
+
+        <h3>Example Alert Types</h3>
+        <div class="two-col">
+          <div>
+            <ul>
+              <li>Kafka Topic Space Alert</li>
+              <li>Kafka Consumer Lag</li>
+              <li>Kafka Consumer Errors</li>
+              <li>Flink Errors</li>
+              <li>Async API Response Errors</li>
+            </ul>
+          </div>
+          <div>
+            <ul>
+              <li>Consumer Group Lag</li>
+              <li>End-to-End Response Time Latency</li>
+              <li>CDC Latency</li>
+              <li>API Response Time Latency</li>
+              <li>Data Transformations Latency</li>
+            </ul>
+          </div>
+        </div>
+
+        <hr>
+
+        <h2>Tools and Techniques</h2>
+        <table>
+          <thead><tr><th>Technique</th><th>Use</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Brainstorming</strong></td><td>Generate ideas for potential failure modes and causes</td></tr>
+            <tr><td><strong>Fishbone Diagrams</strong></td><td>Visually represent the causes of a failure mode (Cause-and-Effect Diagrams)</td></tr>
+            <tr><td><strong>5 Whys</strong></td><td>Drill down to the root cause of a failure</td></tr>
+          </tbody>
+        </table>
+
+        <hr>
+
+        <h2>Documentation and Reporting</h2>
+
+        <h3>FMEA Report Structure</h3>
+        <ol>
+          <li>Introduction</li>
+          <li>Scope and Objectives</li>
+          <li>Methodology</li>
+          <li>FMEA Table</li>
+          <li>Recommended Actions</li>
+          <li>Conclusion</li>
+          <li>Appendices</li>
+        </ol>
+
+        <p><strong>Communicating FMEA Results:</strong> Share the FMEA results with relevant stakeholders and use them to inform decision-making.</p>
+
+        <hr>
+
+        <h2>Best Practices</h2>
+        <ul>
+          <li>Engage with multiple teams: Product, Application Architects, Platform, Data Modeling, etc.</li>
+          <li>Gather and compile statistics on multiple dimensions: tickets, SLA breaches, run times, response times, etc.</li>
+          <li>Perform periodic review of the FMEA process and update/add changes as necessary</li>
+          <li>Prioritize application nodes with high Risk Priority Assignment</li>
+          <li>Review and update the FMEA on a regular basis to ensure it remains relevant and accurate</li>
+          <li>Incorporate lessons learned from past failures into the FMEA process</li>
+        </ul>
+
+        <hr>
+
+        <h2>Success Criteria Examples</h2>
+        <p>Define success criteria to validate the effectiveness of the FMEA and implemented actions:</p>
+        <ul>
+          <li>Initial Data Load successful</li>
+          <li>Data counts match between source and destination systems</li>
+          <li>Full reconciliation process gives "exact match"</li>
+          <li>No errors in application logs</li>
+          <li>Cache match against database source count</li>
+          <li>Process changes do not impact SLAs</li>
+          <li>One full week with 100% accuracy in the data pipeline</li>
+          <li>Tabletop exercise: Sev 1 Alert detected, ensure notification process is followed</li>
+        </ul>
+
+        <hr>
+
+        <h2>Conclusion</h2>
+        <p>By following these steps and using the provided templates and examples, teams can effectively conduct FMEAs for software applications and improve their reliability, quality, and safety.</p>
+
+        <div class="callout callout-success">
+          <strong>Remember:</strong> FMEA is not a one-time activity. Regular review and updates ensure it remains relevant as your system evolves.
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    function showSection(sectionId) {
+      // Hide all sections
+      document.querySelectorAll('.page-section').forEach(section => {
+        section.classList.remove('active');
+      });
+
+      // Remove active class from all nav links
+      document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+      });
+
+      // Show the selected section
+      document.getElementById(sectionId).classList.add('active');
+
+      // Add active class to clicked nav link
+      document.querySelector(`[href="#${sectionId}"]`).classList.add('active');
+
+      // Scroll to top of content
+      document.querySelector('.main-content').scrollTop = 0;
+
+      return false;
+    }
+
+    // Handle URL hash on page load
+    window.addEventListener('load', function() {
+      const hash = window.location.hash.slice(1);
+      if (hash && document.getElementById(hash)) {
+        showSection(hash);
+      }
+    });
+  </script>
+</body>
+</html>
