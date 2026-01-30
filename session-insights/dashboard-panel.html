@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BOS Dashboard: GL Reconciliation</title>
+    <style>
+        :root {
+            --brand-red: #D71E28;
+            --bg-dark: #1a1a2e;
+            --bg-darker: #16162a;
+            --status-ok: #22c55e;
+            --status-warning: #f59e0b;
+            --status-critical: #ef4444;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+            --card-bg: #1e293b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-darker);
+            color: var(--text-primary);
+            padding: 24px;
+            min-height: 100vh;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .dashboard-title {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .dashboard-title h1 {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .tier-badge {
+            background: var(--brand-red);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--status-ok);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .status-text {
+            font-size: 14px;
+            color: var(--status-ok);
+            font-weight: 500;
+        }
+
+        .dashboard-meta {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-top: 16px;
+            margin-bottom: 8px;
+        }
+
+        .meta-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 16px;
+        }
+
+        .meta-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .meta-value {
+            font-size: 14px;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .meta-sub {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header h2 {
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        /* Signal Layers */
+        .signal-layer {
+            margin-bottom: 20px;
+        }
+
+        .signal-layer:last-child {
+            margin-bottom: 0;
+        }
+
+        .layer-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .layer-badge {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        .layer-1 { background: #3b82f6; }
+        .layer-2 { background: #8b5cf6; }
+        .layer-3 { background: #06b6d4; }
+        .layer-4 { background: var(--brand-red); }
+
+        .layer-title {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .signal-row {
+            display: grid;
+            grid-template-columns: auto 1fr auto auto auto;
+            gap: 16px;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .signal-row:last-child {
+            border-bottom: none;
+        }
+
+        .signal-status {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .signal-status.ok { background: var(--status-ok); }
+        .signal-status.warning { background: var(--status-warning); }
+        .signal-status.critical { background: var(--status-critical); }
+
+        .signal-name {
+            font-size: 14px;
+        }
+
+        .signal-value {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .signal-target {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .signal-slo {
+            font-size: 12px;
+            padding: 2px 8px;
+            background: rgba(34, 197, 94, 0.2);
+            color: var(--status-ok);
+            border-radius: 3px;
+        }
+
+        /* Impact Summary */
+        .impact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .impact-card {
+            padding: 16px;
+            border-radius: 6px;
+            border-left: 4px solid;
+        }
+
+        .impact-card.customer {
+            background: rgba(6, 182, 212, 0.1);
+            border-color: #06b6d4;
+        }
+
+        .impact-card.financial {
+            background: rgba(34, 197, 94, 0.1);
+            border-color: #22c55e;
+        }
+
+        .impact-card.legal {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: #ef4444;
+        }
+
+        .impact-card.operational {
+            background: rgba(249, 115, 22, 0.1);
+            border-color: #f97316;
+        }
+
+        .impact-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+
+        .impact-value {
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        /* Stakeholders */
+        .stakeholder-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .stakeholder-item {
+            padding: 12px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+
+        .stakeholder-name {
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .stakeholder-expectation {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .stakeholder-impact {
+            font-size: 11px;
+            color: #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+            padding: 4px 8px;
+            border-radius: 3px;
+            display: inline-block;
+        }
+
+        .priority-badge {
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 3px;
+            margin-left: 8px;
+        }
+
+        .priority-critical {
+            background: var(--brand-red);
+            color: white;
+        }
+
+        .priority-high {
+            background: #f97316;
+            color: white;
+        }
+
+        /* Operations Card */
+        .ops-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .ops-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .ops-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        .ops-value {
+            font-size: 13px;
+        }
+
+        .ops-value a {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+
+        /* Footer */
+        .dashboard-footer {
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+
+        /* Quick Stats */
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--status-ok);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-header">
+        <div class="dashboard-title">
+            <h1>Auto Lending GL Reconciliation</h1>
+            <span class="tier-badge">T1 CRITICAL</span>
+        </div>
+        <div class="status-indicator">
+            <span class="status-dot"></span>
+            <span class="status-text">ALL SYSTEMS OK</span>
+        </div>
+    </div>
+
+    <div class="dashboard-meta">
+        <div class="meta-card">
+            <div class="meta-label">Job</div>
+            <div class="meta-value">AL_REG_EOD_REPORT_GEN</div>
+        </div>
+        <div class="meta-card">
+            <div class="meta-label">Owner</div>
+            <div class="meta-value">Jane Doe</div>
+            <div class="meta-sub">VP, Auto Lending Ops</div>
+        </div>
+        <div class="meta-card">
+            <div class="meta-label">Last Run</div>
+            <div class="meta-value">5:42 AM EST</div>
+            <div class="meta-sub">Duration: 43 min</div>
+        </div>
+        <div class="meta-card">
+            <div class="meta-label">Records</div>
+            <div class="meta-value">124,892</div>
+        </div>
+    </div>
+
+    <div class="quick-stats">
+        <div class="stat-card">
+            <div class="stat-value">99.7%</div>
+            <div class="stat-label">SLA Attainment (30d)</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">43m</div>
+            <div class="stat-label">Avg Duration</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">$0</div>
+            <div class="stat-label">Penalty Exposure</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">0</div>
+            <div class="stat-label">Apps at Risk</div>
+        </div>
+    </div>
+
+    <div class="main-grid">
+        <div class="card">
+            <div class="card-header">
+                <h2>Signal Health (Four-Layer Model)</h2>
+            </div>
+            <div class="card-body">
+                <!-- Layer 1: System -->
+                <div class="signal-layer">
+                    <div class="layer-header">
+                        <span class="layer-badge layer-1">L1</span>
+                        <span class="layer-title">System Health</span>
+                    </div>
+                    <div class="signal-row">
+                        <span class="signal-status ok"></span>
+                        <span class="signal-name">Job Started On Schedule</span>
+                        <span class="signal-value">02:03 AM</span>
+                        <span class="signal-target">Target: ≤02:15</span>
+                        <span class="signal-slo">100%</span>
+                    </div>
+                </div>
+
+                <!-- Layer 2: Process -->
+                <div class="signal-layer">
+                    <div class="layer-header">
+                        <span class="layer-badge layer-2">L2</span>
+                        <span class="layer-title">Process Health</span>
+                    </div>
+                    <div class="signal-row">
+                        <span class="signal-status ok"></span>
+                        <span class="signal-name">Job Success Rate</span>
+                        <span class="signal-value">Success</span>
+                        <span class="signal-target">Target: 99%</span>
+                        <span class="signal-slo">99.7%</span>
+                    </div>
+                    <div class="signal-row">
+                        <span class="signal-status ok"></span>
+                        <span class="signal-name">Job Duration</span>
+                        <span class="signal-value">43 min</span>
+                        <span class="signal-target">Target: &lt;60 min</span>
+                        <span class="signal-slo">100%</span>
+                    </div>
+                </div>
+
+                <!-- Layer 3: Business -->
+                <div class="signal-layer">
+                    <div class="layer-header">
+                        <span class="layer-badge layer-3">L3</span>
+                        <span class="layer-title">Business Health</span>
+                    </div>
+                    <div class="signal-row">
+                        <span class="signal-status ok"></span>
+                        <span class="signal-name">Report Available by 6:00 AM</span>
+                        <span class="signal-value">05:42 AM</span>
+                        <span class="signal-target">SLA: 06:00 AM</span>
+                        <span class="signal-slo">99.7%</span>
+                    </div>
+                    <div class="signal-row">
+                        <span class="signal-status ok"></span>
+                        <span class="signal-name">Reconciliation Accuracy</span>
+                        <span class="signal-value">$0.00 var</span>
+                        <span class="signal-target">Target: ±$0.01</span>
+                        <span class="signal-slo">100%</span>
+                    </div>
+                </div>
+
+                <!-- Layer 4: Impact -->
+                <div class="signal-layer">
+                    <div class="layer-header">
+                        <span class="layer-badge layer-4">L4</span>
+                        <span class="layer-title">Business Impact</span>
+                    </div>
+                    <div class="signal-row">
+                        <span class="signal-status ok"></span>
+                        <span class="signal-name">Regulatory Penalty Exposure</span>
+                        <span class="signal-value">$0</span>
+                        <span class="signal-target">At Risk: $10K-$50K</span>
+                        <span></span>
+                    </div>
+                    <div class="signal-row">
+                        <span class="signal-status ok"></span>
+                        <span class="signal-name">Customer Applications at Risk</span>
+                        <span class="signal-value">0</span>
+                        <span class="signal-target">At Risk: ~2,400</span>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 24px;">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Business Impact (If Failed)</h2>
+                </div>
+                <div class="card-body">
+                    <div class="impact-grid">
+                        <div class="impact-card legal">
+                            <div class="impact-label">Legal/Regulatory</div>
+                            <div class="impact-value">$10K-$50K Fed Reg D penalties</div>
+                        </div>
+                        <div class="impact-card financial">
+                            <div class="impact-label">Financial</div>
+                            <div class="impact-value">$125K quarterly adjustments</div>
+                        </div>
+                        <div class="impact-card customer">
+                            <div class="impact-label">Customer</div>
+                            <div class="impact-value">~2,400 apps frozen</div>
+                        </div>
+                        <div class="impact-card operational">
+                            <div class="impact-label">Operational</div>
+                            <div class="impact-value">2.5 hrs unplanned work</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2>Stakeholders</h2>
+                </div>
+                <div class="card-body">
+                    <div class="stakeholder-list">
+                        <div class="stakeholder-item">
+                            <div class="stakeholder-name">
+                                Federal Reserve Regulators
+                                <span class="priority-badge priority-critical">CRITICAL</span>
+                            </div>
+                            <div class="stakeholder-expectation">Report by 6:00 AM EST daily</div>
+                            <div class="stakeholder-impact">Fed Reg D non-compliance</div>
+                        </div>
+                        <div class="stakeholder-item">
+                            <div class="stakeholder-name">
+                                VP Auto Lending Operations
+                                <span class="priority-badge priority-critical">CRITICAL</span>
+                            </div>
+                            <div class="stakeholder-expectation">Reliable execution, proactive alerts</div>
+                            <div class="stakeholder-impact">Executive notification required</div>
+                        </div>
+                        <div class="stakeholder-item">
+                            <div class="stakeholder-name">
+                                Finance Team
+                                <span class="priority-badge priority-high">HIGH</span>
+                            </div>
+                            <div class="stakeholder-expectation">$0.01 reconciliation tolerance</div>
+                            <div class="stakeholder-impact">SOX remediation costs</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2>Operations</h2>
+                </div>
+                <div class="card-body">
+                    <div class="ops-grid">
+                        <div class="ops-item">
+                            <span class="ops-label">Support Team</span>
+                            <span class="ops-value">FinTech_Data_Platform</span>
+                        </div>
+                        <div class="ops-item">
+                            <span class="ops-label">PagerDuty</span>
+                            <span class="ops-value">PD_SERVICE_XYZ</span>
+                        </div>
+                        <div class="ops-item">
+                            <span class="ops-label">Runbook</span>
+                            <span class="ops-value"><a href="#">KB0012345</a></span>
+                        </div>
+                        <div class="ops-item">
+                            <span class="ops-label">Last Certified</span>
+                            <span class="ops-value">2025-10-15</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-footer">
+        <span>BOS v3.7 | Generated from structured metadata</span>
+        <span>Metadata-as-Code Pilot | 2026-01-09</span>
+    </div>
+</body>
+</html>
