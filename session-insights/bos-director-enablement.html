@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business Observability — Director Enablement</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { background: #F4F5F7; }
+body {
+  font-family: Arial, sans-serif;
+  color: #1C2833;
+  line-height: 1.6;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 24px 80px 24px;
+}
+
+/* === HEADER === */
+.doc-header {
+  border-bottom: 4px solid #D71E28;
+  padding-bottom: 20px;
+  margin-bottom: 40px;
+}
+.doc-header h1 {
+  font-size: 32px;
+  font-weight: bold;
+  color: #1C2833;
+  margin-bottom: 6px;
+}
+.doc-header .subtitle {
+  font-size: 16px;
+  color: #5D6D7E;
+}
+.doc-header .meta {
+  font-size: 12px;
+  color: #95A5A6;
+  margin-top: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* === SECTIONS === */
+section {
+  margin-bottom: 48px;
+}
+section h2 {
+  font-size: 22px;
+  font-weight: bold;
+  color: #1C2833;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #E5E7EB;
+}
+section h3 {
+  font-size: 16px;
+  font-weight: bold;
+  color: #2E4053;
+  margin: 20px 0 10px 0;
+}
+p {
+  margin-bottom: 14px;
+  font-size: 15px;
+  color: #2E4053;
+}
+p.lead {
+  font-size: 16px;
+  color: #1C2833;
+  line-height: 1.7;
+}
+
+/* === CALLOUT BOXES === */
+.callout {
+  padding: 18px 22px;
+  border-radius: 4px;
+  margin: 20px 0;
+}
+.callout-problem {
+  background: #FDEDEC;
+  border-left: 4px solid #D71E28;
+}
+.callout-problem .callout-label { color: #D71E28; }
+.callout-insight {
+  background: #EBF5FB;
+  border-left: 4px solid #2980B9;
+}
+.callout-insight .callout-label { color: #1A5276; }
+.callout-action {
+  background: #EAFAF1;
+  border-left: 4px solid #27AE60;
+}
+.callout-action .callout-label { color: #1E8449; }
+.callout-neutral {
+  background: #F8F9F9;
+  border-left: 4px solid #5D6D7E;
+}
+.callout-neutral .callout-label { color: #5D6D7E; }
+.callout .callout-label {
+  font-size: 11px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+.callout p:last-child { margin-bottom: 0; }
+
+/* === PIPELINE TABLE === */
+.pipeline-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 14px;
+}
+.pipeline-table th {
+  background: #2E4053;
+  color: #FFFFFF;
+  text-align: left;
+  padding: 12px 16px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.pipeline-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #E5E7EB;
+  vertical-align: top;
+  color: #2E4053;
+}
+.pipeline-table tr:last-child td {
+  border-bottom: none;
+}
+.pipeline-table .stage-num {
+  font-weight: bold;
+  color: #FFFFFF;
+  background: #5D6D7E;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  margin-right: 8px;
+}
+.pipeline-table .stage-num.s1 { background: #3498DB; }
+.pipeline-table .stage-num.s2 { background: #8E44AD; }
+.pipeline-table .stage-num.s3 { background: #E67E22; }
+.pipeline-table .stage-num.s4 { background: #27AE60; }
+.pipeline-table .stage-name {
+  font-weight: bold;
+  color: #1C2833;
+}
+.pipeline-table .effort-tag {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: bold;
+}
+.effort-low { background: #D5F5E3; color: #1E8449; }
+.effort-med { background: #FEF9E7; color: #9A7B0A; }
+.effort-high { background: #FDEDEC; color: #922B21; }
+
+/* === PIPELINE VISUAL === */
+.pipeline-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin: 24px 0;
+  padding: 20px 0;
+}
+.pipeline-stage-box {
+  text-align: center;
+  padding: 16px 20px;
+  border-radius: 6px;
+  flex: 1;
+  min-width: 0;
+}
+.pipeline-stage-box.ps1 { background: #EBF5FB; border: 2px solid #3498DB; }
+.pipeline-stage-box.ps2 { background: #F4ECF7; border: 2px solid #8E44AD; }
+.pipeline-stage-box.ps3 { background: #FDF2E9; border: 2px solid #E67E22; }
+.pipeline-stage-box.ps4 { background: #EAFAF1; border: 2px solid #27AE60; }
+.pipeline-stage-box .ps-num {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+.pipeline-stage-box.ps1 .ps-num { color: #3498DB; }
+.pipeline-stage-box.ps2 .ps-num { color: #8E44AD; }
+.pipeline-stage-box.ps3 .ps-num { color: #E67E22; }
+.pipeline-stage-box.ps4 .ps-num { color: #27AE60; }
+.pipeline-stage-box .ps-name {
+  font-size: 13px;
+  font-weight: bold;
+  color: #1C2833;
+  margin-bottom: 4px;
+}
+.pipeline-stage-box .ps-desc {
+  font-size: 11px;
+  color: #5D6D7E;
+  line-height: 1.4;
+}
+.pipeline-arrow {
+  font-size: 22px;
+  color: #BDC3C7;
+  padding: 0 6px;
+  flex-shrink: 0;
+}
+
+/* === PERSONA CARDS === */
+.persona-row {
+  display: flex;
+  gap: 16px;
+  margin: 20px 0;
+}
+.persona-card {
+  flex: 1;
+  padding: 18px;
+  border-radius: 6px;
+  border-top: 4px solid;
+}
+.persona-card.pc-product { border-top-color: #8E44AD; background: #F9F5FC; }
+.persona-card.pc-appdev { border-top-color: #2980B9; background: #F0F7FC; }
+.persona-card.pc-platform { border-top-color: #16A085; background: #F0FAF7; }
+.persona-card .pc-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: bold;
+  color: #FFFFFF;
+  margin-bottom: 10px;
+}
+.persona-card.pc-product .pc-icon { background: #8E44AD; }
+.persona-card.pc-appdev .pc-icon { background: #2980B9; }
+.persona-card.pc-platform .pc-icon { background: #16A085; }
+.persona-card .pc-role {
+  font-size: 14px;
+  font-weight: bold;
+  color: #1C2833;
+  margin-bottom: 6px;
+}
+.persona-card .pc-does {
+  font-size: 13px;
+  color: #2E4053;
+  line-height: 1.5;
+}
+
+/* === LISTS === */
+ul.check-list {
+  list-style: none;
+  padding: 0;
+  margin: 14px 0;
+}
+ul.check-list li {
+  padding: 6px 0 6px 28px;
+  position: relative;
+  font-size: 14px;
+  color: #2E4053;
+  line-height: 1.5;
+}
+ul.check-list li::before {
+  content: "\2713";
+  position: absolute;
+  left: 4px;
+  color: #27AE60;
+  font-weight: bold;
+}
+ul.bullet-list {
+  margin: 14px 0 14px 20px;
+  padding: 0;
+}
+ul.bullet-list li {
+  padding: 4px 0;
+  font-size: 14px;
+  color: #2E4053;
+  line-height: 1.5;
+}
+
+/* === TWO-COLUMN === */
+.two-col {
+  display: flex;
+  gap: 24px;
+  margin: 20px 0;
+}
+.two-col .col { flex: 1; }
+
+/* === QUOTE === */
+.quote-block {
+  border-left: 4px solid #D71E28;
+  padding: 14px 20px;
+  margin: 20px 0;
+  background: #FDF2F2;
+  font-style: italic;
+  font-size: 15px;
+  color: #2E4053;
+  line-height: 1.6;
+}
+.quote-block .quote-attr {
+  font-style: normal;
+  font-size: 12px;
+  color: #95A5A6;
+  margin-top: 8px;
+}
+
+/* === PORTFOLIO EXAMPLE === */
+.portfolio-bar-group {
+  margin: 20px 0;
+}
+.portfolio-bar-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.portfolio-bar-label {
+  width: 160px;
+  font-size: 13px;
+  color: #5D6D7E;
+  text-align: right;
+  padding-right: 14px;
+}
+.portfolio-bar-track {
+  flex: 1;
+  height: 28px;
+  background: #E5E7EB;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+.portfolio-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #FFFFFF;
+}
+.portfolio-bar-fill.pf1 { background: #3498DB; }
+.portfolio-bar-fill.pf2 { background: #8E44AD; }
+.portfolio-bar-fill.pf3 { background: #E67E22; }
+.portfolio-bar-fill.pf4 { background: #27AE60; }
+
+/* === FOOTER === */
+.doc-footer {
+  margin-top: 60px;
+  padding-top: 20px;
+  border-top: 2px solid #E5E7EB;
+  font-size: 12px;
+  color: #95A5A6;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 700px) {
+  .persona-row { flex-direction: column; }
+  .two-col { flex-direction: column; }
+  .pipeline-visual { flex-direction: column; gap: 8px; }
+  .pipeline-arrow { transform: rotate(90deg); }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!-- HEADER                                                        -->
+<!-- ============================================================ -->
+<div class="doc-header">
+  <h1>Business Observability</h1>
+  <p class="subtitle">What it is, how it works, and what it means for our teams</p>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 1: Executive Context                                  -->
+<!-- ============================================================ -->
+<section id="context">
+  <h2>1. Executive Context</h2>
+
+  <p class="lead">Our technical observability is mature. We've invested significantly in infrastructure monitoring, APM, synthetics, and alerting &mdash; and that investment has driven real improvement in incident response times across Consumer Technology. But it has a ceiling.</p>
+
+  <div class="callout callout-problem">
+    <p class="callout-label">The Gap</p>
+    <p>When an incident happens, we can tell you the system is down. We cannot <em>consistently</em> tell you: <strong>how many customers are affected, what the dollar impact is, or which business outcome is failing.</strong> Some teams have built this capability &mdash; bespoke dashboards, well-documented runbooks, strong product-ops partnerships that deliver business impact visibility quickly. But these solutions don't transfer. Each team that wants this capability has to build it from scratch, and many don't have the capacity. We lack a shared methodology and framework that makes business observability repeatable at the scale of 900+ applications. The gap isn't that no one has solved this &mdash; it's that we can't scale what works.</p>
+  </div>
+
+  <div class="callout callout-insight">
+    <p class="callout-label">The Opportunity</p>
+    <p>Business observability provides the methodology and framework to make this capability repeatable. We've validated it with an initial flow &mdash; the funding wire service &mdash; and proved the pattern works: 5 hours of incident investigation reduced to 30 minutes. The opportunity is extending that pattern across teams without each one having to figure it out alone. The goal: when an incident is declared, the business impact &mdash; customers affected, revenue exposure, business processes blocked &mdash; is visible <strong>in minutes, not an hour.</strong></p>
+  </div>
+
+  <p>What's needed now is the operational path forward &mdash; a shared understanding across our teams of what this work looks like and what it requires from each of us.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: The Pipeline                                       -->
+<!-- ============================================================ -->
+<section id="pipeline">
+  <h2>2. The Business Observability Readiness Pipeline</h2>
+
+  <p>Business observability isn't all-or-nothing. Every business flow moves through a progression, and there is value at every stage. This pipeline is the central framework.</p>
+
+  <!-- Visual pipeline -->
+  <div class="pipeline-visual">
+    <div class="pipeline-stage-box ps1">
+      <div class="ps-num">1</div>
+      <div class="ps-name">Identified</div>
+      <div class="ps-desc">Flow named, described, criticality ranked</div>
+    </div>
+    <div class="pipeline-arrow">&rarr;</div>
+    <div class="pipeline-stage-box ps2">
+      <div class="ps-num">2</div>
+      <div class="ps-name">Contextualized</div>
+      <div class="ps-desc">Stakeholders, expectations, business impact documented</div>
+    </div>
+    <div class="pipeline-arrow">&rarr;</div>
+    <div class="pipeline-stage-box ps3">
+      <div class="ps-num">3</div>
+      <div class="ps-name">Instrumented</div>
+      <div class="ps-desc">Telemetry mapped to business context, signals created</div>
+    </div>
+    <div class="pipeline-arrow">&rarr;</div>
+    <div class="pipeline-stage-box ps4">
+      <div class="ps-num">4</div>
+      <div class="ps-name">Operationalized</div>
+      <div class="ps-desc">Dashboards, alerts, runbooks live in production</div>
+    </div>
+  </div>
+
+  <!-- Detailed table -->
+  <table class="pipeline-table">
+    <thead>
+      <tr>
+        <th style="width: 170px;">Stage</th>
+        <th>What Happens</th>
+        <th style="width: 200px;">Who's Involved</th>
+        <th style="width: 110px;">Effort / Flow</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="stage-num s1">1</span> <span class="stage-name">Identified</span></td>
+        <td>Business flow is named, described, and ranked by criticality. We establish what exists and where it sits in the portfolio.</td>
+        <td>Product + Platform</td>
+        <td><span class="effort-tag effort-low">Hours</span></td>
+      </tr>
+      <tr>
+        <td><span class="stage-num s2">2</span> <span class="stage-name">Contextualized</span></td>
+        <td>Stakeholders, their expectations, and the business impact if those expectations aren't met are documented. This is the foundation &mdash; the business context that today lives in people's heads.</td>
+        <td>Product Owner + SMEs</td>
+        <td><span class="effort-tag effort-low">1&ndash;2 sessions</span></td>
+      </tr>
+      <tr>
+        <td><span class="stage-num s3">3</span> <span class="stage-name">Instrumented</span></td>
+        <td>Existing telemetry is reviewed and mapped to business signals. Targeted gaps are filled with new instrumentation. This is real development work &mdash; scoped by what Stages 1&ndash;2 identify, not open-ended.</td>
+        <td>App Dev + Platform</td>
+        <td><span class="effort-tag effort-high">Days</span></td>
+      </tr>
+      <tr>
+        <td><span class="stage-num s4">4</span> <span class="stage-name">Operationalized</span></td>
+        <td>Dashboards, alerts, and runbooks are live in production. Business health is visible during incidents. Platform sustains and maintains.</td>
+        <td>Platform + SRE</td>
+        <td><span class="effort-tag effort-med">Days (Platform-led)</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout-neutral">
+    <p class="callout-label">Key Point</p>
+    <p><strong>Value exists at every stage.</strong> A flow at Stage 2 (contextualized) already has documented business impact &mdash; that alone transforms incident response for that flow. Full value comes at Stage 4, but every step forward is an improvement over where we are today.</p>
+  </div>
+
+  <div class="callout callout-neutral">
+    <p class="callout-label">Key Terms</p>
+    <p><strong>Business Flow:</strong> A specific business process or transaction type that delivers value to stakeholders (e.g., wire transfer execution, credit check processing, payment disbursement).</p>
+    <p><strong>Business Context:</strong> The stakeholder expectations, success criteria, and impact definitions that give meaning to technical signals &mdash; who cares, what they expect, what happens if it breaks.</p>
+    <p><strong>Business Signal:</strong> A measurement that tracks whether a business outcome is being achieved, not just whether systems are running (e.g., "funds arrived on time" rather than "API responded").</p>
+  </div>
+
+  <h3>An Honest Starting Point</h3>
+  <p>We don't have a unified inventory of all critical business flows today. Across Consumer Technology's 900+ business applications, context exists &mdash; in wiki pages, existing monitoring, and the knowledge our teams carry &mdash; but there is no single, authoritative source that maps business flows to their stakeholders, expectations, and impact definitions. We don't have an authoritative process for how we collect and maintain this business context.</p>
+
+  <p>The hardest part is gathering and understanding that business context &mdash; and it means working closely with business partners and product owners. That's the problem this pipeline solves. Not by building a complete inventory first, but by establishing a structured process for the flows that matter most and building from there.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: The 3-Persona Model                                -->
+<!-- ============================================================ -->
+<section id="personas">
+  <h2>3. Three Organizations, One Shared Outcome</h2>
+
+  <p>Business observability requires contributions that no single organization owns entirely. This is a structural requirement, not a political one &mdash; each organization contributes knowledge the others don't have.</p>
+
+  <div class="persona-row">
+    <div class="persona-card pc-product">
+      <div class="pc-icon">PO</div>
+      <div class="pc-role">Product</div>
+      <div class="pc-does"><strong>Defines what success looks like.</strong> Who are the stakeholders? What do they expect? What happens to the business if those expectations aren't met? This context is the foundation &mdash; everything else builds on it.</div>
+    </div>
+    <div class="persona-card pc-appdev">
+      <div class="pc-icon">DEV</div>
+      <div class="pc-role">App Dev</div>
+      <div class="pc-does"><strong>Translates intent into instrumentation.</strong> Knows the business flows and the code. Identifies telemetry that tracks outcomes, not just errors. Implements targeted signals that answer "is this working for customers?"</div>
+    </div>
+    <div class="persona-card pc-platform">
+      <div class="pc-icon">PLT</div>
+      <div class="pc-role">Platform</div>
+      <div class="pc-does"><strong>Creates visibility and sustains monitoring.</strong> Distinct from SRE (who respond to incidents), Platform provides the framework, templates, and embedded support that make business observability repeatable across teams.</div>
+    </div>
+  </div>
+
+  <p>Without Product defining business success criteria, monitoring stays technically focused. Without App Dev implementing business signals, the gap between business context and working telemetry can't be closed. Without Platform sustaining the monitoring layer, insights don't persist. Each director's teams play a role. This is a shared commitment.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: What This Means for Platform Teams                 -->
+<!-- ============================================================ -->
+<section id="platform-teams">
+  <h2>4. What This Means for Our Teams</h2>
+
+  <div class="two-col">
+    <div class="col">
+      <h3>What Directors Need from Their Teams</h3>
+      <ul class="bullet-list">
+        <li><strong>Engagement in Stages 1&ndash;2:</strong> Teams participate in identifying critical flows and documenting business context. This is working sessions, not a separate project &mdash; typically 1&ndash;2 sessions per flow.</li>
+        <li><strong>Capacity for Stage 3:</strong> Targeted development work to map existing telemetry and fill instrumentation gaps. This is days per flow of scoped work that enters existing backlogs &mdash; not an open-ended initiative.</li>
+        <li><strong>SME availability:</strong> Engineers and product contacts who know how the systems work and what the business cares about. They often already have this context from building and running the systems daily.</li>
+      </ul>
+    </div>
+    <div class="col">
+      <h3>What Platform Provides</h3>
+      <ul class="check-list">
+        <li>Business observability framework (signal model, methodology, templates)</li>
+        <li>Embedded support &mdash; working directly with teams through each flow</li>
+        <li>Dashboard and alert generation from documented business context</li>
+        <li>Standard patterns for Splunk and Grafana</li>
+        <li>Ongoing sustainment of the monitoring layer</li>
+        <li>A repeatable, proven process that gets faster with each flow</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout callout-insight">
+    <p class="callout-label">Embedded, Not Bolted On</p>
+    <p>This integrates into existing workflows &mdash; operational reviews, incident retros, migration planning, existing backlogs. No new recurring meetings. No separate BOS workstream. Stage 2 sessions are scheduled as needed. Stage 3 work is prioritized in existing backlogs. Platform drives the process and provides embedded support throughout.</p>
+  </div>
+
+  <h3>Being Honest About Stage 3</h3>
+  <p>Stage 3 is where the real development effort lives. In practice, it means reviewing existing code, logs, and APM tools to identify telemetry that already serves as a business signal. New instrumentation is only for targeted gaps. This is days per flow of focused work &mdash; not weeks, not months &mdash; but it is real engineering effort that needs to be planned for.</p>
+
+  <p>Not everything starts from zero. Many applications already have monitoring, alerts, and dashboards. The methodology can be applied as an analytical lens on what already exists &mdash; existing alerts annotated with business context, existing dashboards evaluated for business health coverage. We assess what's there and build only for targeted gaps.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: Portfolio Visibility                                -->
+<!-- ============================================================ -->
+<section id="portfolio">
+  <h2>5. Portfolio Visibility for Leadership</h2>
+
+  <p>The pipeline enables something we don't have today: a CIO-level portfolio view showing where critical business flows stand across all product areas. Instead of a binary "do we have business observability? yes/no," leadership gets a concrete picture of readiness across Consumer Technology.</p>
+
+  <h3>Risk Quantification Language</h3>
+  <p>The pipeline gives leadership a shared vocabulary for describing where we are and what's needed:</p>
+
+  <!-- Example portfolio bars -->
+  <div class="portfolio-bar-group">
+    <div class="portfolio-bar-row">
+      <div class="portfolio-bar-label">Identified</div>
+      <div class="portfolio-bar-track">
+        <div class="portfolio-bar-fill pf1" style="width: 80%;">150 flows</div>
+      </div>
+    </div>
+    <div class="portfolio-bar-row">
+      <div class="portfolio-bar-label">Contextualized</div>
+      <div class="portfolio-bar-track">
+        <div class="portfolio-bar-fill pf2" style="width: 35%;">50 flows</div>
+      </div>
+    </div>
+    <div class="portfolio-bar-row">
+      <div class="portfolio-bar-label">Instrumented</div>
+      <div class="portfolio-bar-track">
+        <div class="portfolio-bar-fill pf3" style="width: 15%;">20 flows</div>
+      </div>
+    </div>
+    <div class="portfolio-bar-row">
+      <div class="portfolio-bar-label">Operationalized</div>
+      <div class="portfolio-bar-track">
+        <div class="portfolio-bar-fill pf4" style="width: 6%;">8 flows</div>
+      </div>
+    </div>
+  </div>
+
+  <p style="font-size: 12px; color: #95A5A6; text-align: center; margin-top: -8px;">Illustrative example &mdash; actual numbers will emerge as work progresses</p>
+
+  <p>This visualization shows leadership exactly where investment is needed and where progress is being made. It turns "we need better observability" into "we have 150 identified flows across Consumer Technology, 50 with documented business context, 20 with instrumented signals, and 8 fully operational. Here's the plan to move the next 30 to Stage 3 by Q4."</p>
+
+  <p>The reality is straightforward: we won't see significant improvement in stability KPIs unless we change how we do observability for our top business services. If we want to improve, it's going to take a change &mdash; and this is the path.</p>
+
+  <p>This is the shared language for the offsite. Every director can speak to where their product area stands on the pipeline, what's needed to move forward, and what the business risk is for flows that remain at early stages. When an incident hits a flow without documented business context, the scramble is the same work as proactive documentation &mdash; just higher stress, lower quality, and more people involved.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: Getting Started                                    -->
+<!-- ============================================================ -->
+<section id="getting-started">
+  <h2>6. Getting Started</h2>
+
+  <h3>Finite Scope, Not a Complete Inventory</h3>
+  <p>We start with an initial set of flows per product area &mdash; not a comprehensive inventory of every application. A complete inventory is not the first initiative. The first initiative is making business observability concrete and working for the flows that matter most.</p>
+
+  <h3>Flow Selection Is Joint Work</h3>
+  <p>No single criterion determines which flows to start with. Business criticality, operational pain, active development, and team readiness all factor in &mdash; and they point to different candidates. The right starting flows will look different across product areas. The selection itself is the first collaborative act: Platform and each product area identify candidates together based on where there's both business importance and a willing, available team.</p>
+
+  <h3>Early Flows Teach the Pattern</h3>
+  <ul class="bullet-list">
+    <li>The first few flows establish the process, templates, and working relationships</li>
+    <li>Each subsequent flow goes faster as patterns become repeatable</li>
+    <li>Not all flows start from zero &mdash; existing monitoring, alerts, and dashboards can be bootstrapped with business context</li>
+    <li>Platform provides embedded support through the initial flows to build team confidence and capture lessons</li>
+  </ul>
+
+  <h3>What This Looks Like in Practice</h3>
+  <p>Consider a time-critical payment service that processes customer funds disbursements. Here's how it moves through the pipeline:</p>
+
+  <p><strong>Stage 1 (Identified):</strong> Product and Platform identify the payment service as critical based on transaction volume, regulatory requirements, and customer commitments. The flow is named and ranked in the portfolio.</p>
+
+  <p><strong>Stage 2 (Contextualized):</strong> In a 90-minute session, the Product Owner documents three stakeholder groups: customers awaiting funds (expecting same-day disbursement), receiving parties (expecting accurate amounts to correct accounts), and operations teams (expecting reliable processing for compliance and reconciliation). They capture what happens if each expectation is broken: transaction delays, payment disputes, regulatory exposure.</p>
+
+  <p><strong>Stage 3 (Instrumented):</strong> App Dev reviews existing telemetry and identifies payment success rate as a business signal. They don't instrument everything &mdash; just what answers "are funds arriving on time?" The existing APM and error monitoring stay as-is; they add targeted signals that track the business outcome.</p>
+
+  <p><strong>Stage 4 (Operationalized):</strong> Platform creates a dashboard combining business context with live signals. During an incident, the team sees immediately: transactions pending, processing delays, and which stakeholder expectations are at risk. What previously took 5 hours of investigation now takes 30 minutes &mdash; because the business context was documented once and is available every time.</p>
+
+  <div class="callout callout-insight">
+    <p class="callout-label">The Pattern</p>
+    <p>This is the pattern for every flow: identify, capture business context, instrument targeted signals, operationalize for incidents. Each flow teaches the next. The first few take longer; after that, the process becomes repeatable.</p>
+  </div>
+
+  <div class="callout callout-action">
+    <p class="callout-label">The Path Forward</p>
+    <p>This is concrete, scoped, and underway. Platform provides the framework and embedded support. Product areas provide the business context and team engagement. Together, we build the visibility that lets us answer the business impact question in minutes instead of an hour.</p>
+    <p style="margin-top: 12px;">Each director's contribution: ensure your senior technology managers and their teams are prepared to engage in flow identification and contextualization sessions as Platform coordinates with each product area.</p>
+  </div>
+
+  <div class="callout callout-neutral">
+    <p class="callout-label">A Note on Scope</p>
+    <p>The pipeline and methodology are designed to work across Consumer Technology's diverse product areas. Each line of business has different application landscapes, team structures, and operational pressures. The approach accommodates that diversity &mdash; flow selection, session formats, and bootstrapping strategies will be tailored as we learn what works best in each context. What's consistent is the framework; what varies is the application.</p>
+  </div>
+</section>
+
+
+</body>
+</html>
