@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BOS: Who Does What</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fa;
+            color: #1a1a2e;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1a1a2e;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 50px;
+        }
+
+        .section {
+            margin-bottom: 60px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .section-number {
+            width: 48px;
+            height: 48px;
+            background: #1a1a2e;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .section-desc {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* Swimlane Grid */
+        .swimlane {
+            display: grid;
+            grid-template-columns: 180px 1fr 1fr 1fr;
+            gap: 2px;
+            background: #dee2e6;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .header-cell {
+            background: #1a1a2e;
+            color: white;
+            padding: 16px 20px;
+            font-weight: 600;
+            text-align: center;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+
+        .header-cell.corner {
+            background: #2d2d44;
+        }
+
+        .row-header {
+            background: #f1f3f4;
+            padding: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            color: #1a1a2e;
+            border-right: 3px solid;
+        }
+
+        .row-header.product { border-color: #4361ee; }
+        .row-header.appdev { border-color: #7209b7; }
+        .row-header.platform { border-color: #f72585; }
+
+        .cell {
+            background: white;
+            padding: 20px;
+        }
+
+        .cell ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .cell li {
+            padding: 6px 0;
+            font-size: 0.9rem;
+            color: #333;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .cell li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .product-row li::before { background: #4361ee; }
+        .appdev-row li::before { background: #7209b7; }
+        .platform-row li::before { background: #f72585; }
+
+        /* Integrated View Styles */
+        .integrated-cell {
+            background: white;
+            padding: 16px 20px;
+        }
+
+        .integrated-group {
+            margin-bottom: 14px;
+        }
+
+        .integrated-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .sdlc-header {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #1a1a2e;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .sdlc-header::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .product-row .sdlc-header::before { background: #4361ee; }
+        .appdev-row .sdlc-header::before { background: #7209b7; }
+        .platform-row .sdlc-header::before { background: #f72585; }
+
+        .bos-items {
+            list-style: none;
+            margin: 0;
+            padding-left: 12px;
+            border-left: 2px solid #e9ecef;
+            margin-left: 3px;
+        }
+
+        .bos-items li {
+            font-size: 0.82rem;
+            color: #555;
+            padding: 3px 0 3px 10px;
+        }
+
+        .bos-tag {
+            display: inline-block;
+            font-size: 0.65rem;
+            background: #e7f1ff;
+            color: #4361ee;
+            padding: 1px 5px;
+            border-radius: 3px;
+            margin-left: 6px;
+            font-weight: 500;
+            vertical-align: middle;
+        }
+
+        /* Examples/Proof Layer Styles */
+        .example-cell {
+            background: white;
+            padding: 16px 20px;
+        }
+
+        .example-group {
+            margin-bottom: 16px;
+        }
+
+        .example-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .activity-header {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #1a1a2e;
+            margin-bottom: 10px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .output-item {
+            margin-bottom: 10px;
+        }
+
+        .output-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .output-name {
+            font-weight: 500;
+            font-size: 0.8rem;
+            color: #495057;
+            margin-bottom: 3px;
+        }
+
+        .output-example {
+            font-size: 0.78rem;
+            color: #6c757d;
+            background: #f8f9fa;
+            padding: 6px 10px;
+            border-radius: 4px;
+            border-left: 3px solid;
+            font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+        }
+
+        .product-row .output-example { border-color: #4361ee; }
+        .appdev-row .output-example { border-color: #7209b7; }
+        .platform-row .output-example { border-color: #f72585; }
+
+        /* Artifacts Pattern Layer Styles */
+        .artifact-cell {
+            background: white;
+            padding: 16px 20px;
+        }
+
+        .artifact-group {
+            margin-bottom: 14px;
+        }
+
+        .artifact-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .artifact-activity {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #1a1a2e;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .artifact-activity::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .product-row .artifact-activity::before { background: #4361ee; }
+        .appdev-row .artifact-activity::before { background: #7209b7; }
+        .platform-row .artifact-activity::before { background: #f72585; }
+
+        .artifact-tree {
+            margin-left: 12px;
+            padding-left: 12px;
+            border-left: 2px solid #e9ecef;
+        }
+
+        .artifact-item {
+            margin-bottom: 8px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .artifact-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .artifact-name {
+            font-weight: 500;
+            font-size: 0.82rem;
+            color: #495057;
+        }
+
+        .artifact-pattern {
+            font-size: 0.78rem;
+            color: #6c757d;
+            margin-top: 2px;
+            padding-left: 12px;
+        }
+
+        /* Comparison Section */
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .comparison-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .comparison-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .comparison-card.sdlc h3 { border-color: #adb5bd; }
+        .comparison-card.bos h3 { border-color: #4361ee; }
+
+        .equivalence {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f3f4;
+        }
+
+        .equivalence:last-child {
+            border-bottom: none;
+        }
+
+        .equiv-label {
+            width: 120px;
+            font-weight: 500;
+            color: #666;
+            font-size: 0.85rem;
+        }
+
+        .equiv-arrow {
+            color: #adb5bd;
+            font-size: 1.2rem;
+        }
+
+        .equiv-value {
+            flex: 1;
+            font-size: 0.95rem;
+        }
+
+        /* Key Message */
+        .key-message {
+            background: linear-gradient(135deg, #1a1a2e 0%, #2d2d44 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .key-message h2 {
+            font-size: 1.8rem;
+            margin-bottom: 16px;
+            font-weight: 500;
+        }
+
+        .key-message p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Navigation */
+        .nav-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+
+        .nav-tab {
+            padding: 12px 24px;
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .nav-tab:hover {
+            border-color: #4361ee;
+        }
+
+        .nav-tab.active {
+            background: #4361ee;
+            border-color: #4361ee;
+            color: white;
+        }
+
+        .view {
+            display: none;
+        }
+
+        .view.active {
+            display: block;
+        }
+
+        /* Responsive */
+        @media (max-width: 1000px) {
+            .swimlane {
+                grid-template-columns: 120px 1fr 1fr 1fr;
+            }
+
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Who Does What?</h1>
+        <p class="subtitle">Same accountability pattern. Same roles. Different outputs.</p>
+
+        <div class="nav-tabs">
+            <div class="nav-tab active" onclick="showView('sdlc')">1. SDLC (Familiar)</div>
+            <div class="nav-tab" onclick="showView('bos')">2. Business Observability</div>
+            <div class="nav-tab" onclick="showView('integrated')">3. Integrated View</div>
+            <div class="nav-tab" onclick="showView('artifacts')">4. The Artifacts</div>
+            <div class="nav-tab" onclick="showView('examples')">5. Concrete Examples</div>
+        </div>
+
+        <!-- View 1: SDLC -->
+        <div id="sdlc" class="view active">
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-number">1</div>
+                    <div>
+                        <div class="section-title">Software Development Lifecycle</div>
+                        <div class="section-desc">The accountability pattern you already follow</div>
+                    </div>
+                </div>
+
+                <div class="swimlane">
+                    <div class="header-cell corner"></div>
+                    <div class="header-cell">DEFINE</div>
+                    <div class="header-cell">IMPLEMENT</div>
+                    <div class="header-cell">OPERATE</div>
+
+                    <div class="row-header product">PRODUCT</div>
+                    <div class="cell product-row">
+                        <ul>
+                            <li>Business Requirements</li>
+                            <li>User Stories</li>
+                            <li>Priority Decisions</li>
+                            <li>Success Definitions</li>
+                        </ul>
+                    </div>
+                    <div class="cell product-row">
+                        <ul>
+                            <li>Acceptance Criteria</li>
+                            <li>Requirement Clarification</li>
+                            <li>Testing Sign-off</li>
+                        </ul>
+                    </div>
+                    <div class="cell product-row">
+                        <ul>
+                            <li>Outcome Validation</li>
+                            <li>Go/No-Go Decisions</li>
+                            <li>Priority Guidance</li>
+                        </ul>
+                    </div>
+
+                    <div class="row-header appdev">APP DEV</div>
+                    <div class="cell appdev-row">
+                        <ul>
+                            <li>Feasibility Assessment</li>
+                            <li>Design Proposals</li>
+                            <li>Effort Estimates</li>
+                        </ul>
+                    </div>
+                    <div class="cell appdev-row">
+                        <ul>
+                            <li>Application Code</li>
+                            <li>Unit/Integration Tests</li>
+                            <li>APIs and Services</li>
+                            <li>Build Artifacts</li>
+                        </ul>
+                    </div>
+                    <div class="cell appdev-row">
+                        <ul>
+                            <li>Bug Fixes</li>
+                            <li>Production Debugging</li>
+                            <li>Code-level Support</li>
+                        </ul>
+                    </div>
+
+                    <div class="row-header platform">PLATFORM OPS</div>
+                    <div class="cell platform-row">
+                        <ul>
+                            <li>NFR Input</li>
+                            <li>Infrastructure Constraints</li>
+                            <li>Operational Readiness Criteria</li>
+                        </ul>
+                    </div>
+                    <div class="cell platform-row">
+                        <ul>
+                            <li>CI/CD Pipelines</li>
+                            <li>Deployment Configuration</li>
+                            <li>Environment Provisioning</li>
+                        </ul>
+                    </div>
+                    <div class="cell platform-row">
+                        <ul>
+                            <li>System Monitoring</li>
+                            <li>Alerting</li>
+                            <li>Incident Response</li>
+                            <li>Runbooks</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- View 2: BOS -->
+        <div id="bos" class="view">
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-number">2</div>
+                    <div>
+                        <div class="section-title">Business Observability</div>
+                        <div class="section-desc">The same pattern — for knowing if business is healthy</div>
+                    </div>
+                </div>
+
+                <div class="swimlane">
+                    <div class="header-cell corner"></div>
+                    <div class="header-cell">DEFINE</div>
+                    <div class="header-cell">IMPLEMENT</div>
+                    <div class="header-cell">OPERATE</div>
+
+                    <div class="row-header product">PRODUCT</div>
+                    <div class="cell product-row">
+                        <ul>
+                            <li>Stakeholder Expectations</li>
+                            <li>Business Impact Definitions</li>
+                            <li>Impact Category Selection</li>
+                            <li>Business Health Targets</li>
+                            <li>Service Scope Decisions</li>
+                        </ul>
+                    </div>
+                    <div class="cell product-row">
+                        <ul>
+                            <li>Signal Validation</li>
+                            <li>Acceptance Decisions</li>
+                            <li>Business Clarification</li>
+                        </ul>
+                    </div>
+                    <div class="cell product-row">
+                        <ul>
+                            <li>Incident Priority Guidance</li>
+                            <li>Expectation Updates</li>
+                            <li>Go/No-Go Decisions</li>
+                        </ul>
+                    </div>
+
+                    <div class="row-header appdev">APP DEV</div>
+                    <div class="cell appdev-row">
+                        <ul>
+                            <li>Data Source Identification</li>
+                            <li>Instrumentation Gap Analysis</li>
+                            <li>Technical Feasibility</li>
+                        </ul>
+                    </div>
+                    <div class="cell appdev-row">
+                        <ul>
+                            <li>Query Implementation</li>
+                            <li>Signal Query Logic</li>
+                            <li>Data Source Configuration</li>
+                            <li>Instrumentation</li>
+                        </ul>
+                    </div>
+                    <div class="cell appdev-row">
+                        <ul>
+                            <li>Query Maintenance</li>
+                            <li>Instrumentation Fixes</li>
+                            <li>Data Troubleshooting</li>
+                        </ul>
+                    </div>
+
+                    <div class="row-header platform">PLATFORM OPS</div>
+                    <div class="cell platform-row">
+                        <ul>
+                            <li>SLO Target Input</li>
+                            <li>Alert Threshold Input</li>
+                            <li>Dashboard Hierarchy Needs</li>
+                        </ul>
+                    </div>
+                    <div class="cell platform-row">
+                        <ul>
+                            <li>Dashboard Configuration</li>
+                            <li>Alert Routing</li>
+                            <li>Runbook Creation</li>
+                            <li>Pipeline Integration</li>
+                        </ul>
+                    </div>
+                    <div class="cell platform-row">
+                        <ul>
+                            <li>Dashboard Maintenance</li>
+                            <li>Alert Response</li>
+                            <li>Playbook Execution</li>
+                            <li>Incident Response</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- View 3: Integrated -->
+        <div id="integrated" class="view">
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-number">3</div>
+                    <div>
+                        <div class="section-title">Integrated View</div>
+                        <div class="section-desc">SDLC structure with BOS as the observability implementation</div>
+                    </div>
+                </div>
+
+                <div class="swimlane">
+                    <div class="header-cell corner"></div>
+                    <div class="header-cell">DEFINE</div>
+                    <div class="header-cell">IMPLEMENT</div>
+                    <div class="header-cell">OPERATE</div>
+
+                    <!-- PRODUCT ROW -->
+                    <div class="row-header product">PRODUCT</div>
+                    <div class="integrated-cell product-row">
+                        <div class="integrated-group">
+                            <div class="sdlc-header">Define what matters</div>
+                            <ul class="bos-items">
+                                <li>Who cares about this service</li>
+                                <li>What they expect</li>
+                                <li>What breaks if it fails</li>
+                            </ul>
+                        </div>
+                        <div class="integrated-group">
+                            <div class="sdlc-header">Decide what's in scope</div>
+                            <ul class="bos-items">
+                                <li>Which services need BOS</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="integrated-cell product-row">
+                        <div class="integrated-group">
+                            <div class="sdlc-header">Review & approve</div>
+                            <ul class="bos-items">
+                                <li>Do the signals reflect reality?</li>
+                                <li>Sign off on dashboards</li>
+                            </ul>
+                        </div>
+                        <div class="integrated-group">
+                            <div class="sdlc-header">Answer questions</div>
+                            <ul class="bos-items">
+                                <li>Business context when Dev asks</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="integrated-cell product-row">
+                        <div class="integrated-group">
+                            <div class="sdlc-header">Tell Ops what matters</div>
+                            <ul class="bos-items">
+                                <li>Incident priority calls</li>
+                                <li>Update expectations after incidents</li>
+                            </ul>
+                        </div>
+                        <div class="integrated-group">
+                            <div class="sdlc-header">Make the call</div>
+                            <ul class="bos-items">
+                                <li>Go/no-go on escalations</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- APP DEV ROW -->
+                    <div class="row-header appdev">APP DEV</div>
+                    <div class="integrated-cell appdev-row">
+                        <div class="integrated-group">
+                            <div class="sdlc-header">Figure out what data exists</div>
+                            <ul class="bos-items">
+                                <li>Where's the data? (logs, metrics, traces)</li>
+                                <li>What's missing?</li>
+                            </ul>
+                        </div>
+                        <div class="integrated-group">
+                            <div class="sdlc-header">Say if it's doable</div>
+                            <ul class="bos-items">
+                                <li>Can we measure what Product wants?</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="integrated-cell appdev-row">
+                        <div class="integrated-group">
+                            <div class="sdlc-header">Build the queries</div>
+                            <ul class="bos-items">
+                                <li>Write the SPL/SQL</li>
+                                <li>Define the signals</li>
+                                <li>Add instrumentation where needed</li>
+                            </ul>
+                        </div>
+                        <div class="integrated-group">
+                            <div class="sdlc-header">Wire up the data</div>
+                            <ul class="bos-items">
+                                <li>Connect to data sources</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="integrated-cell appdev-row">
+                        <div class="integrated-group">
+                            <div class="sdlc-header">Fix data problems</div>
+                            <ul class="bos-items">
+                                <li>Broken queries</li>
+                                <li>Missing instrumentation</li>
+                                <li>Data source issues</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- PLATFORM OPS ROW -->
+                    <div class="row-header platform">PLATFORM OPS</div>
+                    <div class="integrated-cell platform-row">
+                        <div class="integrated-group">
+                            <div class="sdlc-header">Set the guardrails</div>
+                            <ul class="bos-items">
+                                <li>SLO targets (what's acceptable)</li>
+                                <li>Alert thresholds (when to page)</li>
+                                <li>Dashboard views (who sees what)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="integrated-cell platform-row">
+                        <div class="integrated-group">
+                            <div class="sdlc-header">Build the dashboards & alerts</div>
+                            <ul class="bos-items">
+                                <li>Configure dashboards</li>
+                                <li>Set up alert routing</li>
+                                <li>Write the runbooks</li>
+                                <li>Plug into pipelines</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="integrated-cell platform-row">
+                        <div class="integrated-group">
+                            <div class="sdlc-header">Watch & respond</div>
+                            <ul class="bos-items">
+                                <li>Keep dashboards healthy</li>
+                                <li>Respond to alerts</li>
+                                <li>Run the playbooks</li>
+                                <li>Handle incidents</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="key-message" style="margin-top: 30px;">
+                    <h2>You Already Do This</h2>
+                    <p>BOS isn't new work. It's making your existing SDLC accountabilities<br>
+                    deliver business observability, not just functionality.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- View 4: Artifacts Pattern Layer -->
+        <div id="artifacts" class="view">
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-number">4</div>
+                    <div>
+                        <div class="section-title">The Artifacts</div>
+                        <div class="section-desc">What each team produces — connecting Business Health to Business Impact</div>
+                    </div>
+                </div>
+
+                <div class="swimlane">
+                    <div class="header-cell corner"></div>
+                    <div class="header-cell">DEFINE</div>
+                    <div class="header-cell">IMPLEMENT</div>
+                    <div class="header-cell">OPERATE</div>
+
+                    <!-- PRODUCT ROW -->
+                    <div class="row-header product">PRODUCT</div>
+                    <div class="artifact-cell product-row">
+                        <div class="artifact-group">
+                            <div class="artifact-activity">Define what matters</div>
+                            <div class="artifact-tree">
+                                <div class="artifact-item">
+                                    <span class="artifact-name">Stakeholder Expectations</span>
+                                    <span class="artifact-pattern">Who cares, what they need, response time tolerances</span>
+                                </div>
+                                <div class="artifact-item">
+                                    <span class="artifact-name">Business Impact Definitions</span>
+                                    <span class="artifact-pattern">Revenue/customer/regulatory consequences quantified</span>
+                                </div>
+                                <div class="artifact-item">
+                                    <span class="artifact-name">Impact Category Selection</span>
+                                    <span class="artifact-pattern">Customer, financial, legal/risk, operational classification</span>
+                                </div>
+                                <div class="artifact-item">
+                                    <span class="artifact-name">Business Health Targets</span>
+                                    <span class="artifact-pattern">Business Health thresholds defining "healthy" (with rationale)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="artifact-cell product-row">
+                        <div class="artifact-group">
+                            <div class="artifact-activity">Review & approve</div>
+                            <div class="artifact-tree">
+                                <div class="artifact-item">
+                                    <span class="artifact-name">Signal Validation</span>
+                                    <span class="artifact-pattern">Confirmation that signals reflect business reality</span>
+                                </div>
+                                <div class="artifact-item">
+                                    <span class="artifact-name">Dashboard Sign-off</span>
+                                    <span class="artifact-pattern">Approval for production use</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="artifact-cell product-row">
+                        <div class="artifact-group">
+                            <div class="artifact-activity">Tell Ops what matters</div>
+                            <div class="artifact-tree">
+                                <div class="artifact-item">
+                                    <span class="artifact-name">Incident Priority Rules</span>
+                                    <span class="artifact-pattern">P1/P2/P3 classification by business impact</span>
+                                </div>
+                                <div class="artifact-item">
+                                    <span class="artifact-name">Expectation Updates</span>
+                                    <span class="artifact-pattern">Revised thresholds based on learnings</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- APP DEV ROW -->
+                    <div class="row-header appdev">APP DEV</div>
+                    <div class="artifact-cell appdev-row">
+                        <div class="artifact-group">
+                            <div class="artifact-activity">Figure out what data exists</div>
+                            <div class="artifact-tree">
+                                <div class="artifact-item">
+                                    <span class="artifact-name">Data Source Inventory</span>
+                                    <span class="artifact-pattern">Logs, metrics, traces available per service</span>
+                                </div>
+                                <div class="artifact-item">
+                                    <span class="artifact-name">Gap Analysis</span>
+                                    <span class="artifact-pattern">What's missing to measure business criteria</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="artifact-cell appdev-row">
+                        <div class="artifact-group">
+                            <div class="artifact-activity">Build the queries</div>
+                            <div class="artifact-tree">
+                                <div class="artifact-item">
+                                    <span class="artifact-name">Query Implementations</span>
+                                    <span class="artifact-pattern">SPL/SQL that extracts business metrics</span>
+                                </div>
+                                <div class="artifact-item">
+                                    <span class="artifact-name">Signal Query Logic</span>
+                                    <span class="artifact-pattern">SPL/SQL formulas implementing business health signals</span>
+                                </div>
+                                <div class="artifact-item">
+                                    <span class="artifact-name">Instrumentation Code</span>
+                                    <span class="artifact-pattern">New telemetry where gaps existed</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="artifact-cell appdev-row">
+                        <div class="artifact-group">
+                            <div class="artifact-activity">Fix data problems</div>
+                            <div class="artifact-tree">
+                                <div class="artifact-item">
+                                    <span class="artifact-name">Query Fixes</span>
+                                    <span class="artifact-pattern">Corrections when signals drift from reality</span>
+                                </div>
+                                <div class="artifact-item">
+                                    <span class="artifact-name">Instrumentation Patches</span>
+                                    <span class="artifact-pattern">Repairs to telemetry collection</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PLATFORM OPS ROW -->
+                    <div class="row-header platform">PLATFORM OPS</div>
+                    <div class="artifact-cell platform-row">
+                        <div class="artifact-group">
+                            <div class="artifact-activity">Set the guardrails</div>
+                            <div class="artifact-tree">
+                                <div class="artifact-item">
+                                    <span class="artifact-name">SLO Target Input</span>
+                                    <span class="artifact-pattern">Operational recommendations for availability, latency, error rate (PO approves)</span>
+                                </div>
+                                <div class="artifact-item">
+                                    <span class="artifact-name">Alert Threshold Input</span>
+                                    <span class="artifact-pattern">When to page vs. notify vs. log (based on ops experience)</span>
+                                </div>
+                                <div class="artifact-item">
+                                    <span class="artifact-name">Dashboard Hierarchy</span>
+                                    <span class="artifact-pattern">L4 / L3 / L2 / L1 view structure</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="artifact-cell platform-row">
+                        <div class="artifact-group">
+                            <div class="artifact-activity">Build the dashboards & alerts</div>
+                            <div class="artifact-tree">
+                                <div class="artifact-item">
+                                    <span class="artifact-name">Dashboard Configurations</span>
+                                    <span class="artifact-pattern">Executive / Service / Operational views</span>
+                                </div>
+                                <div class="artifact-item">
+                                    <span class="artifact-name">Alert Routing Rules</span>
+                                    <span class="artifact-pattern">P1/P2/P3 escalation paths</span>
+                                </div>
+                                <div class="artifact-item">
+                                    <span class="artifact-name">Runbooks</span>
+                                    <span class="artifact-pattern">Signal-linked playbooks per service</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="artifact-cell platform-row">
+                        <div class="artifact-group">
+                            <div class="artifact-activity">Watch & respond</div>
+                            <div class="artifact-tree">
+                                <div class="artifact-item">
+                                    <span class="artifact-name">Dashboard Health</span>
+                                    <span class="artifact-pattern">Ongoing accuracy and relevance</span>
+                                </div>
+                                <div class="artifact-item">
+                                    <span class="artifact-name">Alert Responses</span>
+                                    <span class="artifact-pattern">Acknowledged, triaged, escalated</span>
+                                </div>
+                                <div class="artifact-item">
+                                    <span class="artifact-name">Playbook Executions</span>
+                                    <span class="artifact-pattern">Runbook followed, outcome documented</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="key-message" style="margin-top: 30px;">
+                    <h2>These Are the Deliverables</h2>
+                    <p>Not concepts. Not processes. Tangible artifacts that exist,<br>
+                    can be reviewed, and connect business to operations.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- View 5: Examples / Proof Layer -->
+        <div id="examples" class="view">
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-number">5</div>
+                    <div>
+                        <div class="section-title">Concrete Examples</div>
+                        <div class="section-desc">Real data, real values — proof that this isn't vaporware</div>
+                    </div>
+                </div>
+
+                <div class="swimlane">
+                    <div class="header-cell corner"></div>
+                    <div class="header-cell">DEFINE</div>
+                    <div class="header-cell">IMPLEMENT</div>
+                    <div class="header-cell">OPERATE</div>
+
+                    <!-- PRODUCT ROW -->
+                    <div class="row-header product">PRODUCT</div>
+                    <div class="example-cell product-row">
+                        <div class="example-group">
+                            <div class="activity-header">Define what matters</div>
+                            <div class="output-item">
+                                <div class="output-name">Stakeholder Expectation</div>
+                                <div class="output-example">"Loan officers expect credit checks in 5 seconds"</div>
+                            </div>
+                            <div class="output-item">
+                                <div class="output-name">Business Impact</div>
+                                <div class="output-example">"$2.3M daily revenue at risk if credit checks fail"</div>
+                            </div>
+                            <div class="output-item">
+                                <div class="output-name">Impact Category</div>
+                                <div class="output-example">Customer Experience, Financial</div>
+                            </div>
+                            <div class="output-item">
+                                <div class="output-name">Business Health Target</div>
+                                <div class="output-example">"≥ 99% success rate during peak hours (9am-5pm)"</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="example-cell product-row">
+                        <div class="example-group">
+                            <div class="activity-header">Review & approve</div>
+                            <div class="output-item">
+                                <div class="output-name">Signal Validation</div>
+                                <div class="output-example">"Confirmed: success_rate signal reflects actual loan officer experience"</div>
+                            </div>
+                            <div class="output-item">
+                                <div class="output-name">Dashboard Sign-off</div>
+                                <div class="output-example">"L4 Executive view approved for production"</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="example-cell product-row">
+                        <div class="example-group">
+                            <div class="activity-header">Tell Ops what matters</div>
+                            <div class="output-item">
+                                <div class="output-name">Incident Priority</div>
+                                <div class="output-example">"Credit check down = P1 (direct revenue impact)"</div>
+                            </div>
+                            <div class="output-item">
+                                <div class="output-name">Expectation Update</div>
+                                <div class="output-example">"Lower threshold to 4s based on Q3 incident learnings"</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- APP DEV ROW -->
+                    <div class="row-header appdev">APP DEV</div>
+                    <div class="example-cell appdev-row">
+                        <div class="example-group">
+                            <div class="activity-header">Figure out what data exists</div>
+                            <div class="output-item">
+                                <div class="output-name">Data Sources</div>
+                                <div class="output-example">Splunk: credit_check_logs<br>Prometheus: api_latency_ms</div>
+                            </div>
+                            <div class="output-item">
+                                <div class="output-name">Gap Analysis</div>
+                                <div class="output-example">"Missing: end-to-end transaction tracing"</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="example-cell appdev-row">
+                        <div class="example-group">
+                            <div class="activity-header">Build the queries</div>
+                            <div class="output-item">
+                                <div class="output-name">Query</div>
+                                <div class="output-example">SELECT avg(response_time) FROM credit_check WHERE status='success'</div>
+                            </div>
+                            <div class="output-item">
+                                <div class="output-name">Signal Query Logic</div>
+                                <div class="output-example">credit_check_success_rate = successful_calls / total_calls</div>
+                            </div>
+                            <div class="output-item">
+                                <div class="output-name">Instrumentation</div>
+                                <div class="output-example">"Added trace_id to credit check API calls"</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="example-cell appdev-row">
+                        <div class="example-group">
+                            <div class="activity-header">Fix data problems</div>
+                            <div class="output-item">
+                                <div class="output-name">Query Fix</div>
+                                <div class="output-example">"Fixed timezone bug in latency calculation"</div>
+                            </div>
+                            <div class="output-item">
+                                <div class="output-name">Instrumentation Fix</div>
+                                <div class="output-example">"Re-enabled trace sampling after v2.3 deploy"</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PLATFORM OPS ROW -->
+                    <div class="row-header platform">PLATFORM OPS</div>
+                    <div class="example-cell platform-row">
+                        <div class="example-group">
+                            <div class="activity-header">Set the guardrails</div>
+                            <div class="output-item">
+                                <div class="output-name">SLO Target</div>
+                                <div class="output-example">99.5% availability, p95 latency < 5s</div>
+                            </div>
+                            <div class="output-item">
+                                <div class="output-name">Alert Threshold</div>
+                                <div class="output-example">"Page if success_rate < 99% for 5 min"</div>
+                            </div>
+                            <div class="output-item">
+                                <div class="output-name">Dashboard Hierarchy</div>
+                                <div class="output-example">L4 Executive → L3 Service → L2 Component</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="example-cell platform-row">
+                        <div class="example-group">
+                            <div class="activity-header">Build the dashboards & alerts</div>
+                            <div class="output-item">
+                                <div class="output-name">Dashboard</div>
+                                <div class="output-example">L4 Executive: 6 business health panels<br>L3 Service: signal status by service</div>
+                            </div>
+                            <div class="output-item">
+                                <div class="output-name">Alert Routing</div>
+                                <div class="output-example">P1 → PagerDuty on-call<br>P2 → Slack #ops-alerts + 15 min escalation</div>
+                            </div>
+                            <div class="output-item">
+                                <div class="output-name">Runbook</div>
+                                <div class="output-example">credit-check-degraded.md linked to signal</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="example-cell platform-row">
+                        <div class="example-group">
+                            <div class="activity-header">Watch & respond</div>
+                            <div class="output-item">
+                                <div class="output-name">Dashboard Maintenance</div>
+                                <div class="output-example">"Weekly panel review, monthly threshold tuning"</div>
+                            </div>
+                            <div class="output-item">
+                                <div class="output-name">Alert Response</div>
+                                <div class="output-example">"Acknowledged within 5 min SLA"</div>
+                            </div>
+                            <div class="output-item">
+                                <div class="output-name">Playbook Execution</div>
+                                <div class="output-example">"Followed credit-check-degraded runbook, escalated to App Dev at step 4"</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="key-message" style="margin-top: 30px;">
+                    <h2>This Is Real Work</h2>
+                    <p>Not concepts. Not vaporware. Concrete artifacts your teams produce<br>
+                    that connect business expectations to operational response.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showView(viewId) {
+            // Hide all views
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+
+            // Show selected view
+            document.getElementById(viewId).classList.add('active');
+
+            // Activate tab
+            const tabs = document.querySelectorAll('.nav-tab');
+            if (viewId === 'sdlc') tabs[0].classList.add('active');
+            if (viewId === 'bos') tabs[1].classList.add('active');
+            if (viewId === 'integrated') tabs[2].classList.add('active');
+            if (viewId === 'artifacts') tabs[3].classList.add('active');
+            if (viewId === 'examples') tabs[4].classList.add('active');
+        }
+    </script>
+</body>
+</html>
