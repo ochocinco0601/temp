@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BOS: Who Does What</title>
+    <title>Who Does What? — Business Observability System (BOS) in SDLC</title>
     <style>
         * {
             margin: 0;
@@ -21,22 +21,22 @@
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 20px 20px;
         }
 
         h1 {
             text-align: center;
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 600;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
             color: #1a1a2e;
         }
 
         .subtitle {
             text-align: center;
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: #666;
-            margin-bottom: 50px;
+            margin-bottom: 20px;
         }
 
         .section {
@@ -46,32 +46,31 @@
         .section-header {
             display: flex;
             align-items: center;
-            gap: 16px;
-            margin-bottom: 24px;
+            gap: 12px;
+            margin-bottom: 16px;
         }
 
         .section-number {
-            width: 48px;
-            height: 48px;
+            width: 36px;
+            height: 36px;
             background: #1a1a2e;
             color: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: 1.1rem;
             font-weight: 600;
             flex-shrink: 0;
         }
 
         .section-title {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: 600;
         }
 
         .section-desc {
-            color: #666;
-            font-size: 0.95rem;
+            display: none;  /* Hidden to save vertical space */
         }
 
         /* Swimlane Grid */
@@ -408,7 +407,7 @@
         .nav-tabs {
             display: flex;
             gap: 8px;
-            margin-bottom: 30px;
+            margin-bottom: 16px;
             justify-content: center;
         }
 
@@ -440,6 +439,126 @@
             display: block;
         }
 
+        /* Methodology Reference Panel */
+        .methodology-panel {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 1px solid #dee2e6;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 16px;
+        }
+
+        .methodology-panel h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1a1a2e;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .semantic-flow {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+
+        .flow-item {
+            background: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: 500;
+            color: #1a1a2e;
+            border: 1px solid #dee2e6;
+        }
+
+        .flow-arrow {
+            color: #6c757d;
+            font-size: 0.8rem;
+        }
+
+        .four-layer-mini {
+            display: grid;
+            grid-template-columns: auto 1fr 1fr;
+            gap: 1px;
+            background: #dee2e6;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 16px;
+            font-size: 0.82rem;
+        }
+
+        .four-layer-mini .layer-cell {
+            background: white;
+            padding: 8px 12px;
+        }
+
+        .four-layer-mini .layer-header {
+            background: #1a1a2e;
+            color: white;
+            font-weight: 600;
+            padding: 8px 12px;
+        }
+
+        .four-layer-mini .layer-num {
+            font-weight: 600;
+            background: #f1f3f4;
+        }
+
+        .four-layer-mini .traditional {
+            border-left: 3px solid #6c757d;
+        }
+
+        .four-layer-mini .bos-adds {
+            border-left: 3px solid #4361ee;
+        }
+
+        .layer-tag {
+            display: inline-block;
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            border-radius: 3px;
+            margin-left: 8px;
+            font-weight: 500;
+        }
+
+        .layer-tag.traditional {
+            background: #e9ecef;
+            color: #495057;
+        }
+
+        .layer-tag.bos {
+            background: #e7f1ff;
+            color: #4361ee;
+        }
+
+        .impact-categories {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            font-size: 0.85rem;
+        }
+
+        .impact-category {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .impact-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .impact-dot.customer { background: #4361ee; }
+        .impact-dot.financial { background: #2ecc71; }
+        .impact-dot.legal { background: #e74c3c; }
+        .impact-dot.operational { background: #f39c12; }
+
         /* Responsive */
         @media (max-width: 1000px) {
             .swimlane {
@@ -454,15 +573,14 @@
 </head>
 <body>
     <div class="container">
-        <h1>Who Does What?</h1>
-        <p class="subtitle">Same accountability pattern. Same roles. Different outputs.</p>
+        <h1>Who Does What? <span style="font-weight: 400; font-size: 0.6em; color: #666;">— Business Observability System (BOS) in SDLC</span></h1>
 
         <div class="nav-tabs">
-            <div class="nav-tab active" onclick="showView('sdlc')">1. SDLC (Familiar)</div>
-            <div class="nav-tab" onclick="showView('bos')">2. Business Observability</div>
-            <div class="nav-tab" onclick="showView('integrated')">3. Integrated View</div>
-            <div class="nav-tab" onclick="showView('artifacts')">4. The Artifacts</div>
-            <div class="nav-tab" onclick="showView('examples')">5. Concrete Examples</div>
+            <div class="nav-tab active" onclick="showView('sdlc')">1. SDLC Baseline</div>
+            <div class="nav-tab" onclick="showView('bos')">2. SDLC (BOS)</div>
+            <div class="nav-tab" onclick="showView('integrated')">3. What Teams Do</div>
+            <div class="nav-tab" onclick="showView('artifacts')">4. Outputs</div>
+            <div class="nav-tab" onclick="showView('examples')">5. Examples</div>
         </div>
 
         <!-- View 1: SDLC -->
@@ -471,7 +589,7 @@
                 <div class="section-header">
                     <div class="section-number">1</div>
                     <div>
-                        <div class="section-title">Software Development Lifecycle</div>
+                        <div class="section-title">SDLC Baseline</div>
                         <div class="section-desc">The accountability pattern you already follow</div>
                     </div>
                 </div>
@@ -563,7 +681,7 @@
                 <div class="section-header">
                     <div class="section-number">2</div>
                     <div>
-                        <div class="section-title">Business Observability</div>
+                        <div class="section-title">SDLC (BOS)</div>
                         <div class="section-desc">The same pattern — for knowing if business is healthy</div>
                     </div>
                 </div>
@@ -648,6 +766,61 @@
                         </ul>
                     </div>
                 </div>
+
+                <!-- Methodology Reference Panel -->
+                <div class="methodology-panel" style="margin-top: 24px;">
+                    <h3>BOS Framework Reference</h3>
+
+                    <!-- Core Definition -->
+                    <p style="font-size: 0.9rem; color: #495057; margin-bottom: 20px; line-height: 1.6;">
+                        Business observability begins with defining success in terms of business health—customer outcomes, financial impact, compliance, and operational efficiency. Technical observability (signals, instrumentation, dashboards) exists to support that framing, ensuring every metric and indicator ties back to whether the service is delivering its business value.
+                    </p>
+
+                    <!-- Semantic Flow -->
+                    <div class="semantic-flow">
+                        <span class="flow-item">Stakeholder</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-item">Expectation</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-item">Impact</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-item">Signal</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-item">Dashboard / Playbook</span>
+                    </div>
+
+                    <!-- Four-Layer Model -->
+                    <div class="four-layer-mini">
+                        <div class="layer-header">Layer</div>
+                        <div class="layer-header">Name</div>
+                        <div class="layer-header">Question</div>
+
+                        <div class="layer-cell layer-num">1</div>
+                        <div class="layer-cell traditional">System <span class="layer-tag traditional">Traditional</span></div>
+                        <div class="layer-cell">Is the platform operational?</div>
+
+                        <div class="layer-cell layer-num">2</div>
+                        <div class="layer-cell traditional">Process <span class="layer-tag traditional">Traditional</span></div>
+                        <div class="layer-cell">Is the workflow correct?</div>
+
+                        <div class="layer-cell layer-num">3</div>
+                        <div class="layer-cell bos-adds">Business Health <span class="layer-tag bos">BOS Adds</span></div>
+                        <div class="layer-cell">Is the expectation being met?</div>
+
+                        <div class="layer-cell layer-num">4</div>
+                        <div class="layer-cell bos-adds">Business Impact <span class="layer-tag bos">BOS Adds</span></div>
+                        <div class="layer-cell">How bad when we fail?</div>
+                    </div>
+
+                    <!-- Impact Categories -->
+                    <div class="impact-categories">
+                        <strong style="margin-right: 8px;">Impact Categories:</strong>
+                        <span class="impact-category"><span class="impact-dot customer"></span> Customer</span>
+                        <span class="impact-category"><span class="impact-dot financial"></span> Financial</span>
+                        <span class="impact-category"><span class="impact-dot legal"></span> Legal/Risk</span>
+                        <span class="impact-category"><span class="impact-dot operational"></span> Operational</span>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -657,7 +830,7 @@
                 <div class="section-header">
                     <div class="section-number">3</div>
                     <div>
-                        <div class="section-title">Integrated View</div>
+                        <div class="section-title">What Teams Do</div>
                         <div class="section-desc">SDLC structure with BOS as the observability implementation</div>
                     </div>
                 </div>
@@ -797,11 +970,6 @@
                     </div>
                 </div>
 
-                <div class="key-message" style="margin-top: 30px;">
-                    <h2>You Already Do This</h2>
-                    <p>BOS isn't new work. It's making your existing SDLC accountabilities<br>
-                    deliver business observability, not just functionality.</p>
-                </div>
             </div>
         </div>
 
@@ -811,7 +979,7 @@
                 <div class="section-header">
                     <div class="section-number">4</div>
                     <div>
-                        <div class="section-title">The Artifacts</div>
+                        <div class="section-title">Outputs</div>
                         <div class="section-desc">What each team produces — connecting Business Health to Business Impact</div>
                     </div>
                 </div>
@@ -991,11 +1159,6 @@
                     </div>
                 </div>
 
-                <div class="key-message" style="margin-top: 30px;">
-                    <h2>These Are the Deliverables</h2>
-                    <p>Not concepts. Not processes. Tangible artifacts that exist,<br>
-                    can be reviewed, and connect business to operations.</p>
-                </div>
             </div>
         </div>
 
@@ -1005,7 +1168,7 @@
                 <div class="section-header">
                     <div class="section-number">5</div>
                     <div>
-                        <div class="section-title">Concrete Examples</div>
+                        <div class="section-title">Examples</div>
                         <div class="section-desc">Real data, real values — proof that this isn't vaporware</div>
                     </div>
                 </div>
@@ -1167,11 +1330,6 @@
                     </div>
                 </div>
 
-                <div class="key-message" style="margin-top: 30px;">
-                    <h2>This Is Real Work</h2>
-                    <p>Not concepts. Not vaporware. Concrete artifacts your teams produce<br>
-                    that connect business expectations to operational response.</p>
-                </div>
             </div>
         </div>
     </div>
