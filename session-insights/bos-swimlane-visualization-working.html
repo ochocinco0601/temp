@@ -1280,6 +1280,10 @@
                     </div>
                 </div>
 
+                <div style="background: #e7f1ff; border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; font-size: 0.85rem; color: #333;">
+                    <strong>Scenario:</strong> Credit Check Service — enables loan officers to pull credit reports during the application process
+                </div>
+
                 <div class="swimlane">
                     <div class="header-cell corner"></div>
                     <div class="header-cell">DEFINE</div>
@@ -1290,48 +1294,97 @@
                     <div class="row-header product">PRODUCT</div>
                     <div class="example-cell product-row">
                         <div class="example-group">
+                            <div class="activity-header">Register the service</div>
+                            <div class="output-item">
+                                <div class="output-name">Service Identity</div>
+                                <div class="output-example">"Credit Check Service — enables loan officers to pull credit reports during application process"</div>
+                            </div>
+                            <div class="output-item">
+                                <div class="output-name">Ownership</div>
+                                <div class="output-example">PO: Consumer Lending team | Tech: Credit Platform team</div>
+                            </div>
+                            <div class="output-item">
+                                <div class="output-name">Tier</div>
+                                <div class="output-example">Tier 1 (revenue-critical)</div>
+                            </div>
+                        </div>
+                        <div class="example-group">
                             <div class="activity-header">Define what matters</div>
                             <div class="output-item">
-                                <div class="output-name">Stakeholder Expectation</div>
-                                <div class="output-example">"Loan officers expect credit checks in 5 seconds"</div>
+                                <div class="output-name">Stakeholder</div>
+                                <div class="output-example">Loan officers (850 active users)</div>
+                            </div>
+                            <div class="output-item">
+                                <div class="output-name">Expectation</div>
+                                <div class="output-example">"Credit checks complete within 5 seconds"</div>
                             </div>
                             <div class="output-item">
                                 <div class="output-name">Business Impact</div>
-                                <div class="output-example">"$2.3M daily revenue at risk if credit checks fail"</div>
+                                <div class="output-example">"$2.3M daily revenue at risk if credit checks are unavailable during business hours"</div>
                             </div>
                             <div class="output-item">
-                                <div class="output-name">Impact Category</div>
+                                <div class="output-name">Impact Categories</div>
                                 <div class="output-example">Customer Experience, Financial</div>
                             </div>
+                        </div>
+                        <div class="example-group">
+                            <div class="activity-header">Define business signals</div>
                             <div class="output-item">
-                                <div class="output-name">Business Health Target</div>
-                                <div class="output-example">"≥ 99% success rate during peak hours (9am-5pm)"</div>
+                                <div class="output-name">Health Criteria</div>
+                                <div class="output-example">"% of credit checks completing successfully within 5 seconds"</div>
+                            </div>
+                            <div class="output-item">
+                                <div class="output-name">Impact Criteria</div>
+                                <div class="output-example">"Estimated revenue impact per hour of degradation"</div>
+                            </div>
+                        </div>
+                        <div class="example-group">
+                            <div class="activity-header">Set SLO targets</div>
+                            <div class="output-item">
+                                <div class="output-name">Target</div>
+                                <div class="output-example">≥ 99.5% success rate</div>
+                            </div>
+                            <div class="output-item">
+                                <div class="output-name">Time Window</div>
+                                <div class="output-example">30-day rolling window</div>
+                            </div>
+                            <div class="output-item">
+                                <div class="output-name">Rationale</div>
+                                <div class="output-example">"Below 99.5%, loan officer abandonment rate increases measurably"</div>
                             </div>
                         </div>
                     </div>
                     <div class="example-cell product-row">
                         <div class="example-group">
-                            <div class="activity-header">Review & approve</div>
+                            <div class="activity-header">Validate & approve</div>
                             <div class="output-item">
                                 <div class="output-name">Signal Validation</div>
                                 <div class="output-example">"Confirmed: success_rate signal reflects actual loan officer experience"</div>
                             </div>
                             <div class="output-item">
                                 <div class="output-name">Dashboard Sign-off</div>
-                                <div class="output-example">"L4 Executive view approved for production"</div>
+                                <div class="output-example">"Executive dashboard approved for production use"</div>
+                            </div>
+                            <div class="output-item">
+                                <div class="output-name">Business Clarification</div>
+                                <div class="output-example">"'Success' means credit report returned and rendered, not just API 200"</div>
                             </div>
                         </div>
                     </div>
                     <div class="example-cell product-row">
                         <div class="example-group">
-                            <div class="activity-header">Tell Ops what matters</div>
+                            <div class="activity-header">Guide operations</div>
                             <div class="output-item">
-                                <div class="output-name">Incident Priority</div>
-                                <div class="output-example">"Credit check down = P1 (direct revenue impact)"</div>
+                                <div class="output-name">Priority Guidance</div>
+                                <div class="output-example">"Credit check down = P1 during business hours (direct revenue impact)"</div>
                             </div>
                             <div class="output-item">
-                                <div class="output-name">Expectation Update</div>
-                                <div class="output-example">"Lower threshold to 4s based on Q3 incident learnings"</div>
+                                <div class="output-name">Escalation Decision</div>
+                                <div class="output-example">"Escalate to VP if degraded > 30 min during peak"</div>
+                            </div>
+                            <div class="output-item">
+                                <div class="output-name">Updated Expectation</div>
+                                <div class="output-example">"Lowered threshold to 4s based on Q3 incident learnings"</div>
                             </div>
                         </div>
                     </div>
@@ -1340,31 +1393,41 @@
                     <div class="row-header appdev">APP DEV</div>
                     <div class="example-cell appdev-row">
                         <div class="example-group">
-                            <div class="activity-header">Figure out what data exists</div>
+                            <div class="activity-header">Assess data availability</div>
                             <div class="output-item">
-                                <div class="output-name">Data Sources</div>
-                                <div class="output-example">Splunk: credit_check_logs<br>Prometheus: api_latency_ms</div>
+                                <div class="output-name">Data Sources Found</div>
+                                <div class="output-example">Splunk: credit_check_logs | Prometheus: api_latency_ms</div>
                             </div>
                             <div class="output-item">
-                                <div class="output-name">Gap Analysis</div>
-                                <div class="output-example">"Missing: end-to-end transaction tracing"</div>
+                                <div class="output-name">Telemetry Gap</div>
+                                <div class="output-example">"Missing: end-to-end transaction tracing from request to render"</div>
+                            </div>
+                        </div>
+                        <div class="example-group">
+                            <div class="activity-header">Define process signals</div>
+                            <div class="output-item">
+                                <div class="output-name">Process Signal</div>
+                                <div class="output-example">"API response time, request queue depth, retry rate"</div>
                             </div>
                         </div>
                     </div>
                     <div class="example-cell appdev-row">
                         <div class="example-group">
-                            <div class="activity-header">Build the queries</div>
+                            <div class="activity-header">Build instrumentation</div>
                             <div class="output-item">
-                                <div class="output-name">Query</div>
-                                <div class="output-example">SELECT avg(response_time) FROM credit_check WHERE status='success'</div>
+                                <div class="output-name">New Telemetry</div>
+                                <div class="output-example">"Added trace_id to credit check API calls for end-to-end tracking"</div>
+                            </div>
+                        </div>
+                        <div class="example-group">
+                            <div class="activity-header">Write the queries</div>
+                            <div class="output-item">
+                                <div class="output-name">Good Events / Total Events</div>
+                                <div class="output-example">good = credit checks completed in &lt; 5s | total = all credit check requests</div>
                             </div>
                             <div class="output-item">
-                                <div class="output-name">Signal Query Logic</div>
-                                <div class="output-example">credit_check_success_rate = successful_calls / total_calls</div>
-                            </div>
-                            <div class="output-item">
-                                <div class="output-name">Instrumentation</div>
-                                <div class="output-example">"Added trace_id to credit check API calls"</div>
+                                <div class="output-name">Signal Formula</div>
+                                <div class="output-example">credit_check_success_rate = good_events / total_events</div>
                             </div>
                         </div>
                     </div>
@@ -1386,48 +1449,74 @@
                     <div class="row-header platform">PLATFORM OPS</div>
                     <div class="example-cell platform-row">
                         <div class="example-group">
-                            <div class="activity-header">Set the guardrails</div>
+                            <div class="activity-header">Define system signals</div>
                             <div class="output-item">
-                                <div class="output-name">SLO Target</div>
-                                <div class="output-example">99.5% availability, p95 latency < 5s</div>
+                                <div class="output-name">Infrastructure Signal</div>
+                                <div class="output-example">"CPU utilization, memory pressure, network latency to credit bureau"</div>
+                            </div>
+                        </div>
+                        <div class="example-group">
+                            <div class="activity-header">Configure alerting</div>
+                            <div class="output-item">
+                                <div class="output-name">Warning Threshold</div>
+                                <div class="output-example">"Warn if success_rate &lt; 99.5% for 5 min"</div>
                             </div>
                             <div class="output-item">
-                                <div class="output-name">Alert Threshold</div>
-                                <div class="output-example">"Page if success_rate < 99% for 5 min"</div>
+                                <div class="output-name">Critical Threshold</div>
+                                <div class="output-example">"Page if success_rate &lt; 99% for 5 min"</div>
                             </div>
                             <div class="output-item">
-                                <div class="output-name">Dashboard Hierarchy</div>
-                                <div class="output-example">L4 Executive → L3 Service → L2 Component</div>
+                                <div class="output-name">Routing</div>
+                                <div class="output-example">P1 → page on-call SRE | P2 → ServiceNow + Slack #ops-alerts</div>
                             </div>
                         </div>
                     </div>
                     <div class="example-cell platform-row">
                         <div class="example-group">
-                            <div class="activity-header">Build the dashboards & alerts</div>
+                            <div class="activity-header">Build dashboards</div>
                             <div class="output-item">
-                                <div class="output-name">Dashboard</div>
-                                <div class="output-example">L4 Executive: 6 business health panels<br>L3 Service: signal status by service</div>
+                                <div class="output-name">Context Section</div>
+                                <div class="output-example">Service identity, ownership, tier, stakeholder summary</div>
                             </div>
                             <div class="output-item">
-                                <div class="output-name">Alert Routing</div>
-                                <div class="output-example">P1 → Page on-call<br>P2 → ServiceNow #ops-alerts + 15 min escalation</div>
+                                <div class="output-name">Health Section</div>
+                                <div class="output-example">Success rate gauge + trend, SLO burn rate</div>
                             </div>
                             <div class="output-item">
-                                <div class="output-name">Runbook</div>
-                                <div class="output-example">credit-check-degraded.md linked to signal</div>
+                                <div class="output-name">Impact Section</div>
+                                <div class="output-example">Revenue impact estimator, customer experience score</div>
+                            </div>
+                        </div>
+                        <div class="example-group">
+                            <div class="activity-header">Create runbooks</div>
+                            <div class="output-item">
+                                <div class="output-name">Diagnostic</div>
+                                <div class="output-example">"Step 1: Check credit bureau connectivity"</div>
+                            </div>
+                            <div class="output-item">
+                                <div class="output-name">Remediation</div>
+                                <div class="output-example">"Failover to secondary bureau if primary &gt; 10s latency"</div>
+                            </div>
+                            <div class="output-item">
+                                <div class="output-name">Escalation</div>
+                                <div class="output-example">"15 min → App Dev on-call | 30 min → VP Consumer Lending"</div>
                             </div>
                         </div>
                     </div>
                     <div class="example-cell platform-row">
                         <div class="example-group">
-                            <div class="activity-header">Watch & respond</div>
-                            <div class="output-item">
-                                <div class="output-name">Dashboard Maintenance</div>
-                                <div class="output-example">"Weekly panel review, monthly threshold tuning"</div>
-                            </div>
+                            <div class="activity-header">Respond & triage</div>
                             <div class="output-item">
                                 <div class="output-name">Alert Response</div>
                                 <div class="output-example">"Acknowledged within 5 min SLA"</div>
+                            </div>
+                            <div class="output-item">
+                                <div class="output-name">Triage</div>
+                                <div class="output-example">"$2.3M/day at risk → classified P1"</div>
+                            </div>
+                            <div class="output-item">
+                                <div class="output-name">Incident Communication</div>
+                                <div class="output-example">"Credit check degraded — loan officers at 8s response, revenue impact ~$95K/hr"</div>
                             </div>
                             <div class="output-item">
                                 <div class="output-name">Playbook Execution</div>
