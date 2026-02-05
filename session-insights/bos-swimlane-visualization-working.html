@@ -580,7 +580,6 @@
             <div class="nav-tab" onclick="showView('bos')">2. SDLC (BOS)</div>
             <div class="nav-tab" onclick="showView('integrated')">3. What Teams Do</div>
             <div class="nav-tab" onclick="showView('artifacts')">4. Outputs</div>
-            <div class="nav-tab" onclick="showView('artifacts-grounded')">4b. Outputs (Grounded)</div>
             <div class="nav-tab" onclick="showView('examples')">5. Examples</div>
         </div>
 
@@ -990,203 +989,14 @@
             </div>
         </div>
 
-        <!-- View 4: Artifacts Pattern Layer -->
+        <!-- View 4: Outputs (Grounded from Tab 3) -->
         <div id="artifacts" class="view">
             <div class="section">
                 <div class="section-header">
                     <div class="section-number">4</div>
                     <div>
                         <div class="section-title">Outputs</div>
-                        <div class="section-desc">What each team produces — connecting Business Health to Business Impact</div>
-                    </div>
-                </div>
-
-                <div class="swimlane">
-                    <div class="header-cell corner"></div>
-                    <div class="header-cell">DEFINE</div>
-                    <div class="header-cell">IMPLEMENT</div>
-                    <div class="header-cell">OPERATE</div>
-
-                    <!-- PRODUCT ROW -->
-                    <div class="row-header product">PRODUCT</div>
-                    <div class="artifact-cell product-row">
-                        <div class="artifact-group">
-                            <div class="artifact-activity">Define what matters</div>
-                            <div class="artifact-tree">
-                                <div class="artifact-item">
-                                    <span class="artifact-name">Stakeholder Expectations</span>
-                                    <span class="artifact-pattern">Who cares, what they need, response time tolerances</span>
-                                </div>
-                                <div class="artifact-item">
-                                    <span class="artifact-name">Business Impact Definitions</span>
-                                    <span class="artifact-pattern">Revenue/customer/regulatory consequences quantified</span>
-                                </div>
-                                <div class="artifact-item">
-                                    <span class="artifact-name">Impact Category Selection</span>
-                                    <span class="artifact-pattern">Customer, financial, legal/risk, operational classification</span>
-                                </div>
-                                <div class="artifact-item">
-                                    <span class="artifact-name">Business Health Targets</span>
-                                    <span class="artifact-pattern">Business Health thresholds defining "healthy" (with rationale)</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="artifact-cell product-row">
-                        <div class="artifact-group">
-                            <div class="artifact-activity">Review & approve</div>
-                            <div class="artifact-tree">
-                                <div class="artifact-item">
-                                    <span class="artifact-name">Signal Validation</span>
-                                    <span class="artifact-pattern">Confirmation that signals reflect business reality</span>
-                                </div>
-                                <div class="artifact-item">
-                                    <span class="artifact-name">Dashboard Sign-off</span>
-                                    <span class="artifact-pattern">Approval for production use</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="artifact-cell product-row">
-                        <div class="artifact-group">
-                            <div class="artifact-activity">Tell Ops what matters</div>
-                            <div class="artifact-tree">
-                                <div class="artifact-item">
-                                    <span class="artifact-name">Incident Priority Rules</span>
-                                    <span class="artifact-pattern">P1/P2/P3 classification by business impact</span>
-                                </div>
-                                <div class="artifact-item">
-                                    <span class="artifact-name">Expectation Updates</span>
-                                    <span class="artifact-pattern">Revised thresholds based on learnings</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- APP DEV ROW -->
-                    <div class="row-header appdev">APP DEV</div>
-                    <div class="artifact-cell appdev-row">
-                        <div class="artifact-group">
-                            <div class="artifact-activity">Figure out what data exists</div>
-                            <div class="artifact-tree">
-                                <div class="artifact-item">
-                                    <span class="artifact-name">Data Source Inventory</span>
-                                    <span class="artifact-pattern">Logs, metrics, traces available per service</span>
-                                </div>
-                                <div class="artifact-item">
-                                    <span class="artifact-name">Gap Analysis</span>
-                                    <span class="artifact-pattern">What's missing to measure business criteria</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="artifact-cell appdev-row">
-                        <div class="artifact-group">
-                            <div class="artifact-activity">Build the queries</div>
-                            <div class="artifact-tree">
-                                <div class="artifact-item">
-                                    <span class="artifact-name">Query Implementations</span>
-                                    <span class="artifact-pattern">SPL/SQL that extracts business metrics</span>
-                                </div>
-                                <div class="artifact-item">
-                                    <span class="artifact-name">Signal Query Logic</span>
-                                    <span class="artifact-pattern">SPL/SQL formulas implementing business health signals</span>
-                                </div>
-                                <div class="artifact-item">
-                                    <span class="artifact-name">Instrumentation Code</span>
-                                    <span class="artifact-pattern">New telemetry where gaps existed</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="artifact-cell appdev-row">
-                        <div class="artifact-group">
-                            <div class="artifact-activity">Fix data problems</div>
-                            <div class="artifact-tree">
-                                <div class="artifact-item">
-                                    <span class="artifact-name">Query Fixes</span>
-                                    <span class="artifact-pattern">Corrections when signals drift from reality</span>
-                                </div>
-                                <div class="artifact-item">
-                                    <span class="artifact-name">Instrumentation Patches</span>
-                                    <span class="artifact-pattern">Repairs to telemetry collection</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- PLATFORM OPS ROW -->
-                    <div class="row-header platform">PLATFORM OPS</div>
-                    <div class="artifact-cell platform-row">
-                        <div class="artifact-group">
-                            <div class="artifact-activity">Set the guardrails</div>
-                            <div class="artifact-tree">
-                                <div class="artifact-item">
-                                    <span class="artifact-name">SLO Target Input</span>
-                                    <span class="artifact-pattern">Operational recommendations for availability, latency, error rate (PO approves)</span>
-                                </div>
-                                <div class="artifact-item">
-                                    <span class="artifact-name">Alert Threshold Input</span>
-                                    <span class="artifact-pattern">When to page vs. notify vs. log (based on ops experience)</span>
-                                </div>
-                                <div class="artifact-item">
-                                    <span class="artifact-name">Dashboard Hierarchy</span>
-                                    <span class="artifact-pattern">L4 / L3 / L2 / L1 view structure</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="artifact-cell platform-row">
-                        <div class="artifact-group">
-                            <div class="artifact-activity">Build the dashboards & alerts</div>
-                            <div class="artifact-tree">
-                                <div class="artifact-item">
-                                    <span class="artifact-name">Dashboard Configurations</span>
-                                    <span class="artifact-pattern">Executive / Service / Operational views</span>
-                                </div>
-                                <div class="artifact-item">
-                                    <span class="artifact-name">Alert Routing Rules</span>
-                                    <span class="artifact-pattern">P1/P2/P3 escalation paths</span>
-                                </div>
-                                <div class="artifact-item">
-                                    <span class="artifact-name">Runbooks</span>
-                                    <span class="artifact-pattern">Signal-linked playbooks per service</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="artifact-cell platform-row">
-                        <div class="artifact-group">
-                            <div class="artifact-activity">Watch & respond</div>
-                            <div class="artifact-tree">
-                                <div class="artifact-item">
-                                    <span class="artifact-name">Dashboard Health</span>
-                                    <span class="artifact-pattern">Ongoing accuracy and relevance</span>
-                                </div>
-                                <div class="artifact-item">
-                                    <span class="artifact-name">Alert Responses</span>
-                                    <span class="artifact-pattern">Acknowledged, triaged, escalated</span>
-                                </div>
-                                <div class="artifact-item">
-                                    <span class="artifact-name">Playbook Executions</span>
-                                    <span class="artifact-pattern">Runbook followed, outcome documented</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-        <!-- View 4b: Outputs (Grounded) - Mirrors Tab 3 structure -->
-        <div id="artifacts-grounded" class="view">
-            <div class="section">
-                <div class="section-header">
-                    <div class="section-number">4b</div>
-                    <div>
-                        <div class="section-title">Outputs (Grounded)</div>
-                        <div class="section-desc">Artifacts mapped 1:1 from Tab 3 actions — for comparison</div>
+                        <div class="section-desc">What each team produces — artifacts mapped from Tab 3 actions</div>
                     </div>
                 </div>
 
@@ -1646,8 +1456,7 @@
             if (viewId === 'bos') tabs[1].classList.add('active');
             if (viewId === 'integrated') tabs[2].classList.add('active');
             if (viewId === 'artifacts') tabs[3].classList.add('active');
-            if (viewId === 'artifacts-grounded') tabs[4].classList.add('active');
-            if (viewId === 'examples') tabs[5].classList.add('active');
+            if (viewId === 'examples') tabs[4].classList.add('active');
         }
     </script>
 </body>
