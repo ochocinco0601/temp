@@ -559,6 +559,192 @@
         .impact-dot.legal { background: #e74c3c; }
         .impact-dot.operational { background: #f39c12; }
 
+        /* Methodology Tab - Redesigned */
+        .methodology-sc {
+            background: #f8f9fa;
+            border-left: 4px solid #495057;
+            padding: 16px 24px;
+            margin-bottom: 32px;
+            font-size: 0.95rem;
+            color: #495057;
+            line-height: 1.8;
+        }
+
+        .framework-section {
+            margin-bottom: 28px;
+        }
+
+        .framework-section h3 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #1a1a2e;
+            margin-bottom: 4px;
+        }
+
+        .framework-subtitle {
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-bottom: 16px;
+        }
+
+        .four-layer-grid {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .layer-row {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            gap: 16px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .layer-row:last-child {
+            border-bottom: none;
+        }
+
+        .traditional-zone {
+            background: #f8f9fa;
+        }
+
+        .bos-zone {
+            background: #f0f4ff;
+        }
+
+        .layer-number {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.95rem;
+            flex-shrink: 0;
+        }
+
+        .traditional-zone .layer-number {
+            background: #dee2e6;
+            color: #495057;
+        }
+
+        .bos-zone .layer-number {
+            background: #4361ee;
+            color: white;
+        }
+
+        .layer-content {
+            flex: 1;
+        }
+
+        .layer-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #1a1a2e;
+        }
+
+        .layer-question {
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-top: 2px;
+        }
+
+        .layer-badge {
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .traditional-badge {
+            background: #e9ecef;
+            color: #495057;
+        }
+
+        .bos-badge {
+            background: #e7f1ff;
+            color: #4361ee;
+        }
+
+        .layer-gap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 20px;
+            background: white;
+            border-top: 2px dashed #dee2e6;
+            border-bottom: 2px dashed #dee2e6;
+        }
+
+        .layer-gap span {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #dc3545;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .impact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 12px;
+        }
+
+        .impact-card {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border-top: 3px solid;
+        }
+
+        .impact-card.customer { border-color: #4361ee; }
+        .impact-card.financial { border-color: #2ecc71; }
+        .impact-card.legal { border-color: #e74c3c; }
+        .impact-card.operational { border-color: #f39c12; }
+
+        .impact-label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #1a1a2e;
+            margin-bottom: 4px;
+        }
+
+        .impact-desc {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+
+        .accountability-chain {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            padding: 16px 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .chain-item {
+            background: #f8f9fa;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 0.88rem;
+            color: #1a1a2e;
+            border: 1px solid #dee2e6;
+        }
+
+        .chain-arrow {
+            color: #6c757d;
+            font-size: 1rem;
+        }
+
         /* Responsive */
         @media (max-width: 1000px) {
             .swimlane {
@@ -576,249 +762,108 @@
         <h1>Who Does What? <span style="font-weight: 400; font-size: 0.6em; color: #666;">— Business Observability System (BOS) in SDLC</span></h1>
 
         <div class="nav-tabs">
-            <div class="nav-tab active" onclick="showView('sdlc')">1. SDLC Baseline</div>
-            <div class="nav-tab" onclick="showView('bos')">2. SDLC (BOS)</div>
-            <div class="nav-tab" onclick="showView('integrated')">3. What Teams Do</div>
-            <div class="nav-tab" onclick="showView('artifacts')">4. Outputs</div>
-            <div class="nav-tab" onclick="showView('examples')">5. Examples</div>
+            <div class="nav-tab active" onclick="showView('bos')">1. Methodology</div>
+            <div class="nav-tab" onclick="showView('integrated')">2. What Teams Do</div>
+            <div class="nav-tab" onclick="showView('artifacts')">3. Outputs</div>
+            <div class="nav-tab" onclick="showView('examples')">4. Examples</div>
         </div>
 
-        <!-- View 1: SDLC -->
-        <div id="sdlc" class="view active">
+        <!-- View 2: Methodology -->
+        <div id="bos" class="view active">
             <div class="section">
                 <div class="section-header">
                     <div class="section-number">1</div>
                     <div>
-                        <div class="section-title">SDLC Baseline</div>
-                        <div class="section-desc">The accountability pattern you already follow</div>
+                        <div class="section-title">Methodology</div>
                     </div>
                 </div>
 
-                <div class="swimlane">
-                    <div class="header-cell corner"></div>
-                    <div class="header-cell">DEFINE</div>
-                    <div class="header-cell">IMPLEMENT</div>
-                    <div class="header-cell">OPERATE</div>
-
-                    <div class="row-header product">PRODUCT</div>
-                    <div class="cell product-row">
-                        <ul>
-                            <li>Business Requirements</li>
-                            <li>User Stories</li>
-                            <li>Priority Decisions</li>
-                            <li>Success Definitions</li>
-                        </ul>
-                    </div>
-                    <div class="cell product-row">
-                        <ul>
-                            <li>Acceptance Criteria</li>
-                            <li>Requirement Clarification</li>
-                            <li>Testing Sign-off</li>
-                        </ul>
-                    </div>
-                    <div class="cell product-row">
-                        <ul>
-                            <li>Outcome Validation</li>
-                            <li>Go/No-Go Decisions</li>
-                            <li>Priority Guidance</li>
-                        </ul>
-                    </div>
-
-                    <div class="row-header appdev">APP DEV</div>
-                    <div class="cell appdev-row">
-                        <ul>
-                            <li>Feasibility Assessment</li>
-                            <li>Design Proposals</li>
-                            <li>Effort Estimates</li>
-                        </ul>
-                    </div>
-                    <div class="cell appdev-row">
-                        <ul>
-                            <li>Application Code</li>
-                            <li>Unit/Integration Tests</li>
-                            <li>APIs and Services</li>
-                            <li>Build Artifacts</li>
-                        </ul>
-                    </div>
-                    <div class="cell appdev-row">
-                        <ul>
-                            <li>Bug Fixes</li>
-                            <li>Production Debugging</li>
-                            <li>Code-level Support</li>
-                        </ul>
-                    </div>
-
-                    <div class="row-header platform">PLATFORM OPS</div>
-                    <div class="cell platform-row">
-                        <ul>
-                            <li>NFR Input</li>
-                            <li>Infrastructure Constraints</li>
-                            <li>Operational Readiness Criteria</li>
-                        </ul>
-                    </div>
-                    <div class="cell platform-row">
-                        <ul>
-                            <li>CI/CD Pipelines</li>
-                            <li>Deployment Configuration</li>
-                            <li>Environment Provisioning</li>
-                        </ul>
-                    </div>
-                    <div class="cell platform-row">
-                        <ul>
-                            <li>System Monitoring</li>
-                            <li>Alerting</li>
-                            <li>Incident Response</li>
-                            <li>Runbooks</li>
-                        </ul>
-                    </div>
+                <!-- Situation + Complication -->
+                <div class="methodology-sc">
+                    Current observability is oriented around technical health. Business impact is discovered during incidents, not known in advance. Where smart teams have solved this, it's bespoke — no repeatable pattern exists at scale.
                 </div>
-            </div>
-        </div>
 
-        <!-- View 2: BOS -->
-        <div id="bos" class="view">
-            <div class="section">
-                <div class="section-header">
-                    <div class="section-number">2</div>
-                    <div>
-                        <div class="section-title">SDLC (BOS)</div>
-                        <div class="section-desc">The same pattern — for knowing if business is healthy</div>
+                <!-- Primary: Four layers of observability -->
+                <div class="framework-section">
+                    <h3>Four layers of observability</h3>
+                    <p class="framework-subtitle">Traditional monitoring covers two. Business observability adds two more.</p>
+                    <div class="four-layer-grid">
+                        <div class="layer-row traditional-zone">
+                            <div class="layer-number">1</div>
+                            <div class="layer-content">
+                                <div class="layer-name">System</div>
+                                <div class="layer-question">Is the infrastructure operational?</div>
+                            </div>
+                            <div class="layer-badge traditional-badge">Traditional</div>
+                        </div>
+                        <div class="layer-row traditional-zone">
+                            <div class="layer-number">2</div>
+                            <div class="layer-content">
+                                <div class="layer-name">Process</div>
+                                <div class="layer-question">Is the application workflow functioning?</div>
+                            </div>
+                            <div class="layer-badge traditional-badge">Traditional</div>
+                        </div>
+                        <div class="layer-gap">
+                            <span>The gap most organizations have today</span>
+                        </div>
+                        <div class="layer-row bos-zone">
+                            <div class="layer-number">3</div>
+                            <div class="layer-content">
+                                <div class="layer-name">Business Health</div>
+                                <div class="layer-question">Is the business expectation being met?</div>
+                            </div>
+                            <div class="layer-badge bos-badge">BOS Adds</div>
+                        </div>
+                        <div class="layer-row bos-zone">
+                            <div class="layer-number">4</div>
+                            <div class="layer-content">
+                                <div class="layer-name">Business Impact</div>
+                                <div class="layer-question">What's the business consequence when we fail?</div>
+                            </div>
+                            <div class="layer-badge bos-badge">BOS Adds</div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="swimlane">
-                    <div class="header-cell corner"></div>
-                    <div class="header-cell">DEFINE</div>
-                    <div class="header-cell">IMPLEMENT</div>
-                    <div class="header-cell">OPERATE</div>
-
-                    <div class="row-header product">PRODUCT</div>
-                    <div class="cell product-row">
-                        <ul>
-                            <li>Stakeholder Expectations</li>
-                            <li>Business Impact Definitions</li>
-                            <li>Impact Category Selection</li>
-                            <li>Business Health Targets</li>
-                            <li>Service Scope Decisions</li>
-                        </ul>
-                    </div>
-                    <div class="cell product-row">
-                        <ul>
-                            <li>Signal Validation</li>
-                            <li>Acceptance Decisions</li>
-                            <li>Business Clarification</li>
-                        </ul>
-                    </div>
-                    <div class="cell product-row">
-                        <ul>
-                            <li>Incident Priority Guidance</li>
-                            <li>Expectation Updates</li>
-                            <li>Go/No-Go Decisions</li>
-                        </ul>
-                    </div>
-
-                    <div class="row-header appdev">APP DEV</div>
-                    <div class="cell appdev-row">
-                        <ul>
-                            <li>Data Source Identification</li>
-                            <li>Instrumentation Gap Analysis</li>
-                            <li>Technical Feasibility</li>
-                        </ul>
-                    </div>
-                    <div class="cell appdev-row">
-                        <ul>
-                            <li>Query Implementation</li>
-                            <li>Signal Query Logic</li>
-                            <li>Data Source Configuration</li>
-                            <li>Instrumentation</li>
-                        </ul>
-                    </div>
-                    <div class="cell appdev-row">
-                        <ul>
-                            <li>Query Maintenance</li>
-                            <li>Instrumentation Fixes</li>
-                            <li>Data Troubleshooting</li>
-                        </ul>
-                    </div>
-
-                    <div class="row-header platform">PLATFORM OPS</div>
-                    <div class="cell platform-row">
-                        <ul>
-                            <li>SLO Target Input</li>
-                            <li>Alert Threshold Input</li>
-                            <li>Dashboard Hierarchy Needs</li>
-                        </ul>
-                    </div>
-                    <div class="cell platform-row">
-                        <ul>
-                            <li>Dashboard Configuration</li>
-                            <li>Alert Routing</li>
-                            <li>Runbook Creation</li>
-                            <li>Pipeline Integration</li>
-                        </ul>
-                    </div>
-                    <div class="cell platform-row">
-                        <ul>
-                            <li>Dashboard Maintenance</li>
-                            <li>Alert Response</li>
-                            <li>Playbook Execution</li>
-                            <li>Incident Response</li>
-                        </ul>
+                <!-- Second: Four types of business impact -->
+                <div class="framework-section">
+                    <h3>Four types of business impact</h3>
+                    <p class="framework-subtitle">Turns "what should we monitor?" into four manageable categories.</p>
+                    <div class="impact-grid">
+                        <div class="impact-card customer">
+                            <div class="impact-label">Customer</div>
+                            <div class="impact-desc">Are users getting what they expect?</div>
+                        </div>
+                        <div class="impact-card financial">
+                            <div class="impact-label">Financial</div>
+                            <div class="impact-desc">What's the revenue or cost impact?</div>
+                        </div>
+                        <div class="impact-card legal">
+                            <div class="impact-label">Legal / Risk</div>
+                            <div class="impact-desc">Are we meeting compliance obligations?</div>
+                        </div>
+                        <div class="impact-card operational">
+                            <div class="impact-label">Operational</div>
+                            <div class="impact-desc">Can we sustain operations?</div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Methodology Reference Panel -->
-                <div class="methodology-panel" style="margin-top: 24px;">
-                    <h3>BOS Framework Reference</h3>
-
-                    <!-- Core Definition -->
-                    <p style="font-size: 0.9rem; color: #495057; margin-bottom: 20px; line-height: 1.6;">
-                        Business observability begins with defining success in terms of business health—customer outcomes, financial impact, compliance, and operational efficiency. Technical observability (signals, instrumentation, dashboards) exists to support that framing, ensuring every metric and indicator ties back to whether the service is delivering its business value.
-                    </p>
-
-                    <!-- Semantic Flow -->
-                    <div class="semantic-flow">
-                        <span class="flow-item">Stakeholder</span>
-                        <span class="flow-arrow">→</span>
-                        <span class="flow-item">Expectation</span>
-                        <span class="flow-arrow">→</span>
-                        <span class="flow-item">Impact</span>
-                        <span class="flow-arrow">→</span>
-                        <span class="flow-item">Signal</span>
-                        <span class="flow-arrow">→</span>
-                        <span class="flow-item">Dashboard / Playbook</span>
-                    </div>
-
-                    <!-- Four-Layer Model -->
-                    <div class="four-layer-mini">
-                        <div class="layer-header">Layer</div>
-                        <div class="layer-header">Name</div>
-                        <div class="layer-header">Question</div>
-
-                        <div class="layer-cell layer-num">1</div>
-                        <div class="layer-cell traditional">System <span class="layer-tag traditional">Traditional</span></div>
-                        <div class="layer-cell">Is the platform operational?</div>
-
-                        <div class="layer-cell layer-num">2</div>
-                        <div class="layer-cell traditional">Process <span class="layer-tag traditional">Traditional</span></div>
-                        <div class="layer-cell">Is the workflow correct?</div>
-
-                        <div class="layer-cell layer-num">3</div>
-                        <div class="layer-cell bos-adds">Business Health <span class="layer-tag bos">BOS Adds</span></div>
-                        <div class="layer-cell">Is the expectation being met?</div>
-
-                        <div class="layer-cell layer-num">4</div>
-                        <div class="layer-cell bos-adds">Business Impact <span class="layer-tag bos">BOS Adds</span></div>
-                        <div class="layer-cell">How bad when we fail?</div>
-                    </div>
-
-                    <!-- Impact Categories -->
-                    <div class="impact-categories">
-                        <strong style="margin-right: 8px;">Impact Categories:</strong>
-                        <span class="impact-category"><span class="impact-dot customer"></span> Customer</span>
-                        <span class="impact-category"><span class="impact-dot financial"></span> Financial</span>
-                        <span class="impact-category"><span class="impact-dot legal"></span> Legal/Risk</span>
-                        <span class="impact-category"><span class="impact-dot operational"></span> Operational</span>
+                <!-- Third: From stakeholder to response -->
+                <div class="framework-section">
+                    <h3>From stakeholder to response</h3>
+                    <p class="framework-subtitle">Why accountability falls where it does.</p>
+                    <div class="accountability-chain">
+                        <span class="chain-item">Stakeholder</span>
+                        <span class="chain-arrow">→</span>
+                        <span class="chain-item">Expectation</span>
+                        <span class="chain-arrow">→</span>
+                        <span class="chain-item">Impact</span>
+                        <span class="chain-arrow">→</span>
+                        <span class="chain-item">Signal</span>
+                        <span class="chain-arrow">→</span>
+                        <span class="chain-item">Dashboard / Playbook</span>
                     </div>
                 </div>
             </div>
@@ -828,7 +873,7 @@
         <div id="integrated" class="view">
             <div class="section">
                 <div class="section-header">
-                    <div class="section-number">3</div>
+                    <div class="section-number">2</div>
                     <div>
                         <div class="section-title">What Teams Do</div>
                         <div class="section-desc">Generated from 27 enumerated BOS actions</div>
@@ -869,7 +914,6 @@
                             <div class="sdlc-header">Set SLO targets</div>
                             <ul class="bos-items">
                                 <li>Set SLO target</li>
-                                <li>Define time window</li>
                                 <li>Document business rationale</li>
                             </ul>
                         </div>
@@ -922,8 +966,7 @@
                         <div class="integrated-group">
                             <div class="sdlc-header">Write the queries</div>
                             <ul class="bos-items">
-                                <li>Translate PO criteria to SPL/SQL</li>
-                                <li>Implement good events / total events pattern</li>
+                                <li>Translate business criteria to query logic</li>
                             </ul>
                         </div>
                     </div>
@@ -960,9 +1003,7 @@
                         <div class="integrated-group">
                             <div class="sdlc-header">Build dashboards</div>
                             <ul class="bos-items">
-                                <li>Build business context section</li>
-                                <li>Build business health section</li>
-                                <li>Build business impact section</li>
+                                <li>Build dashboards reflecting business context, health, and impact</li>
                             </ul>
                         </div>
                         <div class="integrated-group">
@@ -993,7 +1034,7 @@
         <div id="artifacts" class="view">
             <div class="section">
                 <div class="section-header">
-                    <div class="section-number">4</div>
+                    <div class="section-number">3</div>
                     <div>
                         <div class="section-title">Outputs</div>
                         <div class="section-desc">What each team produces — artifacts mapped from Tab 3 actions</div>
@@ -1198,10 +1239,6 @@
                                     <span class="artifact-name">Routing Rules</span>
                                     <span class="artifact-pattern">Who gets notified for what</span>
                                 </div>
-                                <div class="artifact-item">
-                                    <span class="artifact-name">Dashboard Hierarchy</span>
-                                    <span class="artifact-pattern">Executive / Service / Operational view structure</span>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -1220,6 +1257,10 @@
                                 <div class="artifact-item">
                                     <span class="artifact-name">Dashboard: Impact Section</span>
                                     <span class="artifact-pattern">Business impact panels</span>
+                                </div>
+                                <div class="artifact-item">
+                                    <span class="artifact-name">Dashboard Hierarchy</span>
+                                    <span class="artifact-pattern">Executive / Service / Operational view structure</span>
                                 </div>
                             </div>
                         </div>
@@ -1273,7 +1314,7 @@
         <div id="examples" class="view">
             <div class="section">
                 <div class="section-header">
-                    <div class="section-number">5</div>
+                    <div class="section-number">4</div>
                     <div>
                         <div class="section-title">Examples</div>
                         <div class="section-desc">Real data, real values — proof that this isn't vaporware</div>
@@ -1541,11 +1582,8 @@
 
             // Activate tab
             const tabs = document.querySelectorAll('.nav-tab');
-            if (viewId === 'sdlc') tabs[0].classList.add('active');
-            if (viewId === 'bos') tabs[1].classList.add('active');
-            if (viewId === 'integrated') tabs[2].classList.add('active');
-            if (viewId === 'artifacts') tabs[3].classList.add('active');
-            if (viewId === 'examples') tabs[4].classList.add('active');
+            const tabMap = { bos: 0, integrated: 1, artifacts: 2, examples: 3 };
+            if (tabMap[viewId] !== undefined) tabs[tabMap[viewId]].classList.add('active');
         }
     </script>
 </body>
