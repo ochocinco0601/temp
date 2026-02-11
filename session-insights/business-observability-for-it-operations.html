@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business Observability for IT Operations</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { background: #F4F5F7; }
+body {
+  font-family: Arial, sans-serif;
+  color: #1C2833;
+  line-height: 1.6;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px 24px 80px 24px;
+}
+
+/* === HEADER === */
+.doc-header {
+  border-bottom: 4px solid #D71E28;
+  padding-bottom: 10px;
+  margin-bottom: 16px;
+}
+.doc-header h1 {
+  font-size: 26px;
+  font-weight: bold;
+  color: #1C2833;
+  margin-bottom: 4px;
+}
+.doc-header .subtitle {
+  font-size: 14px;
+  color: #5D6D7E;
+  line-height: 1.4;
+}
+
+/* === SECTIONS === */
+section {
+  margin-bottom: 48px;
+}
+section h2 {
+  font-size: 20px;
+  font-weight: bold;
+  color: #1C2833;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #E5E7EB;
+}
+section h3 {
+  font-size: 16px;
+  font-weight: bold;
+  color: #2E4053;
+  margin: 20px 0 10px 0;
+}
+p {
+  margin-bottom: 14px;
+  font-size: 15px;
+  color: #2E4053;
+}
+p.lead {
+  font-size: 16px;
+  color: #1C2833;
+  line-height: 1.7;
+}
+
+/* === CALLOUT BOXES === */
+.callout {
+  padding: 18px 22px;
+  border-radius: 4px;
+  margin: 20px 0;
+}
+.callout-problem {
+  background: #FDEDEC;
+  border-left: 4px solid #D71E28;
+}
+.callout-problem .callout-label { color: #D71E28; }
+.callout-insight {
+  background: #EBF5FB;
+  border-left: 4px solid #2980B9;
+}
+.callout-insight .callout-label { color: #1A5276; }
+.callout-action {
+  background: #EAFAF1;
+  border-left: 4px solid #27AE60;
+}
+.callout-action .callout-label { color: #1E8449; }
+.callout-neutral {
+  background: #F8F9F9;
+  border-left: 4px solid #5D6D7E;
+}
+.callout-neutral .callout-label { color: #5D6D7E; }
+.callout .callout-label {
+  font-size: 11px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+.callout p:last-child { margin-bottom: 0; }
+
+/* === TAXONOMY GRID === */
+.taxonomy-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 24px 0;
+}
+.tax-box {
+  background: #FFFFFF;
+  border: 1px solid #D5D8DC;
+  border-radius: 6px;
+  padding: 18px 16px;
+}
+.tax-category {
+  font-size: 14px;
+  font-weight: bold;
+  color: #1C2833;
+  margin-bottom: 2px;
+}
+.tax-question {
+  font-size: 12px;
+  color: #7F8C8D;
+  font-style: italic;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #F2F3F4;
+}
+.tax-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.tax-items li {
+  font-size: 13px;
+  color: #2E4053;
+  padding: 3px 0;
+  line-height: 1.4;
+}
+.tax-items li.bos {
+  color: #2471A3;
+  font-weight: 600;
+}
+.taxonomy-legend {
+  font-size: 12px;
+  color: #7F8C8D;
+  margin: 8px 0 0 0;
+  text-align: right;
+}
+.taxonomy-legend .bos-marker {
+  color: #2471A3;
+  font-weight: 600;
+}
+
+/* === MATURITY BAR === */
+.maturity-section {
+  margin-top: 28px;
+}
+.maturity-bar {
+  display: flex;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #D5D8DC;
+}
+.maturity-segment {
+  flex: 1;
+  padding: 14px 16px;
+  text-align: center;
+}
+.maturity-segment.crawl {
+  background: #F8F9F9;
+  border-right: 1px solid #D5D8DC;
+}
+.maturity-segment.walk {
+  background: #EBF5FB;
+  border-right: 1px solid #D5D8DC;
+}
+.maturity-segment.run {
+  background: #D4E6F1;
+}
+.maturity-level {
+  font-size: 14px;
+  font-weight: bold;
+  color: #2E4053;
+  margin-bottom: 4px;
+}
+.maturity-desc {
+  font-size: 11px;
+  color: #5D6D7E;
+  line-height: 1.4;
+}
+
+/* === THREAD GRID (Section 2) === */
+.thread-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 24px 0;
+}
+.thread-box {
+  background: #FFFFFF;
+  border: 2px solid #D5D8DC;
+  border-radius: 6px;
+  padding: 16px;
+  position: relative;
+}
+.thread-box .tb-category {
+  font-size: 13px;
+  font-weight: bold;
+  color: #1C2833;
+  margin-bottom: 4px;
+}
+.thread-box .tb-desc {
+  font-size: 12px;
+  color: #5D6D7E;
+  line-height: 1.4;
+}
+.thread-box.threaded {
+  border-color: #2980B9;
+  background: #F0F7FC;
+}
+.thread-box.threaded .tb-category {
+  color: #1A5276;
+}
+.thread-box.threaded .tb-step {
+  position: absolute;
+  top: -11px;
+  left: 14px;
+  background: #2980B9;
+  color: #FFFFFF;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: bold;
+}
+.thread-box.faded {
+  opacity: 0.35;
+  border-color: #E5E7EB;
+  background: #FAFAFA;
+}
+
+/* === RESPONSIBILITY MAP (Section 3) === */
+.responsibility-map-wrapper {
+  position: relative;
+  margin: 24px 0;
+}
+.responsibility-map {
+  display: grid;
+  grid-template-columns: 100px 1fr 1fr 1fr;
+  grid-template-rows: auto repeat(3, minmax(100px, auto));
+  border: 1px solid #E5E7EB;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #FFFFFF;
+}
+.rm-header {
+  background: #2E4053;
+  color: #FFFFFF;
+  font-size: 11px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 12px 10px;
+  text-align: center;
+}
+.rm-header.rm-corner { background: #1C2833; }
+.rm-party-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 12px 8px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #FFFFFF;
+  text-align: center;
+  line-height: 1.3;
+}
+.rm-party-label.rm-product { background: #8E44AD; }
+.rm-party-label.rm-appdev { background: #2980B9; }
+.rm-party-label.rm-platform { background: #16A085; }
+.rm-party-label .rm-party-abbr {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+.rm-cell {
+  padding: 14px 12px;
+  border-bottom: 1px solid #E5E7EB;
+  border-right: 1px solid #E5E7EB;
+  font-size: 13px;
+  color: #2E4053;
+  line-height: 1.5;
+}
+.rm-cell:last-child { border-right: none; }
+.rm-cell ul { margin: 0; padding-left: 16px; }
+.rm-cell li { margin-bottom: 4px; }
+.rm-cell li:last-child { margin-bottom: 0; }
+
+/* === PERSONA CARDS (Section 3) === */
+.persona-row {
+  display: flex;
+  gap: 16px;
+  margin: 20px 0;
+}
+.persona-card {
+  flex: 1;
+  padding: 18px;
+  border-radius: 6px;
+  border-top: 4px solid;
+}
+.persona-card.pc-product { border-top-color: #8E44AD; background: #F9F5FC; }
+.persona-card.pc-appdev { border-top-color: #2980B9; background: #F0F7FC; }
+.persona-card.pc-platform { border-top-color: #16A085; background: #F0FAF7; }
+.persona-card .pc-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: bold;
+  color: #FFFFFF;
+  margin-bottom: 10px;
+}
+.persona-card.pc-product .pc-icon { background: #8E44AD; }
+.persona-card.pc-appdev .pc-icon { background: #2980B9; }
+.persona-card.pc-platform .pc-icon { background: #16A085; }
+.persona-card .pc-role {
+  font-size: 14px;
+  font-weight: bold;
+  color: #1C2833;
+  margin-bottom: 6px;
+}
+.persona-card .pc-does {
+  font-size: 13px;
+  color: #2E4053;
+  line-height: 1.5;
+}
+
+/* === SDLC SWIMLANE (Section 4) === */
+.sdlc-swim {
+  display: grid;
+  grid-template-columns: 90px 1fr 1fr 1fr;
+  gap: 2px;
+  background: #D5D8DC;
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 16px 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.sdlc-header {
+  background: #2E4053;
+  color: #FFFFFF;
+  font-size: 11px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 10px 8px;
+  text-align: center;
+}
+.sdlc-corner { background: #1C2833; }
+.sdlc-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 8px;
+  font-size: 11px;
+  font-weight: bold;
+  color: #FFFFFF;
+  text-align: center;
+  letter-spacing: 0.3px;
+}
+.sdlc-label.sl-product { background: #8E44AD; }
+.sdlc-label.sl-dev { background: #2980B9; }
+.sdlc-label.sl-platform { background: #16A085; }
+.sdlc-cell {
+  background: #FFFFFF;
+  padding: 12px;
+}
+.sdlc-activity { margin-bottom: 12px; }
+.sdlc-activity:last-child { margin-bottom: 0; }
+.sdlc-name {
+  font-size: 13px;
+  font-weight: bold;
+  color: #1C2833;
+  margin-bottom: 2px;
+}
+.sdlc-mechanism {
+  font-size: 12px;
+  color: #5D6D7E;
+  line-height: 1.4;
+}
+
+/* === EXAMPLE CELLS (Tab 5) === */
+.ex-scenario {
+  background: #EBF5FB;
+  border-radius: 6px;
+  padding: 10px 16px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  color: #1C2833;
+}
+.ex-cell {
+  background: #FFFFFF;
+  padding: 10px 12px;
+}
+.ex-activity {
+  margin-bottom: 10px;
+}
+.ex-activity:last-child { margin-bottom: 0; }
+.ex-act-name {
+  font-size: 10px;
+  font-weight: bold;
+  color: #95A5A6;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-bottom: 4px;
+}
+.ex-item {
+  font-size: 12px;
+  color: #2E4053;
+  line-height: 1.5;
+  padding: 1px 0;
+}
+.ex-item .ex-label {
+  font-weight: 600;
+  color: #1C2833;
+}
+
+/* === DASHBOARD EMBED (Tab 6) === */
+.dashboard-embed {
+  --db-red: #D71E28;
+  --db-bg: #1a1a2e;
+  --db-bg2: #16162a;
+  --db-ok: #22c55e;
+  --db-warn: #f59e0b;
+  --db-crit: #ef4444;
+  --db-text: #f8fafc;
+  --db-text2: #94a3b8;
+  --db-border: #334155;
+  --db-card: #1e293b;
+  background: var(--db-bg2);
+  color: var(--db-text);
+  border-radius: 8px;
+  padding: 16px 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+.dashboard-embed * { box-sizing: border-box; }
+.db-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--db-border);
+}
+.db-title { display: flex; align-items: center; gap: 12px; }
+.db-title h3 { font-size: 20px; font-weight: 600; color: var(--db-text); margin: 0; border: none; padding: 0; }
+.db-tier { background: var(--db-red); color: white; padding: 3px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+.db-status { display: flex; align-items: center; gap: 8px; }
+.db-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--db-ok); animation: dbpulse 2s infinite; }
+@keyframes dbpulse { 0%,100%{opacity:1} 50%{opacity:0.6} }
+.db-status-text { font-size: 13px; color: var(--db-ok); font-weight: 500; }
+.db-meta { display: flex; gap: 10px; margin-bottom: 10px; }
+.db-meta-card { background: var(--db-card); border: 1px solid var(--db-border); border-radius: 6px; padding: 8px 12px; flex: 1; }
+.db-meta-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--db-text2); margin-bottom: 2px; }
+.db-meta-value { font-size: 13px; font-weight: 500; color: var(--db-text); margin: 0; }
+.db-meta-sub { font-size: 11px; color: var(--db-text2); }
+.db-grid { display: grid; grid-template-columns: 5fr 3fr; gap: 14px; }
+.db-card { background: var(--db-card); border-radius: 6px; border: 1px solid var(--db-border); overflow: hidden; }
+.db-card-header { padding: 8px 14px; border-bottom: 1px solid var(--db-border); }
+.db-card-header h4 { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--db-text2); margin: 0; }
+.db-card-body { padding: 12px 14px; }
+.db-right { display: flex; flex-direction: column; gap: 10px; }
+.db-signal-layer { margin-bottom: 10px; }
+.db-signal-layer:last-child { margin-bottom: 0; }
+.db-layer-header { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; padding-bottom: 4px; border-bottom: 1px solid var(--db-border); }
+.db-layer-badge { font-size: 10px; padding: 1px 6px; border-radius: 3px; font-weight: 600; color: white; }
+.db-l1 { background: #3b82f6; } .db-l2 { background: #8b5cf6; } .db-l3 { background: #06b6d4; } .db-l4 { background: var(--db-red); }
+.db-layer-title { font-size: 12px; color: var(--db-text2); }
+.db-signal-row { display: grid; grid-template-columns: auto 1fr auto auto auto; gap: 12px; align-items: center; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.db-signal-row:last-child { border-bottom: none; }
+.db-sig-dot { width: 8px; height: 8px; border-radius: 50%; }
+.db-sig-dot.ok { background: var(--db-ok); } .db-sig-dot.warn { background: var(--db-warn); }
+.db-sig-name { font-size: 13px; color: var(--db-text); }
+.db-sig-val { font-size: 13px; font-weight: 500; color: var(--db-text); }
+.db-sig-target { font-size: 11px; color: var(--db-text2); }
+.db-sig-slo { font-size: 11px; padding: 1px 6px; background: rgba(34,197,94,0.2); color: var(--db-ok); border-radius: 3px; }
+.db-impact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.db-impact-card { padding: 10px; border-radius: 5px; border-left: 3px solid; }
+.db-impact-card.customer { background: rgba(6,182,212,0.1); border-color: #06b6d4; }
+.db-impact-card.financial { background: rgba(34,197,94,0.1); border-color: #22c55e; }
+.db-impact-card.legal { background: rgba(239,68,68,0.1); border-color: #ef4444; }
+.db-impact-card.operational { background: rgba(249,115,22,0.1); border-color: #f97316; }
+.db-impact-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.4px; color: var(--db-text2); margin-bottom: 3px; }
+.db-impact-value { font-size: 12px; line-height: 1.3; color: var(--db-text); }
+.db-stakeholder-list { display: flex; flex-direction: column; gap: 6px; }
+.db-stakeholder-item { padding: 8px 10px; background: rgba(255,255,255,0.03); border-radius: 5px; border: 1px solid var(--db-border); }
+.db-sh-name { font-size: 12px; font-weight: 500; color: var(--db-text); margin-bottom: 2px; }
+.db-sh-expect { font-size: 11px; color: var(--db-text2); margin-bottom: 4px; }
+.db-sh-impact { font-size: 10px; color: #ef4444; background: rgba(239,68,68,0.1); padding: 2px 6px; border-radius: 3px; display: inline-block; }
+.db-priority { font-size: 9px; padding: 1px 5px; border-radius: 3px; margin-left: 6px; color: white; }
+.db-priority.crit { background: var(--db-red); }
+.db-priority.high { background: #f97316; }
+.db-ops-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.db-ops-label { font-size: 10px; color: var(--db-text2); text-transform: uppercase; }
+.db-ops-value { font-size: 12px; color: var(--db-text); }
+.db-footer { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--db-border); display: flex; justify-content: space-between; font-size: 11px; color: var(--db-text2); }
+
+/* === TAB NAVIGATION === */
+.tab-bar {
+  display: flex;
+  background: #2E4053;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.tab {
+  flex: 1;
+  padding: 14px 8px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: #AEB6BF;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-bottom: 3px solid transparent;
+}
+.tab:hover {
+  color: #FFFFFF;
+  background: rgba(255,255,255,0.05);
+}
+.tab.active {
+  color: #FFFFFF;
+  background: rgba(255,255,255,0.1);
+  border-bottom-color: #D71E28;
+}
+
+/* === LISTS === */
+ul.check-list {
+  list-style: none;
+  padding: 0;
+  margin: 14px 0;
+}
+ul.check-list li {
+  padding: 6px 0 6px 28px;
+  position: relative;
+  font-size: 14px;
+  color: #2E4053;
+  line-height: 1.5;
+}
+ul.check-list li::before {
+  content: "\2713";
+  position: absolute;
+  left: 4px;
+  color: #27AE60;
+  font-weight: bold;
+}
+ul.bullet-list {
+  margin: 14px 0 14px 20px;
+  padding: 0;
+}
+ul.bullet-list li {
+  padding: 4px 0;
+  font-size: 14px;
+  color: #2E4053;
+  line-height: 1.5;
+}
+
+/* === SEMANTIC FLOW === */
+.semantic-flow {
+  margin: 28px 0 0 0;
+}
+.sf-chain {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+.sf-node {
+  background: #FFFFFF;
+  border: 2px solid #2980B9;
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #1A5276;
+  text-align: center;
+  white-space: nowrap;
+}
+.sf-arrow {
+  font-size: 18px;
+  color: #2980B9;
+  padding: 0 6px;
+  font-weight: bold;
+}
+.sf-note {
+  font-size: 12px;
+  color: #7F8C8D;
+  text-align: center;
+  margin-top: 12px;
+  font-style: italic;
+}
+
+/* === TOOLKIT LIST (Tab 7) === */
+.tk-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.tk-list li {
+  font-size: 13px;
+  color: #2E4053;
+  padding: 4px 0;
+  line-height: 1.4;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+.tk-list li:last-child { border-bottom: none; }
+
+/* === QUOTE === */
+.quote-block {
+  border-left: 4px solid #D71E28;
+  padding: 14px 20px;
+  margin: 20px 0;
+  background: #FDF2F2;
+  font-style: italic;
+  font-size: 15px;
+  color: #2E4053;
+  line-height: 1.6;
+}
+
+/* === FOOTER === */
+.doc-footer {
+  margin-top: 60px;
+  padding-top: 20px;
+  border-top: 2px solid #E5E7EB;
+  font-size: 12px;
+  color: #95A5A6;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 700px) {
+  .taxonomy-grid { grid-template-columns: 1fr; }
+  .thread-grid { grid-template-columns: 1fr; }
+  .thread-box.threaded .tb-step { top: -10px; left: 10px; }
+  .persona-row { flex-direction: column; }
+  .maturity-bar { flex-direction: column; }
+  .maturity-segment.crawl,
+  .maturity-segment.walk {
+    border-right: none;
+    border-bottom: 1px solid #D5D8DC;
+  }
+  .responsibility-map {
+    grid-template-columns: 80px 1fr 1fr 1fr;
+    font-size: 12px;
+  }
+  .sdlc-swim { grid-template-columns: 1fr; }
+  .sdlc-label { padding: 10px; }
+  .sf-chain { flex-wrap: wrap; justify-content: center; gap: 4px; }
+  .sf-node { padding: 6px 10px; font-size: 11px; }
+  .sf-arrow { padding: 0 3px; font-size: 14px; }
+  .tab-bar { flex-wrap: wrap; }
+  .tab { font-size: 11px; padding: 10px 6px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!-- HEADER                                                        -->
+<!-- ============================================================ -->
+<div class="doc-header">
+  <h1>Business Observability for IT Operations</h1>
+  <p class="subtitle">Detecting, responding to, and restoring business service</p>
+</div>
+
+<!-- ============================================================ -->
+<!-- TAB NAVIGATION                                                -->
+<!-- ============================================================ -->
+<div class="tab-bar">
+  <div class="tab active" data-view="landscape" onclick="showTab('landscape')">1. Landscape</div>
+  <div class="tab" data-view="focus" onclick="showTab('focus')">2. Focus</div>
+  <div class="tab" data-view="approach" onclick="showTab('approach')">3. Approach</div>
+  <div class="tab" data-view="example" onclick="showTab('example')">4. Example</div>
+  <div class="tab" data-view="dashboard" onclick="showTab('dashboard')">5. Dashboard</div>
+  <div class="tab" data-view="forward" onclick="showTab('forward')">6. Path Forward</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 1: THE LANDSCAPE                                      -->
+<!-- ============================================================ -->
+<section id="landscape">
+  <h2>1. The Landscape</h2>
+
+  <div class="taxonomy-grid">
+
+    <!-- Intent & Definition -->
+    <div class="tax-box">
+      <div class="tax-category">Intent &amp; Definition</div>
+      <div class="tax-question">What does "good" look like?</div>
+      <ul class="tax-items">
+        <li>SLIs / SLOs</li>
+        <li>NFRs</li>
+        <li>DORA targets (MTTR)</li>
+        <li class="bos">Business health expectations</li>
+        <li class="bos">Impact categories</li>
+      </ul>
+    </div>
+
+    <!-- Structural Understanding -->
+    <div class="tax-box">
+      <div class="tax-category">Structural Understanding</div>
+      <div class="tax-question">How is the system shaped &amp; connected?</div>
+      <ul class="tax-items">
+        <li>Service topology</li>
+        <li>Dependency maps</li>
+        <li>Flow views</li>
+        <li>Service relationships</li>
+      </ul>
+    </div>
+
+    <!-- Signals & Telemetry -->
+    <div class="tax-box">
+      <div class="tax-category">Signals &amp; Telemetry</div>
+      <div class="tax-question">What evidence do we collect?</div>
+      <ul class="tax-items">
+        <li>Metrics</li>
+        <li>Logs</li>
+        <li>Traces</li>
+        <li>Synthetic checks</li>
+      </ul>
+    </div>
+
+    <!-- Decision Surfaces -->
+    <div class="tax-box">
+      <div class="tax-category">Decision Surfaces</div>
+      <div class="tax-question">Where do humans see meaning?</div>
+      <ul class="tax-items">
+        <li>Dashboards</li>
+        <li>Alerts</li>
+        <li>Health indicators</li>
+        <li class="bos">Business status views</li>
+        <li class="bos">Portfolio views</li>
+      </ul>
+    </div>
+
+    <!-- Response & Execution -->
+    <div class="tax-box">
+      <div class="tax-category">Response &amp; Execution</div>
+      <div class="tax-question">What do we do when it's wrong?</div>
+      <ul class="tax-items">
+        <li>Incident triage</li>
+        <li>Incident response</li>
+        <li>Runbooks</li>
+        <li>Escalation paths</li>
+        <li class="bos">Business-informed triage</li>
+      </ul>
+    </div>
+
+    <!-- Learning & Risk Analysis -->
+    <div class="tax-box">
+      <div class="tax-category">Learning &amp; Risk Analysis</div>
+      <div class="tax-question">How do we prevent repeats?</div>
+      <ul class="tax-items">
+        <li>FMEA</li>
+        <li>Post-incident reviews</li>
+        <li>Reliability analysis</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <p class="taxonomy-legend"><span class="bos-marker">Highlighted items</span> = business observability capability</p>
+
+  <div class="maturity-section">
+    <div class="maturity-bar">
+      <div class="maturity-segment crawl">
+        <div class="maturity-level">Crawl</div>
+        <div class="maturity-desc">Manual &middot; Tribal<br>Spreadsheets &middot; Ad hoc</div>
+      </div>
+      <div class="maturity-segment walk">
+        <div class="maturity-level">Walk</div>
+        <div class="maturity-desc">Structured &middot; Repeatable<br>Templates &middot; Model</div>
+      </div>
+      <div class="maturity-segment run">
+        <div class="maturity-level">Run</div>
+        <div class="maturity-desc">Automated &middot; Integrated<br>CI/CD &middot; AI</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: THE FOCUS                                          -->
+<!-- ============================================================ -->
+<section id="focus" style="display:none">
+  <h2>2. The Focus</h2>
+
+  <div class="thread-grid">
+    <div class="thread-box threaded">
+      <span class="tb-step">1</span>
+      <div class="tb-category">Intent &amp; Definition</div>
+      <div class="tb-desc">Define what business health looks like</div>
+    </div>
+    <div class="thread-box faded">
+      <div class="tb-category">Structural Understanding</div>
+      <div class="tb-desc">System shape &amp; connections</div>
+    </div>
+    <div class="thread-box threaded">
+      <span class="tb-step">2</span>
+      <div class="tb-category">Signals &amp; Telemetry</div>
+      <div class="tb-desc">Collect business signals</div>
+    </div>
+    <div class="thread-box threaded">
+      <span class="tb-step">3</span>
+      <div class="tb-category">Decision Surfaces</div>
+      <div class="tb-desc">See business status during incidents</div>
+    </div>
+    <div class="thread-box threaded">
+      <span class="tb-step">4</span>
+      <div class="tb-category">Response &amp; Execution</div>
+      <div class="tb-desc">Triage with business context</div>
+    </div>
+    <div class="thread-box faded">
+      <div class="tb-category">Learning &amp; Risk Analysis</div>
+      <div class="tb-desc">Prevent repeats</div>
+    </div>
+  </div>
+
+  <div class="quote-block">
+    Our incident response machinery is mature and repeatable. Our ability to answer &ldquo;what is the business experiencing during those incidents?&rdquo; is not. Some teams have built this capability &mdash; bespoke solutions that don&rsquo;t transfer. The gap isn&rsquo;t that no one has solved this. It&rsquo;s that we can&rsquo;t scale what works.
+  </div>
+
+  <div class="semantic-flow">
+    <div class="sf-chain">
+      <div class="sf-node">Stakeholder</div>
+      <div class="sf-arrow">&rarr;</div>
+      <div class="sf-node">Expectation</div>
+      <div class="sf-arrow">&rarr;</div>
+      <div class="sf-node">Impact</div>
+      <div class="sf-arrow">&rarr;</div>
+      <div class="sf-node">Telemetry</div>
+      <div class="sf-arrow">&rarr;</div>
+      <div class="sf-node">Signal</div>
+      <div class="sf-arrow">&rarr;</div>
+      <div class="sf-node">Dashboard / Playbook</div>
+    </div>
+    <p class="sf-note">This flow ensures every technical metric connects back to stakeholder value</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: APPROACH                                           -->
+<!-- ============================================================ -->
+<section id="approach" style="display:none">
+  <h2>3. Who Does What</h2>
+
+  <div class="persona-row">
+    <div class="persona-card pc-product">
+      <div class="pc-icon">PO</div>
+      <div class="pc-role">Product</div>
+      <div class="pc-does"><strong>Defines what success looks like.</strong> Who are the stakeholders? What do they expect? What happens to the business when those expectations aren&rsquo;t met?</div>
+    </div>
+    <div class="persona-card pc-appdev">
+      <div class="pc-icon">DEV</div>
+      <div class="pc-role">App Dev</div>
+      <div class="pc-does"><strong>Translates intent into instrumentation.</strong> Knows the business flows and the code. Identifies telemetry that tracks outcomes. Validates queries against real data.</div>
+    </div>
+    <div class="persona-card pc-platform">
+      <div class="pc-icon">PLT</div>
+      <div class="pc-role">Platform</div>
+      <div class="pc-does"><strong>Creates visibility and sustains monitoring.</strong> Builds dashboards, configures alerts, writes playbooks. Framework and embedded support that make this repeatable.</div>
+    </div>
+  </div>
+
+  <div class="sdlc-swim">
+    <!-- Header row -->
+    <div class="sdlc-header sdlc-corner"></div>
+    <div class="sdlc-header">Define</div>
+    <div class="sdlc-header">Implement</div>
+    <div class="sdlc-header">Operate</div>
+
+    <!-- Product row -->
+    <div class="sdlc-label sl-product">PRODUCT</div>
+    <div class="sdlc-cell">
+      <div class="sdlc-activity">
+        <div class="sdlc-name">Define What Matters</div>
+        <div class="sdlc-mechanism">Capture who depends on the service, what they expect, and what happens to the business when expectations aren&rsquo;t met.</div>
+      </div>
+      <div class="sdlc-activity">
+        <div class="sdlc-name">Define Business Signals</div>
+        <div class="sdlc-mechanism">Name each measurement in business language &mdash; what &ldquo;healthy&rdquo; means and how to quantify impact when it isn&rsquo;t.</div>
+      </div>
+    </div>
+    <div class="sdlc-cell">
+      <div class="sdlc-activity">
+        <div class="sdlc-name">Validate &amp; Approve</div>
+        <div class="sdlc-mechanism">Review generated dashboards and signal implementations against business reality &mdash; confirm definitions match actual operations.</div>
+      </div>
+    </div>
+    <div class="sdlc-cell">
+      <div class="sdlc-activity">
+        <div class="sdlc-name">Guide Operations</div>
+        <div class="sdlc-mechanism">During incidents, reference pre-defined stakeholder expectations and impact data to classify business priority.</div>
+      </div>
+    </div>
+
+    <!-- App Dev row -->
+    <div class="sdlc-label sl-dev">APP DEV</div>
+    <div class="sdlc-cell">
+      <div class="sdlc-activity">
+        <div class="sdlc-name">Assess Data Availability</div>
+        <div class="sdlc-mechanism">Map each business signal to existing telemetry &mdash; Splunk indexes, databases, APM &mdash; and document gaps.</div>
+      </div>
+    </div>
+    <div class="sdlc-cell">
+      <div class="sdlc-activity">
+        <div class="sdlc-name">Write the Queries</div>
+        <div class="sdlc-mechanism">Translate each signal definition into executable Splunk or SQL &mdash; good events / total events, or value against threshold.</div>
+      </div>
+    </div>
+    <div class="sdlc-cell">
+      <div class="sdlc-activity">
+        <div class="sdlc-name">Maintain Observability</div>
+        <div class="sdlc-mechanism">Keep query logic, instrumentation, and signal definitions accurate as services evolve through code changes and migrations.</div>
+      </div>
+    </div>
+
+    <!-- Platform row -->
+    <div class="sdlc-label sl-platform">PLATFORM</div>
+    <div class="sdlc-cell">
+      <div class="sdlc-activity">
+        <div class="sdlc-name">Configure Alerting</div>
+        <div class="sdlc-mechanism">Set warning and critical thresholds per signal, configure notification routing, write business-context alert messages.</div>
+      </div>
+    </div>
+    <div class="sdlc-cell">
+      <div class="sdlc-activity">
+        <div class="sdlc-name">Build Dashboards</div>
+        <div class="sdlc-mechanism">Assemble upstream definitions into dashboards &mdash; business context panel, health signals vs. targets, quantified impact.</div>
+      </div>
+      <div class="sdlc-activity">
+        <div class="sdlc-name">Create Runbooks</div>
+        <div class="sdlc-mechanism">Document diagnostic steps, remediation procedures, and escalation paths enriched with stakeholder and impact context.</div>
+      </div>
+    </div>
+    <div class="sdlc-cell">
+      <div class="sdlc-activity">
+        <div class="sdlc-name">Respond &amp; Triage</div>
+        <div class="sdlc-mechanism">Alert arrives with business context: stakeholders affected, financial exposure, linked runbook. Triage by business impact.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: EXAMPLE                                            -->
+<!-- ============================================================ -->
+<section id="example" style="display:none">
+  <h2>4. Example: Credit Check Service</h2>
+
+  <div class="ex-scenario">
+    <strong>Scenario:</strong> Credit Check Service &mdash; enables loan officers to pull credit reports during the application process
+  </div>
+
+  <div class="sdlc-swim">
+    <!-- Header row -->
+    <div class="sdlc-header sdlc-corner"></div>
+    <div class="sdlc-header">Define</div>
+    <div class="sdlc-header">Implement</div>
+    <div class="sdlc-header">Operate</div>
+
+    <!-- Product row -->
+    <div class="sdlc-label sl-product">PRODUCT</div>
+    <div class="ex-cell">
+      <div class="ex-activity">
+        <div class="ex-act-name">Define What Matters</div>
+        <div class="ex-item"><span class="ex-label">Stakeholder:</span> Loan officers (850 active users)</div>
+        <div class="ex-item"><span class="ex-label">Expectation:</span> &ldquo;Credit checks complete within 5 seconds&rdquo;</div>
+        <div class="ex-item"><span class="ex-label">Impact:</span> &ldquo;$2.3M daily revenue at risk if unavailable&rdquo;</div>
+      </div>
+      <div class="ex-activity">
+        <div class="ex-act-name">Define Business Signals</div>
+        <div class="ex-item"><span class="ex-label">Health:</span> % of credit checks completing successfully within 5s</div>
+        <div class="ex-item"><span class="ex-label">Impact:</span> Estimated revenue impact per hour of degradation</div>
+      </div>
+    </div>
+    <div class="ex-cell">
+      <div class="ex-activity">
+        <div class="ex-act-name">Validate &amp; Approve</div>
+        <div class="ex-item">&ldquo;success_rate signal reflects actual loan officer experience&rdquo;</div>
+        <div class="ex-item">&ldquo;Executive dashboard approved for production use&rdquo;</div>
+      </div>
+    </div>
+    <div class="ex-cell">
+      <div class="ex-activity">
+        <div class="ex-act-name">Guide Operations</div>
+        <div class="ex-item"><span class="ex-label">Priority:</span> P1 during business hours &mdash; direct revenue impact</div>
+        <div class="ex-item"><span class="ex-label">Escalation:</span> VP if degraded &gt; 30 min during peak</div>
+      </div>
+    </div>
+
+    <!-- App Dev row -->
+    <div class="sdlc-label sl-dev">APP DEV</div>
+    <div class="ex-cell">
+      <div class="ex-activity">
+        <div class="ex-act-name">Assess Data Availability</div>
+        <div class="ex-item"><span class="ex-label">Found:</span> Splunk: credit_check_logs &middot; Prometheus: api_latency_ms</div>
+        <div class="ex-item"><span class="ex-label">Gap:</span> Missing end-to-end transaction tracing</div>
+      </div>
+    </div>
+    <div class="ex-cell">
+      <div class="ex-activity">
+        <div class="ex-act-name">Write the Queries</div>
+        <div class="ex-item"><span class="ex-label">Good:</span> credit checks completed in &lt; 5s</div>
+        <div class="ex-item"><span class="ex-label">Total:</span> all credit check requests</div>
+        <div class="ex-item"><span class="ex-label">Signal:</span> credit_check_success_rate = good / total</div>
+      </div>
+    </div>
+    <div class="ex-cell">
+      <div class="ex-activity">
+        <div class="ex-act-name">Maintain Observability</div>
+        <div class="ex-item">&ldquo;Fixed timezone bug in latency calculation&rdquo;</div>
+        <div class="ex-item">&ldquo;Re-enabled trace sampling after v2.3 deploy&rdquo;</div>
+      </div>
+    </div>
+
+    <!-- Platform row -->
+    <div class="sdlc-label sl-platform">PLATFORM</div>
+    <div class="ex-cell">
+      <div class="ex-activity">
+        <div class="ex-act-name">Configure Alerting</div>
+        <div class="ex-item"><span class="ex-label">Warning:</span> success_rate &lt; 99.5% for 5 min</div>
+        <div class="ex-item"><span class="ex-label">Critical:</span> success_rate &lt; 99% for 5 min &rarr; page on-call</div>
+        <div class="ex-item"><span class="ex-label">Routing:</span> P1 &rarr; page SRE &middot; P2 &rarr; ServiceNow + Slack</div>
+      </div>
+    </div>
+    <div class="ex-cell">
+      <div class="ex-activity">
+        <div class="ex-act-name">Build Dashboards</div>
+        <div class="ex-item"><span class="ex-label">Context:</span> Identity, ownership, tier, stakeholders</div>
+        <div class="ex-item"><span class="ex-label">Health:</span> Success rate gauge + SLO burn rate</div>
+        <div class="ex-item"><span class="ex-label">Impact:</span> Revenue impact estimator</div>
+      </div>
+      <div class="ex-activity">
+        <div class="ex-act-name">Create Runbooks</div>
+        <div class="ex-item"><span class="ex-label">Diagnostic:</span> Check credit bureau connectivity</div>
+        <div class="ex-item"><span class="ex-label">Remediation:</span> Failover to secondary if &gt; 10s latency</div>
+        <div class="ex-item"><span class="ex-label">Escalation:</span> 15 min &rarr; App Dev &middot; 30 min &rarr; VP</div>
+      </div>
+    </div>
+    <div class="ex-cell">
+      <div class="ex-activity">
+        <div class="ex-act-name">Respond &amp; Triage</div>
+        <div class="ex-item"><span class="ex-label">Triage:</span> $2.3M/day at risk &rarr; classified P1</div>
+        <div class="ex-item"><span class="ex-label">Comms:</span> &ldquo;Credit check degraded &mdash; 8s response, ~$95K/hr impact&rdquo;</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: DASHBOARD                                          -->
+<!-- ============================================================ -->
+<section id="dashboard" style="display:none">
+  <h2>5. The Result</h2>
+
+  <div class="dashboard-embed">
+    <div class="db-header">
+      <div class="db-title">
+        <h3>Credit Check Service</h3>
+        <span class="db-tier">T1 CRITICAL</span>
+      </div>
+      <div class="db-status">
+        <span class="db-dot"></span>
+        <span class="db-status-text">ALL SYSTEMS OK</span>
+      </div>
+    </div>
+
+    <div class="db-meta">
+      <div class="db-meta-card">
+        <div class="db-meta-label">Service</div>
+        <div class="db-meta-value">Credit Check Service</div>
+        <div class="db-meta-sub">CreditCheckAPI_v2</div>
+      </div>
+      <div class="db-meta-card">
+        <div class="db-meta-label">Owner</div>
+        <div class="db-meta-value">Sarah Chen</div>
+        <div class="db-meta-sub">PO, Consumer Lending</div>
+      </div>
+      <div class="db-meta-card">
+        <div class="db-meta-label">Current</div>
+        <div class="db-meta-value" style="color: var(--db-ok);">99.8% success</div>
+        <div class="db-meta-sub">2.1s avg response</div>
+      </div>
+      <div class="db-meta-card">
+        <div class="db-meta-label">SLA (30d)</div>
+        <div class="db-meta-value" style="color: var(--db-ok);">99.7%</div>
+        <div class="db-meta-sub">$0 revenue exposure</div>
+      </div>
+    </div>
+
+    <div class="db-grid">
+      <div class="db-card">
+        <div class="db-card-header">
+          <h4>Signal Health &mdash; Four-Layer Model</h4>
+        </div>
+        <div class="db-card-body">
+          <div class="db-signal-layer">
+            <div class="db-layer-header">
+              <span class="db-layer-badge db-l1">L1</span>
+              <span class="db-layer-title">System Health</span>
+            </div>
+            <div class="db-signal-row">
+              <span class="db-sig-dot ok"></span>
+              <span class="db-sig-name">API Uptime</span>
+              <span class="db-sig-val">99.99%</span>
+              <span class="db-sig-target">Target: 99.9%</span>
+              <span class="db-sig-slo">100%</span>
+            </div>
+            <div class="db-signal-row">
+              <span class="db-sig-dot ok"></span>
+              <span class="db-sig-name">Avg Response Time</span>
+              <span class="db-sig-val">2.1s</span>
+              <span class="db-sig-target">Target: &lt;5s</span>
+              <span class="db-sig-slo">99.8%</span>
+            </div>
+          </div>
+
+          <div class="db-signal-layer">
+            <div class="db-layer-header">
+              <span class="db-layer-badge db-l2">L2</span>
+              <span class="db-layer-title">Process Health</span>
+            </div>
+            <div class="db-signal-row">
+              <span class="db-sig-dot ok"></span>
+              <span class="db-sig-name">Credit Check Success Rate</span>
+              <span class="db-sig-val">99.8%</span>
+              <span class="db-sig-target">Target: 99.5%</span>
+              <span class="db-sig-slo">99.7%</span>
+            </div>
+            <div class="db-signal-row">
+              <span class="db-sig-dot ok"></span>
+              <span class="db-sig-name">Bureau Response Rate</span>
+              <span class="db-sig-val">99.9%</span>
+              <span class="db-sig-target">Target: 99%</span>
+              <span class="db-sig-slo">100%</span>
+            </div>
+          </div>
+
+          <div class="db-signal-layer">
+            <div class="db-layer-header">
+              <span class="db-layer-badge db-l3">L3</span>
+              <span class="db-layer-title">Business Health</span>
+            </div>
+            <div class="db-signal-row">
+              <span class="db-sig-dot ok"></span>
+              <span class="db-sig-name">Applicant Wait Time</span>
+              <span class="db-sig-val">2.1s</span>
+              <span class="db-sig-target">SLA: &lt;5s</span>
+              <span class="db-sig-slo">99.7%</span>
+            </div>
+            <div class="db-signal-row">
+              <span class="db-sig-dot ok"></span>
+              <span class="db-sig-name">Completion Rate (Biz Hours)</span>
+              <span class="db-sig-val">99.8%</span>
+              <span class="db-sig-target">Target: 99.5%</span>
+              <span class="db-sig-slo">99.7%</span>
+            </div>
+          </div>
+
+          <div class="db-signal-layer">
+            <div class="db-layer-header">
+              <span class="db-layer-badge db-l4">L4</span>
+              <span class="db-layer-title">Business Impact</span>
+            </div>
+            <div class="db-signal-row">
+              <span class="db-sig-dot ok"></span>
+              <span class="db-sig-name">Revenue Exposure</span>
+              <span class="db-sig-val">$0</span>
+              <span class="db-sig-target">At Risk: $2.3M/day</span>
+              <span></span>
+            </div>
+            <div class="db-signal-row">
+              <span class="db-sig-dot ok"></span>
+              <span class="db-sig-name">Applicants Affected</span>
+              <span class="db-sig-val">0</span>
+              <span class="db-sig-target">At Risk: ~850 active</span>
+              <span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="db-right">
+        <div class="db-card">
+          <div class="db-card-header">
+            <h4>Business Impact (If Degraded)</h4>
+          </div>
+          <div class="db-card-body">
+            <div class="db-impact-grid">
+              <div class="db-impact-card customer">
+                <div class="db-impact-label">Customer</div>
+                <div class="db-impact-value">~850 loan officers unable to process</div>
+              </div>
+              <div class="db-impact-card financial">
+                <div class="db-impact-label">Financial</div>
+                <div class="db-impact-value">$2.3M daily revenue at risk</div>
+              </div>
+              <div class="db-impact-card legal">
+                <div class="db-impact-label">Regulatory</div>
+                <div class="db-impact-value">Fair lending response time compliance</div>
+              </div>
+              <div class="db-impact-card operational">
+                <div class="db-impact-label">Operational</div>
+                <div class="db-impact-value">Manual fallback &mdash; phone-based credit checks</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="db-card">
+          <div class="db-card-header">
+            <h4>Stakeholders</h4>
+          </div>
+          <div class="db-card-body">
+            <div class="db-stakeholder-list">
+              <div class="db-stakeholder-item">
+                <div class="db-sh-name">Loan Officers (850 active)<span class="db-priority crit">CRITICAL</span></div>
+                <div class="db-sh-expect">Credit decisions within 5 seconds</div>
+                <div class="db-sh-impact">Application abandonment</div>
+              </div>
+              <div class="db-stakeholder-item">
+                <div class="db-sh-name">VP Consumer Lending<span class="db-priority crit">CRITICAL</span></div>
+                <div class="db-sh-expect">Revenue continuity, proactive alerts</div>
+                <div class="db-sh-impact">$2.3M daily exposure</div>
+              </div>
+              <div class="db-stakeholder-item">
+                <div class="db-sh-name">Compliance Team<span class="db-priority high">HIGH</span></div>
+                <div class="db-sh-expect">Fair lending response time SLAs</div>
+                <div class="db-sh-impact">Regulatory audit finding</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="db-card">
+          <div class="db-card-header">
+            <h4>Operations</h4>
+          </div>
+          <div class="db-card-body">
+            <div class="db-ops-grid">
+              <div>
+                <div class="db-ops-label">Support Team</div>
+                <div class="db-ops-value">Credit_Platform_SRE</div>
+              </div>
+              <div>
+                <div class="db-ops-label">PagerDuty</div>
+                <div class="db-ops-value">PD_CREDIT_CHK</div>
+              </div>
+              <div>
+                <div class="db-ops-label">Runbook</div>
+                <div class="db-ops-value" style="color: #3b82f6;">KB0045678</div>
+              </div>
+              <div>
+                <div class="db-ops-label">Last Certified</div>
+                <div class="db-ops-value">2026-01-22</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="db-footer">
+      <span>BOS v3.7 | Generated from structured metadata</span>
+      <span>Executive Service View</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: THE PATH FORWARD                                   -->
+<!-- ============================================================ -->
+<section id="forward" style="display:none">
+  <h2>6. Path Forward</h2>
+
+  <p style="font-size: 16px; color: #1C2833; line-height: 1.7;">Start with 2&ndash;3 critical business flows per product area.</p>
+
+  <h3>What Teams Receive</h3>
+
+  <div class="persona-row">
+    <div class="persona-card pc-product">
+      <div class="pc-icon">PO</div>
+      <div class="pc-role">Product</div>
+      <ul class="tk-list">
+        <li>Role guide</li>
+        <li>Workbook: stakeholders, expectations, impact</li>
+        <li>Story templates for backlog</li>
+      </ul>
+    </div>
+    <div class="persona-card pc-appdev">
+      <div class="pc-icon">DEV</div>
+      <div class="pc-role">App Dev</div>
+      <ul class="tk-list">
+        <li>Role guide</li>
+        <li>Signal-to-telemetry checklist</li>
+        <li>Query output format</li>
+        <li>Story templates for backlog</li>
+      </ul>
+    </div>
+    <div class="persona-card pc-platform">
+      <div class="pc-icon">PLT</div>
+      <div class="pc-role">Platform</div>
+      <ul class="tk-list">
+        <li>Role guide</li>
+        <li>Dashboard templates</li>
+        <li>Alert configuration patterns</li>
+        <li>Runbook templates</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout callout-action">
+    <p class="callout-label">The Ask</p>
+    <p>Identify 2&ndash;3 critical flows. Make your PO and Dev SMEs available. Platform brings the toolkit and runs the sessions.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- FOOTER                                                        -->
+<!-- ============================================================ -->
+<div class="doc-footer">
+  Business Observability for IT Operations
+</div>
+
+<script>
+function showTab(id) {
+  var sections = ['landscape','focus','approach','example','dashboard','forward'];
+  for (var i = 0; i < sections.length; i++) {
+    document.getElementById(sections[i]).style.display = 'none';
+  }
+  document.getElementById(id).style.display = 'block';
+  var tabs = document.querySelectorAll('.tab');
+  for (var i = 0; i < tabs.length; i++) {
+    tabs[i].classList.remove('active');
+  }
+  document.querySelector('.tab[data-view="' + id + '"]').classList.add('active');
+}
+</script>
+
+</body>
+</html>
