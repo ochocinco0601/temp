@@ -17,24 +17,24 @@
   --platform-tint: #FEF5E7;
   --through-accent: #8E44AD;
   --through-tint: #F4ECF7;
-  /* Standard Gray Palette */
-  --gray-50:  #F9FAFB;
-  --gray-100: #F3F4F6;
-  --gray-200: #E5E7EB;
-  --gray-300: #D1D5DB;
-  --gray-400: #9CA3AF;
-  --gray-500: #6B7280;
-  --gray-700: #374151;
-  --gray-900: #111827;
+  /* WF Standard Gray Palette */
+  --wf-gray-50:  #F9FAFB;
+  --wf-gray-100: #F3F4F6;
+  --wf-gray-200: #E5E7EB;
+  --wf-gray-300: #D1D5DB;
+  --wf-gray-400: #9CA3AF;
+  --wf-gray-500: #6B7280;
+  --wf-gray-700: #374151;
+  --wf-gray-900: #111827;
   --card-radius: 8px;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html { background: var(--gray-100); }
+html { background: var(--wf-gray-100); }
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
-  color: var(--gray-700);
+  color: var(--wf-gray-700);
   line-height: 1.6;
   max-width: 1200px;
   margin: 0 auto;
@@ -43,24 +43,24 @@ body {
 
 /* --- Document header --- */
 .doc-header {
-  border-bottom: 4px solid #2563EB;
+  border-bottom: 4px solid #D71E28;
   padding-bottom: 12px;
   margin-bottom: 8px;
 }
 .doc-header h1 {
   font-size: 24px;
   font-weight: bold;
-  color: var(--gray-700);
+  color: var(--wf-gray-700);
   margin-bottom: 4px;
 }
 .doc-header .subtitle {
   font-size: 14px;
-  color: var(--gray-500);
+  color: var(--wf-gray-500);
 }
 
 /* --- Epic banner (dark) --- */
 .epic-banner {
-  background: var(--gray-900);
+  background: var(--wf-gray-900);
   color: #FFFFFF;
   padding: 16px 20px;
   border-radius: 6px;
@@ -70,7 +70,7 @@ body {
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: var(--gray-400);
+  color: var(--wf-gray-400);
   margin-bottom: 6px;
 }
 .epic-banner .epic-title {
@@ -80,7 +80,7 @@ body {
 }
 .epic-banner .epic-desc {
   font-size: 14px;
-  color: var(--gray-200);
+  color: var(--wf-gray-200);
   line-height: 1.5;
 }
 .epic-meta {
@@ -88,14 +88,14 @@ body {
   gap: 24px;
   margin-top: 10px;
   padding-top: 10px;
-  border-top: 1px solid var(--gray-700);
+  border-top: 1px solid var(--wf-gray-700);
 }
 .epic-meta-item {
   font-size: 12px;
-  color: var(--gray-400);
+  color: var(--wf-gray-400);
 }
 .epic-meta-item strong {
-  color: var(--gray-200);
+  color: var(--wf-gray-200);
 }
 
 /* --- Tabs (raised style with top-border color) --- */
@@ -103,21 +103,21 @@ body {
   display: flex;
   gap: 2px;
   margin-bottom: 0;
-  border-bottom: 2px solid var(--gray-200);
+  border-bottom: 2px solid var(--wf-gray-200);
 }
 .tab-btn {
   padding: 10px 18px;
   font-size: 13px;
   font-weight: bold;
   border: none;
-  background: var(--gray-200);
-  color: var(--gray-500);
+  background: var(--wf-gray-200);
+  color: var(--wf-gray-500);
   cursor: pointer;
   border-radius: 6px 6px 0 0;
   transition: background 0.15s;
 }
-.tab-btn:hover { background: var(--gray-200); }
-.tab-btn.active { background: #FFFFFF; color: var(--gray-700); border-bottom: 2px solid #FFFFFF; margin-bottom: -2px; }
+.tab-btn:hover { background: var(--wf-gray-200); }
+.tab-btn.active { background: #FFFFFF; color: var(--wf-gray-700); border-bottom: 2px solid #FFFFFF; margin-bottom: -2px; }
 .tab-btn.po { border-top: 3px solid transparent; }
 .tab-btn.po.active { border-top-color: var(--po-accent); }
 .tab-btn.dev { border-top: 3px solid transparent; }
@@ -127,16 +127,16 @@ body {
 .tab-btn.how { border-top: 3px solid transparent; }
 .tab-btn.how.active { border-top-color: var(--through-accent); }
 .tab-btn.status { border-top: 3px solid transparent; }
-.tab-btn.status.active { border-top-color: var(--gray-500); }
+.tab-btn.status.active { border-top-color: var(--wf-gray-500); }
 .tab-btn.flow { border-top: 3px solid transparent; }
 .tab-btn.flow.active { border-top-color: var(--through-accent); }
 
 /* --- Tab panels --- */
 .tab-panel {
-  background: var(--gray-50);
+  background: var(--wf-gray-50);
   padding: 28px 24px;
   border-radius: 0 0 var(--card-radius) var(--card-radius);
-  border: 1px solid var(--gray-200);
+  border: 1px solid var(--wf-gray-200);
   border-top: none;
 }
 
@@ -156,23 +156,23 @@ body {
 .story-num.dev { color: var(--dev-accent); }
 .story-num.plat { color: var(--platform-accent); }
 .story-num.how { color: var(--through-accent); }
-.story-num.status { color: var(--gray-500); }
+.story-num.status { color: var(--wf-gray-500); }
 .story-num.flow { color: var(--through-accent); }
 .story-header h2 {
   font-size: 20px;
-  color: var(--gray-700);
+  color: var(--wf-gray-700);
   margin-bottom: 10px;
 }
 .story-statement {
   font-size: 15px;
-  color: var(--gray-700);
+  color: var(--wf-gray-700);
   line-height: 1.7;
   padding: 12px 16px;
-  background: var(--gray-50);
+  background: var(--wf-gray-50);
   border-radius: 4px;
-  border-left: 3px solid var(--gray-200);
+  border-left: 3px solid var(--wf-gray-200);
 }
-.story-statement strong { color: var(--gray-700); }
+.story-statement strong { color: var(--wf-gray-700); }
 
 /* --- AC Sections --- */
 .ac-section { margin-bottom: 40px; }
@@ -191,17 +191,17 @@ body {
 .ac-label.plat { color: var(--platform-accent); background: var(--platform-tint); border-left: 4px solid var(--platform-accent); }
 .ac-desc {
   font-size: 11px;
-  color: var(--gray-400);
+  color: var(--wf-gray-400);
   margin-bottom: 10px;
   line-height: 1.4;
 }
 .mirror-note {
   font-size: 12px;
-  color: var(--gray-500);
+  color: var(--wf-gray-500);
   font-style: italic;
   margin-bottom: 12px;
   padding: 6px 10px;
-  background: var(--gray-50);
+  background: var(--wf-gray-50);
   border-radius: 3px;
 }
 
@@ -209,7 +209,7 @@ body {
 .card {
   position: relative;
   background: #FFFFFF;
-  border: 1px solid var(--gray-200);
+  border: 1px solid var(--wf-gray-200);
   border-radius: var(--card-radius);
   padding: 20px;
   margin-bottom: 12px;
@@ -228,11 +228,11 @@ body {
   align-items: center;
   margin-bottom: 12px;
   padding-bottom: 8px;
-  border-bottom: 1px solid var(--gray-100);
+  border-bottom: 1px solid var(--wf-gray-100);
 }
 .card-number {
   font-size: 11px;
-  color: var(--gray-400);
+  color: var(--wf-gray-400);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -240,12 +240,12 @@ body {
 .signal-ref {
   font-size: 13px;
   font-weight: 600;
-  color: var(--gray-700);
+  color: var(--wf-gray-700);
 }
 .mirror-context {
   font-size: 12px;
-  color: var(--gray-500);
-  background: var(--gray-50);
+  color: var(--wf-gray-500);
+  background: var(--wf-gray-50);
   padding: 6px 10px;
   border-radius: 3px;
   margin-bottom: 12px;
@@ -255,8 +255,8 @@ body {
   top: 8px;
   right: 8px;
   background: none;
-  border: 1px solid var(--gray-200);
-  color: var(--gray-400);
+  border: 1px solid var(--wf-gray-200);
+  color: var(--wf-gray-400);
   font-size: 16px;
   cursor: pointer;
   width: 24px;
@@ -272,7 +272,7 @@ body {
 .remove-chain-btn {
   background: transparent;
   border: none;
-  color: var(--gray-200);
+  color: var(--wf-gray-200);
   font-size: 16px;
   cursor: pointer;
   width: 24px;
@@ -291,11 +291,11 @@ body {
 .card-name-input {
   font-size: 15px;
   font-weight: bold;
-  color: var(--gray-700);
+  color: var(--wf-gray-700);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
   background: transparent;
   border: none;
-  border-bottom: 1px solid var(--gray-200);
+  border-bottom: 1px solid var(--wf-gray-200);
   padding: 2px 4px;
   width: 100%;
   outline: none;
@@ -303,12 +303,12 @@ body {
   transition: border-color 0.2s, background 0.2s;
 }
 .card-name-input:hover {
-  background: var(--gray-50);
-  border-bottom-color: var(--gray-400);
+  background: var(--wf-gray-50);
+  border-bottom-color: var(--wf-gray-400);
 }
 .card-name-input:focus {
   background: var(--card-tint, transparent);
-  border-bottom-color: var(--card-accent, var(--gray-400));
+  border-bottom-color: var(--card-accent, var(--wf-gray-400));
 }
 
 /* --- Field rows --- */
@@ -318,10 +318,10 @@ body {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--gray-500);
+  color: var(--wf-gray-500);
   padding: 10px 0 4px 0;
   margin-top: 6px;
-  border-top: 1px solid var(--gray-200);
+  border-top: 1px solid var(--wf-gray-200);
 }
 .field-row {
   display: flex;
@@ -332,14 +332,14 @@ body {
 }
 .field-label {
   flex: 0 0 200px;
-  color: var(--gray-500);
+  color: var(--wf-gray-500);
   font-size: 12px;
   white-space: nowrap;
 }
 .required { color: #E74C3C; }
 .field-helper-text {
   font-size: 11px;
-  color: var(--gray-400);
+  color: var(--wf-gray-400);
   padding: 2px 0 6px 0;
   line-height: 1.4;
 }
@@ -348,47 +348,47 @@ body {
 .field-input-prose {
   flex: 1;
   font-size: 13.5px;
-  color: var(--gray-700);
+  color: var(--wf-gray-700);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
   background: transparent;
   border: none;
-  border-bottom: 1px solid var(--gray-200);
+  border-bottom: 1px solid var(--wf-gray-200);
   padding: 2px 4px;
   outline: none;
   transition: border-color 0.2s, background 0.2s;
 }
-.field-input-prose::placeholder { color: var(--gray-400); font-style: italic; }
+.field-input-prose::placeholder { color: var(--wf-gray-400); font-style: italic; }
 .field-input-prose:hover {
-  background: var(--gray-50);
-  border-bottom-color: var(--gray-400);
+  background: var(--wf-gray-50);
+  border-bottom-color: var(--wf-gray-400);
 }
 .field-input-prose:focus,
 textarea.field-input-prose:focus {
   background: var(--card-tint, transparent);
-  border-bottom-color: var(--card-accent, var(--gray-400));
+  border-bottom-color: var(--card-accent, var(--wf-gray-400));
 }
 
 /* --- Field input: code --- */
 .field-input-code {
   flex: 1;
   font-size: 12.5px;
-  color: var(--gray-700);
+  color: var(--wf-gray-700);
   font-family: 'Courier New', Consolas, monospace;
-  background: var(--gray-100);
-  border: 1px solid var(--gray-200);
+  background: var(--wf-gray-100);
+  border: 1px solid var(--wf-gray-200);
   border-radius: 3px;
   padding: 3px 8px;
   outline: none;
   transition: border-color 0.2s, background 0.2s;
 }
-.field-input-code::placeholder { color: var(--gray-500); font-style: italic; }
+.field-input-code::placeholder { color: var(--wf-gray-500); font-style: italic; }
 .field-input-code:hover {
-  background: var(--gray-200);
-  border-color: var(--gray-400);
+  background: var(--wf-gray-200);
+  border-color: var(--wf-gray-400);
 }
 .field-input-code:focus {
-  background: var(--gray-300);
-  border-color: var(--card-accent, var(--gray-400));
+  background: var(--wf-gray-300);
+  border-color: var(--card-accent, var(--wf-gray-400));
 }
 
 textarea.field-input-prose,
@@ -404,20 +404,20 @@ textarea.field-input-code {
   text-transform: uppercase;
   padding: 3px 8px;
   border-radius: 3px;
-  border: 1px solid var(--gray-200);
+  border: 1px solid var(--wf-gray-200);
   cursor: pointer;
   outline: none;
   appearance: auto;
   transition: border-color 0.2s, background 0.2s;
 }
-.meta-select:hover { border-color: var(--gray-400); }
-.meta-select:focus { border-color: var(--card-accent, var(--gray-400)); }
+.meta-select:hover { border-color: var(--wf-gray-400); }
+.meta-select:focus { border-color: var(--card-accent, var(--wf-gray-400)); }
 
 /* Badge colors */
 .badge-impact-customer_experience { background: #EBF5FB; color: #1A5276; }
 .badge-impact-financial { background: #FEF9E7; color: #7D6608; }
 .badge-impact-legal_risk { background: #FDEDEC; color: #922B21; }
-.badge-impact-operational { background: var(--gray-100); color: var(--gray-500); }
+.badge-impact-operational { background: var(--wf-gray-100); color: var(--wf-gray-500); }
 .badge-priority-CRITICAL { background: #FADBD8; color: #922B21; }
 .badge-priority-HIGH { background: #FADBD8; color: #922B21; }
 .badge-priority-MEDIUM { background: #FDEBD0; color: #935116; }
@@ -432,34 +432,34 @@ textarea.field-input-code {
   padding: 8px 16px;
   font-size: 13px;
   font-weight: 500;
-  color: var(--gray-500);
-  background: var(--gray-50);
-  border: 1.5px dashed var(--gray-300);
+  color: var(--wf-gray-500);
+  background: var(--wf-gray-50);
+  border: 1.5px dashed var(--wf-gray-300);
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.15s ease;
   margin-top: 8px;
 }
 .add-btn:hover {
-  color: var(--gray-700);
-  border-color: var(--gray-500);
-  background: var(--gray-100);
+  color: var(--wf-gray-700);
+  border-color: var(--wf-gray-500);
+  background: var(--wf-gray-100);
 }
 
 /* --- Category Chain View (Section 1.2) --- */
 .category-container {
   background: #FFFFFF;
-  border: 1px solid var(--gray-200);
+  border: 1px solid var(--wf-gray-200);
   border-radius: var(--card-radius);
   padding: 16px 18px;
   margin-bottom: 16px;
-  border-left: 4px solid var(--gray-200);
+  border-left: 4px solid var(--wf-gray-200);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 .category-container[data-category="customer_experience"] { border-left-color: #1A5276; }
 .category-container[data-category="financial"] { border-left-color: #7D6608; }
 .category-container[data-category="legal_risk"] { border-left-color: #922B21; }
-.category-container[data-category="operational"] { border-left-color: var(--gray-500); }
+.category-container[data-category="operational"] { border-left-color: var(--wf-gray-500); }
 
 .category-header {
   font-size: 14px;
@@ -473,7 +473,7 @@ textarea.field-input-code {
 .category-container[data-category="customer_experience"] .category-header { color: #1A5276; }
 .category-container[data-category="financial"] .category-header { color: #7D6608; }
 .category-container[data-category="legal_risk"] .category-header { color: #922B21; }
-.category-container[data-category="operational"] .category-header { color: var(--gray-500); }
+.category-container[data-category="operational"] .category-header { color: var(--wf-gray-500); }
 
 .cat-dot {
   display: inline-block;
@@ -485,21 +485,21 @@ textarea.field-input-code {
 .category-container[data-category="customer_experience"] .cat-dot { background: #1A5276; }
 .category-container[data-category="financial"] .cat-dot { background: #7D6608; }
 .category-container[data-category="legal_risk"] .cat-dot { background: #922B21; }
-.category-container[data-category="operational"] .cat-dot { background: var(--gray-500); }
+.category-container[data-category="operational"] .cat-dot { background: var(--wf-gray-500); }
 
 .chain-row {
   display: flex;
   align-items: flex-start;
   gap: 0;
   padding: 8px 0;
-  border-bottom: 1px solid var(--gray-200);
+  border-bottom: 1px solid var(--wf-gray-200);
 }
 .chain-row:last-of-type { border-bottom: none; }
 
 .chain-segment {
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--gray-200);
+  border: 1px solid var(--wf-gray-200);
   border-radius: 4px;
   padding: 8px 10px;
   background: #FFFFFF;
@@ -512,7 +512,7 @@ textarea.field-input-code {
 }
 .chain-segment.seg-stakeholder .meta-select {
   background: transparent;
-  color: var(--gray-500);
+  color: var(--wf-gray-500);
 }
 .chain-segment.seg-expectation,
 .chain-segment.seg-impact {
@@ -521,12 +521,12 @@ textarea.field-input-code {
 }
 .chain-segment-label {
   font-size: 11px;
-  color: var(--gray-500);
+  color: var(--wf-gray-500);
   margin-bottom: 2px;
 }
 
 .chain-arrow {
-  color: var(--gray-200);
+  color: var(--wf-gray-200);
   font-size: 16px;
   padding: 0 10px;
   align-self: center;
@@ -535,14 +535,14 @@ textarea.field-input-code {
 
 .category-empty {
   font-style: italic;
-  color: var(--gray-200);
+  color: var(--wf-gray-200);
   padding: 8px 0;
   font-size: 13px;
 }
 
 .empty-state {
   font-size: 13px;
-  color: var(--gray-400);
+  color: var(--wf-gray-400);
   font-style: italic;
   padding: 16px;
   text-align: center;
@@ -550,8 +550,8 @@ textarea.field-input-code {
 
 /* --- GQM Bridge Elements --- */
 .bridge-element {
-  background: var(--gray-50);
-  border: 1px solid var(--gray-200);
+  background: var(--wf-gray-50);
+  border: 1px solid var(--wf-gray-200);
   border-left: 4px solid #8E44AD;
   border-radius: var(--card-radius);
   padding: 16px 20px;
@@ -568,7 +568,7 @@ textarea.field-input-code {
 }
 .bridge-prompt {
   font-size: 13px;
-  color: var(--gray-500);
+  color: var(--wf-gray-500);
   margin-bottom: 16px;
   line-height: 1.5;
 }
@@ -590,17 +590,17 @@ textarea.field-input-code {
 .coverage-expectation {
   padding-left: 16px;
   font-size: 12.5px;
-  color: var(--gray-700);
+  color: var(--wf-gray-700);
   margin: 4px 0;
 }
 .coverage-stakeholder {
   font-size: 11px;
-  color: var(--gray-500);
+  color: var(--wf-gray-500);
 }
 .coverage-signals {
   padding-left: 28px;
   font-size: 12px;
-  color: var(--gray-700);
+  color: var(--wf-gray-700);
 }
 .coverage-signals .arrow { color: #27AE60; }
 .coverage-gap {
@@ -617,7 +617,7 @@ textarea.field-input-code {
   display: flex;
   gap: 0;
   background: #FFFFFF;
-  border: 1px solid var(--gray-200);
+  border: 1px solid var(--wf-gray-200);
   border-left: 4px solid var(--through-accent);
   border-radius: var(--card-radius);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
@@ -630,18 +630,18 @@ textarea.field-input-code {
   padding: 16px 12px;
 }
 .bridge-metric + .bridge-metric {
-  border-left: 1px solid var(--gray-100);
+  border-left: 1px solid var(--wf-gray-100);
 }
 .bridge-metric-value {
   display: block;
   font-size: 24px;
   font-weight: 700;
-  color: var(--gray-700);
+  color: var(--wf-gray-700);
   line-height: 1;
   margin-bottom: 6px;
 }
 .bridge-metric-zero {
-  color: var(--gray-400);
+  color: var(--wf-gray-400);
 }
 .bridge-metric-accent {
   color: var(--through-accent);
@@ -652,7 +652,7 @@ textarea.field-input-code {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--gray-400);
+  color: var(--wf-gray-400);
 }
 
 /* --- Trace Checkbox Fields --- */
@@ -667,7 +667,7 @@ textarea.field-input-code {
   align-items: center;
   gap: 6px;
   font-size: 12.5px;
-  color: var(--gray-700);
+  color: var(--wf-gray-700);
   cursor: pointer;
 }
 .trace-checkbox input[type="checkbox"] { cursor: pointer; }
@@ -681,7 +681,7 @@ textarea.field-input-code {
 }
 .trace-checkbox .stakeholder-name {
   font-size: 11px;
-  color: var(--gray-500);
+  color: var(--wf-gray-500);
 }
 .trace-checkbox-list:focus-within {
   border-left: 2px solid var(--po-accent);
@@ -697,24 +697,24 @@ textarea.field-input-code {
   margin-bottom: 16px;
 }
 .through-line-table th {
-  background: var(--gray-100);
+  background: var(--wf-gray-100);
   font-weight: 600;
   text-align: left;
   padding: 8px 10px;
-  border-bottom: 2px solid var(--gray-200);
+  border-bottom: 2px solid var(--wf-gray-200);
   font-size: 11px;
   text-transform: uppercase;
-  color: var(--gray-500);
+  color: var(--wf-gray-500);
   letter-spacing: 0.3px;
 }
 .through-line-table td {
   padding: 8px 10px;
-  border-bottom: 1px solid var(--gray-200);
+  border-bottom: 1px solid var(--wf-gray-200);
   vertical-align: top;
   word-break: break-word;
 }
 .through-line-table .sig-name { font-weight: 600; }
-.through-line-table tr:hover td { background: var(--gray-50); }
+.through-line-table tr:hover td { background: var(--wf-gray-50); }
 
 /* --- Flow-step pattern --- */
 .flow-step {
@@ -740,7 +740,7 @@ textarea.field-input-code {
 .flow-content {
   flex: 1;
   padding: 10px 14px;
-  background: var(--gray-50);
+  background: var(--wf-gray-50);
   border: 1px solid #E5E7EB;
   border-left: none;
   border-radius: 0 4px 4px 0;
@@ -749,14 +749,14 @@ textarea.field-input-code {
   align-items: center;
 }
 .flow-content .flow-fields {
-  color: var(--gray-500);
+  color: var(--wf-gray-500);
   font-size: 12px;
   margin-left: 8px;
 }
 .flow-arrow {
   text-align: center;
   padding: 2px 0;
-  color: var(--gray-400);
+  color: var(--wf-gray-400);
   font-size: 18px;
   margin-left: 40px;
 }
@@ -785,29 +785,29 @@ textarea.field-input-code {
   line-height: 1.3;
 }
 .causal-layer .layer-num { font-size: 13px; margin-bottom: 2px; }
-.causal-layer.l1 { background: var(--gray-500); }
+.causal-layer.l1 { background: var(--wf-gray-500); }
 .causal-layer.l2 { background: #935116; }
 .causal-layer.l3 { background: #922B21; }
 .causal-layer.l4 { background: #1A5276; }
 .causal-content {
   flex: 1;
   padding: 10px 14px;
-  background: var(--gray-50);
+  background: var(--wf-gray-50);
   border: 1px solid #E5E7EB;
   border-left: none;
   border-radius: 0 4px 4px 0;
   font-size: 13px;
 }
-.causal-content strong { color: var(--gray-700); }
+.causal-content strong { color: var(--wf-gray-700); }
 .causal-content .causal-actor {
   font-size: 11px;
-  color: var(--gray-500);
+  color: var(--wf-gray-500);
   margin-top: 2px;
 }
 .causal-arrow {
   text-align: center;
   padding: 2px 0;
-  color: var(--gray-400);
+  color: var(--wf-gray-400);
   font-size: 18px;
   margin-left: 50px;
 }
@@ -838,17 +838,17 @@ textarea.field-input-code {
   padding: 6px 14px;
   font-size: 12px;
   font-weight: 600;
-  border: 1px solid var(--gray-200);
+  border: 1px solid var(--wf-gray-200);
   border-radius: 4px;
-  background: var(--gray-50);
-  color: var(--gray-500);
+  background: var(--wf-gray-50);
+  color: var(--wf-gray-500);
   cursor: pointer;
 }
-.layer-tab-btn:hover { background: var(--gray-200); }
+.layer-tab-btn:hover { background: var(--wf-gray-200); }
 .layer-tab-btn.active {
-  background: var(--gray-900);
+  background: var(--wf-gray-900);
   color: #FFFFFF;
-  border-color: var(--gray-900);
+  border-color: var(--wf-gray-900);
 }
 .layer-panel { display: none; }
 .layer-panel.active { display: block; }
@@ -856,7 +856,7 @@ textarea.field-input-code {
 /* --- Dashboard Preview tab --- */
 .dash-section {
   background: #fff;
-  border: 1px solid var(--gray-200);
+  border: 1px solid var(--wf-gray-200);
   border-radius: 6px;
   padding: 16px 20px;
   margin-bottom: 16px;
@@ -868,7 +868,7 @@ textarea.field-input-code {
 }
 .dash-ac-ref {
   font-size: 11px;
-  color: var(--gray-500);
+  color: var(--wf-gray-500);
   font-weight: normal;
   margin-left: 8px;
 }
@@ -932,13 +932,13 @@ textarea.field-input-code {
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
-  color: var(--gray-500);
+  color: var(--wf-gray-500);
   padding: 8px 10px;
-  border-bottom: 2px solid var(--gray-200);
+  border-bottom: 2px solid var(--wf-gray-200);
 }
 .dash-stakeholder-table td {
   padding: 8px 10px;
-  border-bottom: 1px solid var(--gray-100);
+  border-bottom: 1px solid var(--wf-gray-100);
   vertical-align: top;
 }
 /* --- Completeness evaluation --- */
@@ -947,7 +947,7 @@ textarea.field-input-code {
 .completeness-missing { padding-left: 16px; font-size: 12.5px; color: #E74C3C; }
 .completeness-ok { color: #27AE60; }
 /* --- Dashboard meta label --- */
-.dash-meta-label { font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--gray-500); }
+.dash-meta-label { font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--wf-gray-500); }
 
 /* --- Print-friendly --- */
 @media print {
@@ -957,20 +957,20 @@ textarea.field-input-code {
 
 /* --- Service Manager View --- */
 .service-manager { max-width: 1200px; margin: 0 auto; padding: 24px 0; }
-.service-manager h2 { font-size: 20px; color: var(--gray-700); margin-bottom: 4px; }
-.service-manager .manager-subtitle { font-size: 14px; color: var(--gray-500); margin-bottom: 24px; }
-.service-manager .empty-message { font-size: 14px; color: var(--gray-500); margin-bottom: 24px; }
+.service-manager h2 { font-size: 20px; color: var(--wf-gray-700); margin-bottom: 4px; }
+.service-manager .manager-subtitle { font-size: 14px; color: var(--wf-gray-500); margin-bottom: 24px; }
+.service-manager .empty-message { font-size: 14px; color: var(--wf-gray-500); margin-bottom: 24px; }
 
 .service-card {
-  background: white; border: 1px solid var(--gray-200); border-radius: 6px;
+  background: white; border: 1px solid var(--wf-gray-200); border-radius: 6px;
   padding: 16px; margin-bottom: 12px; cursor: pointer;
   display: flex; justify-content: space-between; align-items: center;
 }
-.service-card:hover { border-color: var(--gray-400); }
+.service-card:hover { border-color: var(--wf-gray-400); }
 .service-card-info { flex: 1; }
-.service-card-name { font-size: 16px; color: var(--gray-700); font-weight: bold; }
-.service-card-meta { font-size: 12px; color: var(--gray-500); margin-top: 4px; }
-.service-card-completion { font-size: 11px; color: var(--gray-500); margin-top: 2px; }
+.service-card-name { font-size: 16px; color: var(--wf-gray-700); font-weight: bold; }
+.service-card-meta { font-size: 12px; color: var(--wf-gray-500); margin-top: 4px; }
+.service-card-completion { font-size: 11px; color: var(--wf-gray-500); margin-top: 2px; }
 .service-card-actions { display: flex; gap: 8px; }
 .service-card-delete {
   background: none; border: 1px solid #E74C3C; color: #E74C3C;
@@ -978,10 +978,10 @@ textarea.field-input-code {
 }
 .service-card-delete:hover { background: #FDEDEC; }
 .service-card-clone {
-  background: none; border: 1px solid var(--gray-200); color: var(--gray-500);
+  background: none; border: 1px solid var(--wf-gray-200); color: var(--wf-gray-500);
   border-radius: 4px; padding: 4px 10px; font-size: 12px; cursor: pointer;
 }
-.service-card-clone:hover { background: var(--gray-100); }
+.service-card-clone:hover { background: var(--wf-gray-100); }
 
 .manager-actions { display: flex; gap: 12px; margin-bottom: 24px; }
 .btn-new-service {
@@ -991,32 +991,32 @@ textarea.field-input-code {
 .btn-new-service:hover { background: #E8F8F5; }
 .btn-import {
   padding: 8px 20px; border-radius: 4px; font-size: 14px; cursor: pointer;
-  background: white; border: 1px solid var(--gray-500); color: var(--gray-500);
+  background: white; border: 1px solid var(--wf-gray-500); color: var(--wf-gray-500);
 }
-.btn-import:hover { background: var(--gray-100); }
+.btn-import:hover { background: var(--wf-gray-100); }
 
 /* --- Service pill bar --- */
 .service-pill-bar {
   display: flex; gap: 8px; padding: 8px 0; margin-bottom: 12px;
-  border-bottom: 1px solid var(--gray-200); align-items: center; flex-wrap: wrap;
+  border-bottom: 1px solid var(--wf-gray-200); align-items: center; flex-wrap: wrap;
 }
 .service-pill {
-  padding: 6px 16px; border-radius: 16px; border: 1px solid var(--gray-200);
-  background: white; cursor: pointer; font-size: 13px; color: var(--gray-700);
+  padding: 6px 16px; border-radius: 16px; border: 1px solid var(--wf-gray-200);
+  background: white; cursor: pointer; font-size: 13px; color: var(--wf-gray-700);
 }
-.service-pill:hover { border-color: var(--gray-400); }
-.service-pill.active { background: var(--gray-700); color: white; border-color: var(--gray-700); }
+.service-pill:hover { border-color: var(--wf-gray-400); }
+.service-pill.active { background: var(--wf-gray-700); color: white; border-color: var(--wf-gray-700); }
 .pill-all-services {
-  font-size: 12px; color: var(--gray-500); margin-left: auto; cursor: pointer;
+  font-size: 12px; color: var(--wf-gray-500); margin-left: auto; cursor: pointer;
   background: none; border: none; text-decoration: underline;
 }
-.pill-all-services:hover { color: var(--gray-700); }
+.pill-all-services:hover { color: var(--wf-gray-700); }
 
 /* --- Export status bar --- */
 .export-status-bar {
   position: fixed; bottom: 0; left: 0; right: 0;
   padding: 8px 16px; font-size: 12px;
-  border-top: 1px solid var(--gray-200); background: white;
+  border-top: 1px solid var(--wf-gray-200); background: white;
   display: flex; align-items: center; justify-content: space-between;
   z-index: 100;
 }
@@ -1026,16 +1026,16 @@ textarea.field-input-code {
 .export-btn-bar { display: flex; gap: 8px; }
 .export-btn-bar button {
   padding: 4px 12px; border-radius: 4px; font-size: 12px; cursor: pointer;
-  background: white; border: 1px solid var(--gray-200); color: var(--gray-700);
+  background: white; border: 1px solid var(--wf-gray-200); color: var(--wf-gray-700);
 }
-.export-btn-bar button:hover { background: var(--gray-100); }
+.export-btn-bar button:hover { background: var(--wf-gray-100); }
 .workspace-actions {
-  margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--gray-200);
+  margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--wf-gray-200);
   display: flex; align-items: center; gap: 8px;
 }
-.workspace-actions-label { font-size: 12px; color: var(--gray-500); }
+.workspace-actions-label { font-size: 12px; color: var(--wf-gray-500); }
 .btn-reset, .btn-reset-example {
-  color: var(--gray-500); border: 1px solid var(--gray-200); background: transparent;
+  color: var(--wf-gray-500); border: 1px solid var(--wf-gray-200); background: transparent;
   font-size: 12px; padding: 4px 12px; border-radius: 4px; cursor: pointer;
 }
 .btn-reset:hover, .btn-reset-example:hover { color: #E74C3C; background: #FDF2F2; }
@@ -1053,21 +1053,21 @@ textarea.field-input-code {
 .severity-critical { background: #FDEDEC; color: #C0392B; }
 /* Example Library (Phase 10) */
 .example-library { margin-bottom: 24px; }
-.section-header { font-size: 14px; font-weight: bold; color: var(--gray-500); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.section-header { font-size: 14px; font-weight: bold; color: var(--wf-gray-500); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
 .section-dot.example-dot { width: 8px; height: 8px; border-radius: 50%; background: #8E44AD; display: inline-block; }
-.example-card { border: 1px solid var(--gray-200); border-left: 3px solid #8E44AD; border-radius: 4px; padding: 12px 16px; margin-bottom: 8px; background: white; display: flex; flex-direction: column; gap: 4px; }
+.example-card { border: 1px solid var(--wf-gray-200); border-left: 3px solid #8E44AD; border-radius: 4px; padding: 12px 16px; margin-bottom: 8px; background: white; display: flex; flex-direction: column; gap: 4px; }
 .example-card:hover { background: rgba(142, 68, 173, 0.03); }
 .example-card-header { display: flex; align-items: center; gap: 8px; }
 .archetype-badge { display: inline-block; font-size: 10px; font-weight: bold; padding: 2px 8px; border-radius: 10px; background: #8E44AD; color: white; text-transform: uppercase; }
-.example-name { font-weight: bold; font-size: 14px; color: var(--gray-700); }
-.example-card-desc { font-size: 12px; color: var(--gray-500); line-height: 1.4; }
-.example-card-domain { font-size: 11px; color: var(--gray-500); }
+.example-name { font-weight: bold; font-size: 14px; color: var(--wf-gray-700); }
+.example-card-desc { font-size: 12px; color: var(--wf-gray-500); line-height: 1.4; }
+.example-card-domain { font-size: 11px; color: var(--wf-gray-500); }
 .example-card-actions { display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-top: 4px; }
 .btn-load { padding: 4px 16px; border-radius: 4px; font-size: 12px; cursor: pointer; background: #8E44AD; color: white; border: none; }
 .btn-load:hover { background: #7D3C98; }
 .loaded-indicator { color: #27AE60; font-size: 12px; font-weight: bold; }
-.example-card .btn-reset-example { background: none; border: none; color: var(--gray-500); font-size: 11px; cursor: pointer; text-decoration: underline; padding: 0; }
-.example-card .btn-reset-example:hover { color: var(--gray-500); }
+.example-card .btn-reset-example { background: none; border: none; color: var(--wf-gray-500); font-size: 11px; cursor: pointer; text-decoration: underline; padding: 0; }
+.example-card .btn-reset-example:hover { color: var(--wf-gray-500); }
 /* Service Definition Guide (Phase 10) */
 .service-guide {
   margin-bottom: 14px;
@@ -1077,17 +1077,17 @@ textarea.field-input-code {
   align-items: center;
   justify-content: space-between;
   padding: 10px 14px;
-  background: var(--gray-100);
-  border-left: 3px solid var(--gray-400);
+  background: var(--wf-gray-100);
+  border-left: 3px solid var(--wf-gray-400);
   border-radius: 6px;
   cursor: pointer;
   font-size: 13px;
   font-weight: 500;
-  color: var(--gray-500);
+  color: var(--wf-gray-500);
   user-select: none;
 }
 .service-guide-header:hover {
-  background: var(--gray-200);
+  background: var(--wf-gray-200);
 }
 .service-guide-indicator {
   font-size: 12px;
@@ -1095,19 +1095,19 @@ textarea.field-input-code {
 }
 .service-guide-body {
   padding: 14px;
-  border: 1px solid var(--gray-200);
+  border: 1px solid var(--wf-gray-200);
   border-top: none;
   border-radius: 0 0 6px 6px;
-  background: var(--gray-100);
+  background: var(--wf-gray-100);
   font-size: 13px;
   line-height: 1.6;
-  color: var(--gray-700);
+  color: var(--wf-gray-700);
 }
 .pattern-card {
   padding: 10px 12px;
   margin-bottom: 8px;
   background: white;
-  border: 1px solid var(--gray-200);
+  border: 1px solid var(--wf-gray-200);
   border-radius: 4px;
 }
 .pattern-card:last-child {
@@ -1116,36 +1116,36 @@ textarea.field-input-code {
 .pattern-name {
   font-weight: 600;
   font-size: 13px;
-  color: var(--gray-700);
+  color: var(--wf-gray-700);
   margin-bottom: 4px;
 }
 .pattern-desc {
   font-size: 12px;
-  color: var(--gray-500);
+  color: var(--wf-gray-500);
   margin-bottom: 4px;
 }
 .pattern-example {
   font-size: 12px;
-  color: var(--gray-500);
+  color: var(--wf-gray-500);
   font-style: italic;
 }
 .pattern-best-when {
   font-size: 11px;
-  color: var(--gray-400);
+  color: var(--wf-gray-400);
   margin-top: 4px;
 }
 .granularity-test {
   margin-top: 12px;
   padding: 10px 14px;
   background: white;
-  border-left: 3px solid var(--gray-300);
+  border-left: 3px solid var(--wf-gray-300);
   border-radius: 0 4px 4px 0;
   font-size: 12px;
   line-height: 1.6;
 }
 .granularity-test strong {
   font-size: 13px;
-  color: var(--gray-700);
+  color: var(--wf-gray-700);
 }
 
 /* --- Grounding Page --- */
@@ -1157,14 +1157,14 @@ textarea.field-input-code {
   padding: 10px 14px;
   margin: 0 0 12px 0;
   border-radius: 2px;
-  color: var(--through-accent);
-  background: var(--through-tint);
+  color: var(--wf-gray-500);
+  background: var(--wf-gray-100);
 }
 .grounding-panel {
   background: #FFFFFF;
   padding: 20px 24px;
   border-radius: 6px;
-  border: 1px solid var(--gray-200);
+  border: 1px solid var(--wf-gray-200);
   margin-bottom: 20px;
 }
 .objective-cards {
@@ -1177,20 +1177,20 @@ textarea.field-input-code {
   flex: 1;
   min-width: 280px;
   background: white;
-  border: 1px solid var(--gray-200);
+  border: 1px solid var(--wf-gray-200);
   border-radius: 6px;
   padding: 16px 18px;
-  border-top: 3px solid var(--through-accent);
+  border-top: 3px solid var(--wf-gray-300);
 }
 .objective-card h4 {
   font-size: 14px;
   font-weight: bold;
-  color: var(--through-accent);
+  color: var(--wf-gray-700);
   margin-bottom: 8px;
 }
 .objective-summary {
   font-size: 13px;
-  color: var(--gray-700);
+  color: var(--wf-gray-700);
   margin-bottom: 12px;
   line-height: 1.5;
 }
@@ -1201,9 +1201,9 @@ textarea.field-input-code {
 }
 .objective-card li {
   font-size: 12px;
-  color: var(--gray-500);
+  color: var(--wf-gray-500);
   padding: 4px 0 4px 12px;
-  border-left: 2px solid var(--gray-200);
+  border-left: 2px solid var(--wf-gray-200);
   margin-bottom: 4px;
   line-height: 1.4;
 }
@@ -1212,15 +1212,15 @@ textarea.field-input-code {
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: var(--gray-400);
+  color: var(--wf-gray-400);
   margin-bottom: 6px;
   margin-top: 4px;
 }
 .objective-card .measure-item {
   font-size: 12px;
-  color: var(--through-accent);
+  color: var(--wf-gray-700);
   padding: 3px 0 3px 12px;
-  border-left: 2px solid var(--through-accent);
+  border-left: 2px solid var(--wf-gray-400);
   margin-bottom: 3px;
   line-height: 1.4;
 }
@@ -1232,9 +1232,9 @@ textarea.field-input-code {
 .sdlc-table td {
   padding: 12px 16px;
   font-size: 13px;
-  color: var(--gray-700);
+  color: var(--wf-gray-700);
   line-height: 1.5;
-  border-bottom: 1px solid var(--gray-200);
+  border-bottom: 1px solid var(--wf-gray-200);
   vertical-align: top;
 }
 .sdlc-table .actor-cell {
@@ -1256,23 +1256,23 @@ textarea.field-input-code {
   border-radius: 6px;
   font-size: 16px;
   font-weight: 600;
-  background: var(--through-accent);
+  background: var(--wf-gray-900);
   color: white;
   border: none;
   cursor: pointer;
   letter-spacing: 0.3px;
 }
 .btn-enter-workspace:hover {
-  background: #7D3C98;
+  background: var(--wf-gray-700);
 }
 .grounding-cta .secondary-text {
   font-size: 12px;
-  color: var(--gray-400);
+  color: var(--wf-gray-400);
   margin-top: 10px;
 }
 .about-link {
   font-size: 12px;
-  color: var(--through-accent);
+  color: var(--wf-gray-500);
   cursor: pointer;
   margin-bottom: 12px;
   display: inline-block;
@@ -1308,7 +1308,7 @@ var CATEGORY_COLORS_BADGE = {
   customer_experience: { bg: '#EBF5FB', text: '#1A5276' },
   financial:           { bg: '#FEF9E7', text: '#7D6608' },
   legal_risk:          { bg: '#FDEDEC', text: '#922B21' },
-  operational:         { bg: 'var(--gray-100)', text: 'var(--gray-500)' },
+  operational:         { bg: 'var(--wf-gray-100)', text: 'var(--wf-gray-500)' },
 };
 
 // ── Dropdown options ──
@@ -1445,7 +1445,7 @@ var SEED_DATA = {
     identity: {
       serviceName: 'GL Reconciliation EOD Report',
       serviceId: 'SVC_GL_001',
-      description: 'Scheduled nightly GL reconciliation for commercial banking — aggregates daily transactions, formats per Fed Reg D, transmits to regulatory file gateway',
+      description: 'Autosys-scheduled nightly GL reconciliation for commercial banking — aggregates daily transactions, formats per Fed Reg D, transmits to regulatory file gateway',
       tier: 'Tier 1',
       productLine: 'Consumer Lending',
       businessDomain: 'Wholesale Banking',
@@ -1460,9 +1460,9 @@ var SEED_DATA = {
       { id: 'ctx-svc003-004', stakeholder: 'Banking Customers', expectationStatement: 'Regulatory compliance maintained so loan processing continues uninterrupted', impactDescription: 'Customer Impact: Enforcement could restrict originations — worst case 48-72hr freeze affecting ~2,400 pending applications', impactCategory: 'customer_experience', priority: 'HIGH' },
     ],
     signals: [
-      { id: 'sig-svc003-001', name: 'Job Started On Schedule', signalType: 'sli_threshold', layer: 'L1', whatItTellsMe: 'Batch job initiated within 15 minutes of scheduled 2:00 AM EST start time', sloTarget: 15, timeWindow: '30d', whyThisTarget: 'T1 batch jobs must start within 15 minutes of schedule; late start compresses processing window before 6 AM SLA', impactCategory: '', impactUnit: '', queryNumerator: "ABS(job_start_time - scheduled_time) FROM scheduler_event_log WHERE job='GL_EOD_RECON_001'", queryDenominator: '', technicalOwner: 'sre-data-platform', alertThreshold: 20, pageThreshold: 30, thresholdOperator: 'lte', thresholdUnit: 'minutes', dataSource: 'Splunk', dataSourceDetails: 'index=scheduler_events sourcetype=job_start', alertSeverity: 'warning', pageSeverity: 'critical', verifies: ['ctx-svc003-002'], quantifies: [] },
-      { id: 'sig-svc003-002', name: 'Job Success Rate', signalType: 'sli_ratio', layer: 'L2', whatItTellsMe: 'Percentage of job executions completing successfully — 99% allows ~3 failures per year', sloTarget: 99, timeWindow: '30d', whyThisTarget: 'T1 regulatory jobs require 99% success rate; each failure triggers manual recovery and potential SLA miss', impactCategory: '', impactUnit: '', queryNumerator: "COUNT(job_runs WHERE status='SUCCESS')", queryDenominator: 'COUNT(job_runs)', technicalOwner: 'sre-data-platform', alertThreshold: 98.5, pageThreshold: 97, thresholdOperator: '', thresholdUnit: '', dataSource: 'Splunk', dataSourceDetails: 'index=scheduler_job_history sourcetype=job_completion', alertSeverity: 'warning', pageSeverity: 'critical', verifies: ['ctx-svc003-002'], quantifies: [] },
-      { id: 'sig-svc003-003', name: 'Job Duration Within Limit', signalType: 'sli_threshold', layer: 'L2', whatItTellsMe: 'Job completes within 60-minute maximum allowed runtime (typical runtime: 45 minutes)', sloTarget: 60, timeWindow: '30d', whyThisTarget: 'Must complete in 60 min to allow buffer before 6 AM SLA; normal runtime is 45 min', impactCategory: '', impactUnit: '', queryNumerator: "job_end_time - job_start_time FROM scheduler_job_history WHERE job='GL_EOD_RECON_001'", queryDenominator: '', technicalOwner: 'sre-data-platform', alertThreshold: 75, pageThreshold: 90, thresholdOperator: 'lte', thresholdUnit: 'minutes', dataSource: 'Splunk', dataSourceDetails: 'index=scheduler_job_history sourcetype=job_completion', alertSeverity: 'warning', pageSeverity: 'critical', verifies: ['ctx-svc003-002'], quantifies: [] },
+      { id: 'sig-svc003-001', name: 'Job Started On Schedule', signalType: 'sli_threshold', layer: 'L1', whatItTellsMe: 'Batch job initiated within 15 minutes of scheduled 2:00 AM EST start time', sloTarget: 15, timeWindow: '30d', whyThisTarget: 'T1 batch jobs must start within 15 minutes of schedule; late start compresses processing window before 6 AM SLA', impactCategory: '', impactUnit: '', queryNumerator: "ABS(job_start_time - scheduled_time) FROM autosys_event_log WHERE job='GL_EOD_RECON_001'", queryDenominator: '', technicalOwner: 'sre-data-platform', alertThreshold: 20, pageThreshold: 30, thresholdOperator: 'lte', thresholdUnit: 'minutes', dataSource: 'Splunk', dataSourceDetails: 'index=autosys_events sourcetype=job_start', alertSeverity: 'warning', pageSeverity: 'critical', verifies: ['ctx-svc003-002'], quantifies: [] },
+      { id: 'sig-svc003-002', name: 'Job Success Rate', signalType: 'sli_ratio', layer: 'L2', whatItTellsMe: 'Percentage of job executions completing successfully — 99% allows ~3 failures per year', sloTarget: 99, timeWindow: '30d', whyThisTarget: 'T1 regulatory jobs require 99% success rate; each failure triggers manual recovery and potential SLA miss', impactCategory: '', impactUnit: '', queryNumerator: "COUNT(job_runs WHERE status='SUCCESS')", queryDenominator: 'COUNT(job_runs)', technicalOwner: 'sre-data-platform', alertThreshold: 98.5, pageThreshold: 97, thresholdOperator: '', thresholdUnit: '', dataSource: 'Splunk', dataSourceDetails: 'index=autosys_job_history sourcetype=job_completion', alertSeverity: 'warning', pageSeverity: 'critical', verifies: ['ctx-svc003-002'], quantifies: [] },
+      { id: 'sig-svc003-003', name: 'Job Duration Within Limit', signalType: 'sli_threshold', layer: 'L2', whatItTellsMe: 'Job completes within 60-minute maximum allowed runtime (typical runtime: 45 minutes)', sloTarget: 60, timeWindow: '30d', whyThisTarget: 'Must complete in 60 min to allow buffer before 6 AM SLA; normal runtime is 45 min', impactCategory: '', impactUnit: '', queryNumerator: "job_end_time - job_start_time FROM autosys_job_history WHERE job='GL_EOD_RECON_001'", queryDenominator: '', technicalOwner: 'sre-data-platform', alertThreshold: 75, pageThreshold: 90, thresholdOperator: 'lte', thresholdUnit: 'minutes', dataSource: 'Splunk', dataSourceDetails: 'index=autosys_job_history sourcetype=job_completion', alertSeverity: 'warning', pageSeverity: 'critical', verifies: ['ctx-svc003-002'], quantifies: [] },
       { id: 'sig-svc003-004', name: 'Report Available by SLA', signalType: 'sli_ratio', layer: 'L3', whatItTellsMe: 'GL reconciliation report arrives at regulatory SFTP gateway before 6:00 AM EST deadline', sloTarget: 99.5, timeWindow: '365d', whyThisTarget: 'Fed Reg D allows 1-2 late submissions per year before triggering formal regulatory review', impactCategory: '', impactUnit: '', queryNumerator: "COUNT(days WHERE file_arrival_time <= '06:00 EST')", queryDenominator: 'COUNT(business_days)', technicalOwner: 'sre-data-platform', alertThreshold: 99, pageThreshold: 98, thresholdOperator: '', thresholdUnit: '', dataSource: 'Splunk', dataSourceDetails: 'index=sftp_gateway sourcetype=file_receipt gl_recon_*.csv', alertSeverity: 'warning', pageSeverity: 'critical', verifies: ['ctx-svc003-001'], quantifies: [] },
       { id: 'sig-svc003-005', name: 'Reconciliation Accuracy', signalType: 'sli_ratio', layer: 'L3', whatItTellsMe: 'GL report totals reconcile with core banking source data within $0.01 tolerance', sloTarget: 99.9, timeWindow: '30d', whyThisTarget: 'Financial accuracy is non-negotiable; reconciliation gaps trigger SOX control remediation', impactCategory: '', impactUnit: '', queryNumerator: 'COUNT(days WHERE ABS(report_total - source_total) <= 0.01)', queryDenominator: 'COUNT(days)', technicalOwner: 'sre-data-platform', alertThreshold: 99.5, pageThreshold: 99, thresholdOperator: '', thresholdUnit: '', dataSource: 'Custom', dataSourceDetails: 'Snowflake query: ABS(report_total - source_total) vs $0.01 tolerance', alertSeverity: 'warning', pageSeverity: 'critical', verifies: ['ctx-svc003-001', 'ctx-svc003-003'], quantifies: [] },
       { id: 'sig-svc003-006', name: 'Regulatory Penalty Exposure', signalType: 'business_impact', layer: 'L4', whatItTellsMe: 'Potential Fed Reg D penalties when SLA breached — $10K first, $25K second, $50K+ third with formal review', sloTarget: null, timeWindow: '', whyThisTarget: '', impactCategory: 'legal_risk', impactUnit: 'USD', queryNumerator: 'penalty_matrix_lookup(breach_count_rolling_12m)', queryDenominator: '', technicalOwner: 'sre-data-platform', alertThreshold: null, pageThreshold: null, thresholdOperator: '', thresholdUnit: '', dataSource: 'Custom', dataSourceDetails: 'Calculated: Fed Reg D penalty schedule x breach history in rolling 12-month window', alertSeverity: 'warning', pageSeverity: 'critical', verifies: [], quantifies: ['ctx-svc003-001'] },
@@ -1541,7 +1541,7 @@ var EXAMPLE_CATALOG = [
     key: 'eod-batch',
     name: 'GL Reconciliation EOD Report',
     archetype: 'Batch Processing',
-    description: 'Scheduled nightly GL reconciliation for regulatory compliance — Fed Reg D reporting with SLA deadlines and data accuracy monitoring.',
+    description: 'Autosys-scheduled nightly GL reconciliation for regulatory compliance — Fed Reg D reporting with SLA deadlines and data accuracy monitoring.',
     domain: 'Wholesale Banking'
   }
 ];
@@ -2323,8 +2323,8 @@ ${r?'Expression: "'+r+`"
 
     <div class="grounding-label">THE PROBLEM TODAY</div>
     <div class="grounding-panel">
-      <p style="font-size:14px; color:var(--gray-700); line-height:1.6; margin:0 0 12px 0;">Your teams build and run hundreds of services. For each one, someone decided what to monitor — usually the engineer closest to production, based on what was easy to instrument. Nobody can tell you which services are monitored for the things that actually matter to the business, which ones have gaps, or whether the monitoring that exists traces back to a stakeholder who would care if it broke.</p>
-      <p style="font-size:14px; color:var(--gray-700); line-height:1.6; margin:0;">When something does break, the first 15 minutes of every incident are spent assembling context: who's affected, what's the business impact, who do we escalate to. That context should exist before the incident — it doesn't, because there's no structured place to define it.</p>
+      <p style="font-size:14px; color:var(--wf-gray-700); line-height:1.6; margin:0 0 12px 0;">Your teams build and run hundreds of services. For each one, someone decided what to monitor — usually the engineer closest to production, based on what was easy to instrument. Nobody can tell you which services are monitored for the things that actually matter to the business, which ones have gaps, or whether the monitoring that exists traces back to a stakeholder who would care if it broke.</p>
+      <p style="font-size:14px; color:var(--wf-gray-700); line-height:1.6; margin:0;">When something does break, the first 15 minutes of every incident are spent assembling context: who's affected, what's the business impact, who do we escalate to. That context should exist before the incident — it doesn't, because there's no structured place to define it.</p>
     </div>
 
     <div class="grounding-label">WHAT THIS TOOL DRIVES TOWARD</div>
@@ -2391,7 +2391,7 @@ ${r?'Expression: "'+r+`"
           <td>Operational readiness gate — configures alert thresholds, severity, notification routing, dashboard, runbook. The "what to do about it." Maps to Platform Story tab.</td>
         </tr>
       </table>
-      <p style="font-size:13px; color:var(--gray-500); margin:8px 0 0 0; font-style:italic;">Same roles. Same backlog. Same sprint gates. New requirement type — operational health — with structured acceptance criteria for each role.</p>
+      <p style="font-size:13px; color:var(--wf-gray-500); margin:8px 0 0 0; font-style:italic;">Same roles. Same backlog. Same sprint gates. New requirement type — operational health — with structured acceptance criteria for each role.</p>
     </div>
 
     <div class="grounding-cta">
@@ -2774,7 +2774,7 @@ ${r?'Expression: "'+r+`"
             <!-- Signal type (read-only — Dev selects type in Section 2.1) -->
             <div class="field-row">
               <span class="field-label">Signal type</span>
-              <span style="color:var(--gray-500);font-style:italic;" x-text="sig.signalType ? signalTypeLabel(sig.signalType) : 'Not yet selected'"></span>
+              <span style="color:var(--wf-gray-500);font-style:italic;" x-text="sig.signalType ? signalTypeLabel(sig.signalType) : 'Not yet selected'"></span>
             </div>
 
             <!-- Target -->
@@ -2945,7 +2945,7 @@ ${r?'Expression: "'+r+`"
 
       <template x-for="sig in service.signals.filter(function(s) { return s.layer === 'L3'; })" :key="sig.id">
         <div class="card dev-card">
-          <div class="card-name-input" style="border:none;cursor:default;background:transparent;font-weight:bold;color:var(--gray-700);"
+          <div class="card-name-input" style="border:none;cursor:default;background:transparent;font-weight:bold;color:var(--wf-gray-700);"
             x-text="sig.name || '(unnamed signal)'"></div>
 
           <div class="field-list">
@@ -2963,19 +2963,19 @@ ${r?'Expression: "'+r+`"
             <!-- PO context fields (read-only — shows what PO has defined) -->
             <div class="field-row">
               <span class="field-label">What it tells me</span>
-              <span style="color:var(--gray-500);font-style:italic;" x-text="sig.whatItTellsMe || '(not yet defined by PO)'"></span>
+              <span style="color:var(--wf-gray-500);font-style:italic;" x-text="sig.whatItTellsMe || '(not yet defined by PO)'"></span>
             </div>
             <div class="field-row">
               <span class="field-label">SLO Target</span>
-              <span style="color:var(--gray-500);font-style:italic;" x-text="sig.sloTarget || '(not yet defined by PO)'"></span>
+              <span style="color:var(--wf-gray-500);font-style:italic;" x-text="sig.sloTarget || '(not yet defined by PO)'"></span>
             </div>
             <div class="field-row">
               <span class="field-label">Time window</span>
-              <span style="color:var(--gray-500);font-style:italic;" x-text="sig.timeWindow || '(not yet defined by PO)'"></span>
+              <span style="color:var(--wf-gray-500);font-style:italic;" x-text="sig.timeWindow || '(not yet defined by PO)'"></span>
             </div>
             <div class="field-row">
               <span class="field-label">Why this target</span>
-              <span style="color:var(--gray-500);font-style:italic;" x-text="sig.whyThisTarget || '(not yet defined by PO)'"></span>
+              <span style="color:var(--wf-gray-500);font-style:italic;" x-text="sig.whyThisTarget || '(not yet defined by PO)'"></span>
             </div>
 
             <!-- Ratio-specific fields -->
@@ -3176,7 +3176,7 @@ ${r?'Expression: "'+r+`"
 
       <template x-for="sig in service.signals.filter(function(s) { return s.layer === 'L4'; })" :key="sig.id">
         <div class="card dev-card">
-          <div class="card-name-input" style="border:none;cursor:default;background:transparent;font-weight:bold;color:var(--gray-700);"
+          <div class="card-name-input" style="border:none;cursor:default;background:transparent;font-weight:bold;color:var(--wf-gray-700);"
             x-text="sig.name || '(unnamed signal)'"></div>
 
           <div class="field-list">
@@ -3341,13 +3341,13 @@ ${r?'Expression: "'+r+`"
 
       <template x-for="sig in service.signals.filter(function(s) { return s.layer !== 'L4'; })" :key="sig.id">
         <div class="card platform-card">
-          <div class="card-name-input" style="border:none;cursor:default;background:transparent;font-weight:bold;color:var(--gray-700);"
+          <div class="card-name-input" style="border:none;cursor:default;background:transparent;font-weight:bold;color:var(--wf-gray-700);"
             x-text="(sig.name || '(unnamed)') + ' (' + sig.layer + ')'"></div>
 
           <div class="field-list">
             <div class="field-row">
               <span class="field-label">Data Source</span>
-              <span style="color:var(--gray-500);font-style:italic;"
+              <span style="color:var(--wf-gray-500);font-style:italic;"
                 x-text="sig.dataSource || '(not yet defined — set on Dev tab)'"></span>
             </div>
             <div class="field-row">
@@ -3487,7 +3487,7 @@ ${r?'Expression: "'+r+`"
 
     <!-- L3 Panel: Credit Check Success Rate (sli_ratio, 3 actors, 8 steps) -->
     <div data-layer-panel="l3" x-show="activeLayer === 'l3'">
-      <div style="margin-bottom: 12px; font-size: 13px; color: var(--gray-500);"><strong>Credit Check Success Rate</strong> — 8 steps — PO → Dev → Platform</div>
+      <div style="margin-bottom: 12px; font-size: 13px; color: var(--wf-gray-500);"><strong>Credit Check Success Rate</strong> — 8 steps — PO → Dev → Platform</div>
 
       <div class="flow-step"><div class="flow-actor po">PO</div><div class="flow-content"><strong>Names the signal</strong> — "Credit Check Success Rate" / "Percentage of credit checks completing successfully" <span class="flow-fields">signal_display_name, description_business</span></div></div>
       <div class="flow-arrow">↓</div>
@@ -3515,7 +3515,7 @@ ${r?'Expression: "'+r+`"
 
     <!-- L4 Panel: Customers Blocked (business_impact, 3 actors, 5 steps) -->
     <div data-layer-panel="l4" x-show="activeLayer === 'l4'">
-      <div style="margin-bottom: 12px; font-size: 13px; color: var(--gray-500);"><strong>Customers Blocked</strong> — 5 steps — PO → Dev → Platform</div>
+      <div style="margin-bottom: 12px; font-size: 13px; color: var(--wf-gray-500);"><strong>Customers Blocked</strong> — 5 steps — PO → Dev → Platform</div>
 
       <div class="flow-step"><div class="flow-actor po">PO</div><div class="flow-content"><strong>Names the impact</strong> — "Customers Blocked" / "Number of loan applicants unable to proceed" <span class="flow-fields">signal_display_name, description_business</span></div></div>
       <div class="flow-arrow">↓</div>
@@ -3534,7 +3534,7 @@ ${r?'Expression: "'+r+`"
 
     <!-- L2 Panel: Credit Check Response Time (sli_threshold, 2 actors, 8 steps) -->
     <div data-layer-panel="l2" x-show="activeLayer === 'l2'">
-      <div style="margin-bottom: 12px; font-size: 13px; color: var(--gray-500);"><strong>Credit Check Response Time</strong> — 8 steps — Dev → Platform</div>
+      <div style="margin-bottom: 12px; font-size: 13px; color: var(--wf-gray-500);"><strong>Credit Check Response Time</strong> — 8 steps — Dev → Platform</div>
 
       <div class="flow-step"><div class="flow-actor dev">Dev</div><div class="flow-content"><strong>Identifies process signal</strong> — "Credit Check Response Time" / "Average time for credit check completion" <span class="flow-fields">signal_display_name, description_business</span></div></div>
       <div class="flow-arrow">↓</div>
@@ -3562,7 +3562,7 @@ ${r?'Expression: "'+r+`"
 
     <!-- L1 Panel: Bureau Connection Health (sli_threshold, 1 actor, 8 steps) -->
     <div data-layer-panel="l1" x-show="activeLayer === 'l1'">
-      <div style="margin-bottom: 12px; font-size: 13px; color: var(--gray-500);"><strong>Bureau Connection Health</strong> — 8 steps — Platform</div>
+      <div style="margin-bottom: 12px; font-size: 13px; color: var(--wf-gray-500);"><strong>Bureau Connection Health</strong> — 8 steps — Platform</div>
 
       <div class="flow-step"><div class="flow-actor plat">Platform</div><div class="flow-content"><strong>Identifies system dependency</strong> — "Bureau Connection Health" / "Percentage of successful connections to credit bureau API" <span class="flow-fields">signal_display_name, description_business</span></div></div>
       <div class="flow-arrow">↓</div>
@@ -3601,7 +3601,7 @@ ${r?'Expression: "'+r+`"
       </div>
 
       <div class="causal-arrow">↓</div>
-      <div style="font-size: 12px; color: var(--gray-500); margin-left: 50px; margin-bottom: 4px;">Credit check requests can't reach the bureau → response times increase</div>
+      <div style="font-size: 12px; color: var(--wf-gray-500); margin-left: 50px; margin-bottom: 4px;">Credit check requests can't reach the bureau → response times increase</div>
 
       <div class="causal-step">
         <div class="causal-layer l2"><div class="layer-num">L2</div>Process</div>
@@ -3611,7 +3611,7 @@ ${r?'Expression: "'+r+`"
       </div>
 
       <div class="causal-arrow">↓</div>
-      <div style="font-size: 12px; color: var(--gray-500); margin-left: 50px; margin-bottom: 4px;">Requests that do complete take too long; some time out → success rate drops</div>
+      <div style="font-size: 12px; color: var(--wf-gray-500); margin-left: 50px; margin-bottom: 4px;">Requests that do complete take too long; some time out → success rate drops</div>
 
       <div class="causal-step">
         <div class="causal-layer l3"><div class="layer-num">L3</div>Business</div>
@@ -3621,7 +3621,7 @@ ${r?'Expression: "'+r+`"
       </div>
 
       <div class="causal-arrow">↓</div>
-      <div style="font-size: 12px; color: var(--gray-500); margin-left: 50px; margin-bottom: 4px;">Credit checks aren't returning valid scores → applicants can't proceed</div>
+      <div style="font-size: 12px; color: var(--wf-gray-500); margin-left: 50px; margin-bottom: 4px;">Credit checks aren't returning valid scores → applicants can't proceed</div>
 
       <div class="causal-step">
         <div class="causal-layer l4"><div class="layer-num">L4</div>Impact</div>
@@ -3631,7 +3631,7 @@ ${r?'Expression: "'+r+`"
       </div>
     </div>
 
-    <div style="margin-top: 16px; padding: 12px 16px; background: var(--gray-50); border-left: 3px solid var(--gray-500); font-size: 13px;"><strong>Diagnostic Direction:</strong> Start at L3 (is the business health signal degraded?) → look down to L2 (is the process slow?) → look down to L1 (is the infrastructure failing?) → look up to L4 (what's the business impact?).</div>
+    <div style="margin-top: 16px; padding: 12px 16px; background: var(--wf-gray-50); border-left: 3px solid var(--wf-gray-500); font-size: 13px;"><strong>Diagnostic Direction:</strong> Start at L3 (is the business health signal degraded?) → look down to L2 (is the process slow?) → look down to L1 (is the infrastructure failing?) → look up to L4 (what's the business impact?).</div>
 
     <!-- Section 3: Signal Correlation Patterns -->
     <div class="ac-label" style="margin-top: 2rem;">Section 3: Signal Correlation Patterns</div>
@@ -3807,7 +3807,7 @@ ${r?'Expression: "'+r+`"
         <span x-text="service ? (service.identity.serviceName || '(no service name)') : ''"></span>
         <span class="dash-ac-ref">AC 1.1</span>
       </div>
-      <p style="font-size: 14px; color: var(--gray-700); margin-bottom: 12px;"
+      <p style="font-size: 14px; color: var(--wf-gray-700); margin-bottom: 12px;"
          x-text="service ? (service.identity.description || '') : ''"></p>
       <div style="display: flex; gap: 24px; flex-wrap: wrap;">
         <div><span class="dash-meta-label">Owner</span><br>
@@ -3853,7 +3853,7 @@ ${r?'Expression: "'+r+`"
       </div>
 
       <template x-for="layerDef in [
-        {layer:'L1',label:'L1 SYSTEM HEALTH',badge:'var(--gray-500)',border:'#E67E22'},
+        {layer:'L1',label:'L1 SYSTEM HEALTH',badge:'var(--wf-gray-500)',border:'#E67E22'},
         {layer:'L2',label:'L2 PROCESS HEALTH',badge:'#935116',border:'#27AE60'},
         {layer:'L3',label:'L3 BUSINESS HEALTH',badge:'#922B21',border:'#2980B9'},
         {layer:'L4',label:'L4 BUSINESS IMPACT',badge:'#1A5276',border:'#2980B9'}
@@ -3865,16 +3865,16 @@ ${r?'Expression: "'+r+`"
           </div>
           <template x-for="sig in (service ? service.signals : []).filter(function(s) { return s.layer === layerDef.layer })" :key="sig.id">
             <div :class="layerDef.layer === 'L4' ? 'dash-signal-row-impact' : 'dash-signal-row'">
-              <div class="dash-status-dot" style="background: var(--gray-500);"></div>
+              <div class="dash-status-dot" style="background: var(--wf-gray-500);"></div>
               <div style="font-size: 13px;">
                 <strong x-text="sig.name || '(unnamed)'"></strong>
-                <span style="color: var(--gray-500); font-size: 12px;" x-text="sig.whatItTellsMe ? ' — ' + sig.whatItTellsMe : ''"></span>
+                <span style="color: var(--wf-gray-500); font-size: 12px;" x-text="sig.whatItTellsMe ? ' — ' + sig.whatItTellsMe : ''"></span>
               </div>
               <template x-if="layerDef.layer !== 'L4'">
-                <div style="font-size: 12px; color: var(--gray-500);" x-text="'Target: ' + formatTarget(sig)"></div>
+                <div style="font-size: 12px; color: var(--wf-gray-500);" x-text="'Target: ' + formatTarget(sig)"></div>
               </template>
               <template x-if="layerDef.layer === 'L4'">
-                <div style="font-size: 12px; color: var(--gray-500);" x-text="sig.impactUnit || ''"></div>
+                <div style="font-size: 12px; color: var(--wf-gray-500);" x-text="sig.impactUnit || ''"></div>
               </template>
             </div>
           </template>
@@ -3890,12 +3890,12 @@ ${r?'Expression: "'+r+`"
       </div>
       <div class="dash-impact-grid">
         <template x-for="sig in (service ? service.signals : []).filter(function(s) { return s.layer === 'L4' })" :key="sig.id">
-          <div class="dash-impact-card" :style="'border-left: 4px solid ' + ((CATEGORY_COLORS[sig.impactCategory] || {}).dot || 'var(--gray-500)')">
-            <div style="font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--gray-500); margin-bottom: 4px;"
+          <div class="dash-impact-card" :style="'border-left: 4px solid ' + ((CATEGORY_COLORS[sig.impactCategory] || {}).dot || 'var(--wf-gray-500)')">
+            <div style="font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--wf-gray-500); margin-bottom: 4px;"
                  x-text="categoryName(sig.impactCategory)"></div>
             <div style="font-size: 13px; margin-bottom: 4px;"
                  x-text="dashImpactDescription(sig, service ? service.stakeholders : []) || sig.whatItTellsMe || ''"></div>
-            <div style="font-size: 12px; color: var(--gray-500);" x-text="sig.impactUnit ? 'Unit: ' + sig.impactUnit : ''"></div>
+            <div style="font-size: 12px; color: var(--wf-gray-500);" x-text="sig.impactUnit ? 'Unit: ' + sig.impactUnit : ''"></div>
           </div>
         </template>
       </div>
