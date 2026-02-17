@@ -26,6 +26,7 @@
   --gray-500: #6B7280;
   --gray-700: #374151;
   --gray-900: #111827;
+  --card-radius: 8px;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -132,9 +133,9 @@ body {
 
 /* --- Tab panels --- */
 .tab-panel {
-  background: #FFFFFF;
+  background: var(--gray-50);
   padding: 28px 24px;
-  border-radius: 0 0 6px 6px;
+  border-radius: 0 0 var(--card-radius) var(--card-radius);
   border: 1px solid var(--gray-200);
   border-top: none;
 }
@@ -174,20 +175,20 @@ body {
 .story-statement strong { color: var(--gray-700); }
 
 /* --- AC Sections --- */
-.ac-section { margin-bottom: 28px; }
+.ac-section { margin-bottom: 40px; }
 .ac-section + .ac-section { margin-top: 12px; }
 .ac-label {
   font-size: 13px;
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  padding: 10px 14px;
+  padding: 10px 14px 10px 18px;
   margin: 0 -24px 12px -24px;
   border-radius: 2px;
 }
-.ac-label.po { color: var(--po-accent); background: var(--po-tint); }
-.ac-label.dev { color: var(--dev-accent); background: var(--dev-tint); }
-.ac-label.plat { color: var(--platform-accent); background: var(--platform-tint); }
+.ac-label.po { color: var(--po-accent); background: var(--po-tint); border-left: 4px solid var(--po-accent); }
+.ac-label.dev { color: var(--dev-accent); background: var(--dev-tint); border-left: 4px solid var(--dev-accent); }
+.ac-label.plat { color: var(--platform-accent); background: var(--platform-tint); border-left: 4px solid var(--platform-accent); }
 .ac-desc {
   font-size: 11px;
   color: var(--gray-400);
@@ -209,9 +210,10 @@ body {
   position: relative;
   background: #FFFFFF;
   border: 1px solid var(--gray-200);
-  border-radius: 6px;
-  padding: 16px 18px;
+  border-radius: var(--card-radius);
+  padding: 20px;
   margin-bottom: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 .po-card    { border-left: 3px solid var(--po-accent); }
 .dev-card   { border-left: 3px solid var(--dev-accent); }
@@ -312,11 +314,11 @@ body {
 /* --- Field rows --- */
 .field-list { display: flex; flex-direction: column; gap: 4px; }
 .field-sub-header {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--gray-400);
+  letter-spacing: 0.1em;
+  color: var(--gray-500);
   padding: 10px 0 4px 0;
   margin-top: 6px;
   border-top: 1px solid var(--gray-200);
@@ -448,10 +450,11 @@ textarea.field-input-code {
 .category-container {
   background: #FFFFFF;
   border: 1px solid var(--gray-200);
-  border-radius: 6px;
+  border-radius: var(--card-radius);
   padding: 16px 18px;
   margin-bottom: 16px;
   border-left: 4px solid var(--gray-200);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 .category-container[data-category="customer_experience"] { border-left-color: #1A5276; }
 .category-container[data-category="financial"] { border-left-color: #7D6608; }
@@ -550,9 +553,10 @@ textarea.field-input-code {
   background: var(--gray-50);
   border: 1px solid var(--gray-200);
   border-left: 4px solid #8E44AD;
-  border-radius: 6px;
+  border-radius: var(--card-radius);
   padding: 16px 20px;
   margin: 20px 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 .bridge-header {
   font-size: 12px;
@@ -608,15 +612,48 @@ textarea.field-input-code {
   font-style: italic;
   padding-left: 16px;
 }
-.coverage-summary {
-  border-top: 1px solid var(--gray-200);
-  margin-top: 12px;
-  padding-top: 12px;
-  font-size: 12px;
-  color: var(--gray-500);
+/* --- Bridge Summary Metrics Card (C8) --- */
+.bridge-summary-metrics {
+  display: flex;
+  gap: 0;
+  background: #FFFFFF;
+  border: 1px solid var(--gray-200);
+  border-left: 4px solid var(--through-accent);
+  border-radius: var(--card-radius);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  margin-top: 20px;
+  overflow: hidden;
 }
-.coverage-summary .full { color: #27AE60; }
-.coverage-summary .gap { color: #E74C3C; }
+.bridge-metric {
+  flex: 1;
+  text-align: center;
+  padding: 16px 12px;
+}
+.bridge-metric + .bridge-metric {
+  border-left: 1px solid var(--gray-100);
+}
+.bridge-metric-value {
+  display: block;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--gray-700);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.bridge-metric-zero {
+  color: var(--gray-400);
+}
+.bridge-metric-accent {
+  color: var(--through-accent);
+}
+.bridge-metric-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gray-400);
+}
 
 /* --- Trace Checkbox Fields --- */
 .trace-checkbox-list {
@@ -1110,6 +1147,139 @@ textarea.field-input-code {
   font-size: 13px;
   color: var(--gray-700);
 }
+
+/* --- Grounding Page --- */
+.grounding-label {
+  font-size: 13px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 10px 14px;
+  margin: 0 0 12px 0;
+  border-radius: 2px;
+  color: var(--through-accent);
+  background: var(--through-tint);
+}
+.grounding-panel {
+  background: #FFFFFF;
+  padding: 20px 24px;
+  border-radius: 6px;
+  border: 1px solid var(--gray-200);
+  margin-bottom: 20px;
+}
+.objective-cards {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.objective-card {
+  flex: 1;
+  min-width: 280px;
+  background: white;
+  border: 1px solid var(--gray-200);
+  border-radius: 6px;
+  padding: 16px 18px;
+  border-top: 3px solid var(--through-accent);
+}
+.objective-card h4 {
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--through-accent);
+  margin-bottom: 8px;
+}
+.objective-summary {
+  font-size: 13px;
+  color: var(--gray-700);
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+.objective-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 12px 0;
+}
+.objective-card li {
+  font-size: 12px;
+  color: var(--gray-500);
+  padding: 4px 0 4px 12px;
+  border-left: 2px solid var(--gray-200);
+  margin-bottom: 4px;
+  line-height: 1.4;
+}
+.measures-label {
+  font-size: 11px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--gray-400);
+  margin-bottom: 6px;
+  margin-top: 4px;
+}
+.objective-card .measure-item {
+  font-size: 12px;
+  color: var(--through-accent);
+  padding: 3px 0 3px 12px;
+  border-left: 2px solid var(--through-accent);
+  margin-bottom: 3px;
+  line-height: 1.4;
+}
+.sdlc-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 16px;
+}
+.sdlc-table td {
+  padding: 12px 16px;
+  font-size: 13px;
+  color: var(--gray-700);
+  line-height: 1.5;
+  border-bottom: 1px solid var(--gray-200);
+  vertical-align: top;
+}
+.sdlc-table .actor-cell {
+  width: 140px;
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.sdlc-table .actor-cell.po   { color: var(--po-accent); background: var(--po-tint); }
+.sdlc-table .actor-cell.dev  { color: var(--dev-accent); background: var(--dev-tint); }
+.sdlc-table .actor-cell.plat { color: var(--platform-accent); background: var(--platform-tint); }
+.grounding-cta {
+  text-align: center;
+  padding: 24px 0;
+}
+.btn-enter-workspace {
+  padding: 12px 32px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  background: var(--through-accent);
+  color: white;
+  border: none;
+  cursor: pointer;
+  letter-spacing: 0.3px;
+}
+.btn-enter-workspace:hover {
+  background: #7D3C98;
+}
+.grounding-cta .secondary-text {
+  font-size: 12px;
+  color: var(--gray-400);
+  margin-top: 10px;
+}
+.about-link {
+  font-size: 12px;
+  color: var(--through-accent);
+  cursor: pointer;
+  margin-bottom: 12px;
+  display: inline-block;
+}
+.about-link:hover {
+  text-decoration: underline;
+}
   </style>
 </head>
 <body>
@@ -1248,14 +1418,14 @@ var SEED_DATA = {
       { id: 'ctx-svc002-004', stakeholder: 'Loan Processors', expectationStatement: 'Credit checks complete successfully without manual intervention', impactDescription: 'Operational Impact: Manual workarounds reduce processing capacity', impactCategory: 'operational', priority: 'MEDIUM' },
     ],
     signals: [
-      { id: 'sig-svc002-001', name: 'Credit Check Success Rate', signalType: 'sli_ratio', layer: 'L3', whatItTellsMe: 'Credit check returns valid score within 30 seconds', sloTarget: 85, timeWindow: '1h', whyThisTarget: 'Credit bureau connectivity issues expected; focus on rapid recovery', impactCategory: '', impactUnit: '', queryNumerator: "status='SUCCESS' AND score BETWEEN 300 AND 850 AND response_time_ms<30000", queryDenominator: "request_type='CREDIT_CHECK'", technicalOwner: 'platform-engineering-team', alertThreshold: 80, pageThreshold: 75, thresholdOperator: '', thresholdUnit: '', dataSource: 'Splunk', dataSourceDetails: 'index=credit_checks', alertSeverity: 'warning', pageSeverity: 'critical', verifies: ['ctx-svc002-001', 'ctx-svc002-002'], quantifies: [] },
-      { id: 'sig-svc002-002', name: 'Customers Blocked', signalType: 'business_impact', layer: 'L4', whatItTellsMe: 'Loan applicants unable to proceed due to missing credit scores', sloTarget: null, timeWindow: '', whyThisTarget: '', impactCategory: 'customer_experience', impactUnit: 'customers', queryNumerator: 'COUNT(DISTINCT applicant_id) WHERE credit_score IS NULL', queryDenominator: '', technicalOwner: 'platform-engineering-team', alertThreshold: null, pageThreshold: null, thresholdOperator: '', thresholdUnit: '', dataSource: 'Splunk', dataSourceDetails: 'index=credit_checks', alertSeverity: 'warning', pageSeverity: 'critical', quantifies: ['ctx-svc002-001'], verifies: [] },
-      { id: 'sig-svc002-003', name: 'Loan Revenue at Risk', signalType: 'business_impact', layer: 'L4', whatItTellsMe: 'Loan origination revenue opportunity lost to failed credit checks', sloTarget: null, timeWindow: '', whyThisTarget: '', impactCategory: 'financial', impactUnit: 'dollars', queryNumerator: "SUM(loan_amount) WHERE credit_check_status='FAILED'", queryDenominator: '', technicalOwner: 'platform-engineering-team', alertThreshold: null, pageThreshold: null, thresholdOperator: '', thresholdUnit: '', dataSource: 'Splunk', dataSourceDetails: 'index=credit_checks', alertSeverity: 'warning', pageSeverity: 'critical', quantifies: ['ctx-svc002-002'], verifies: [] },
-      { id: 'sig-svc002-004', name: 'FCRA Timing Violations', signalType: 'business_impact', layer: 'L4', whatItTellsMe: 'Credit checks exceeding 30-day FCRA requirement', sloTarget: null, timeWindow: '', whyThisTarget: '', impactCategory: 'legal_risk', impactUnit: 'violations', queryNumerator: 'COUNT(*) WHERE response_time_days > 30', queryDenominator: '', technicalOwner: 'platform-engineering-team', alertThreshold: null, pageThreshold: null, thresholdOperator: '', thresholdUnit: '', dataSource: 'Splunk', dataSourceDetails: 'index=credit_checks', alertSeverity: 'warning', pageSeverity: 'critical', quantifies: ['ctx-svc002-003'], verifies: [] },
-      { id: 'sig-svc002-005', name: 'Manual Interventions Required', signalType: 'business_impact', layer: 'L4', whatItTellsMe: 'Credit check failures requiring manual processor intervention', sloTarget: null, timeWindow: '', whyThisTarget: '', impactCategory: 'operational', impactUnit: 'interventions', queryNumerator: "COUNT(*) WHERE requires_manual_review='TRUE'", queryDenominator: '', technicalOwner: 'platform-engineering-team', alertThreshold: null, pageThreshold: null, thresholdOperator: '', thresholdUnit: '', dataSource: 'Splunk', dataSourceDetails: 'index=credit_checks', alertSeverity: 'warning', pageSeverity: 'critical', quantifies: ['ctx-svc002-004'], verifies: [] },
-      { id: 'sig-svc002-006', name: 'Credit Score Retrieval %', signalType: 'sli_ratio', layer: 'L3', whatItTellsMe: 'Credit scores successfully retrieved from bureau', sloTarget: 99.5, timeWindow: '1h', whyThisTarget: 'Credit score retrieval success rate', impactCategory: '', impactUnit: '', queryNumerator: "status='SUCCESS' AND score IS NOT NULL", queryDenominator: "request_type='CREDIT_CHECK'", technicalOwner: 'platform-engineering-team', alertThreshold: 97, pageThreshold: 95, thresholdOperator: '', thresholdUnit: '', dataSource: 'Splunk', dataSourceDetails: 'index=credit_checks', alertSeverity: 'warning', pageSeverity: 'critical', verifies: ['ctx-svc002-001'], quantifies: [] },
-      { id: 'sig-svc002-007', name: 'Valid Score Return Rate', signalType: 'sli_ratio', layer: 'L3', whatItTellsMe: 'Credit bureau returns valid scorable response', sloTarget: 99.8, timeWindow: '1h', whyThisTarget: 'Valid score return ensures accurate lending decisions', impactCategory: '', impactUnit: '', queryNumerator: "score_valid=true AND score_range='300-850'", queryDenominator: "request_status='COMPLETE'", technicalOwner: 'platform-engineering-team', alertThreshold: 99, pageThreshold: 98, thresholdOperator: '', thresholdUnit: '', dataSource: 'Splunk', dataSourceDetails: 'index=credit_checks', alertSeverity: 'warning', pageSeverity: 'critical', verifies: ['ctx-svc002-001'], quantifies: [] },
-      { id: 'sig-svc002-008', name: 'Credit Check Response Time', signalType: 'sli_threshold', layer: 'L2', whatItTellsMe: 'End-to-end credit check request completes within acceptable time for applicant experience', sloTarget: 5, timeWindow: '1h', whyThisTarget: 'Loan applicants expect near-instant decisioning; 5-second threshold balances bureau response variability with applicant experience', impactCategory: '', impactUnit: '', queryNumerator: 'response_time_seconds', queryDenominator: '', technicalOwner: 'platform-engineering-team', alertThreshold: 7, pageThreshold: 10, thresholdOperator: 'lt', thresholdUnit: 'seconds', dataSource: 'Splunk', dataSourceDetails: 'index=credit_checks', alertSeverity: 'warning', pageSeverity: 'critical', verifies: ['ctx-svc002-001'], quantifies: [] },
+      { id: 'sig-svc002-001', name: 'Credit Check Success Rate', signalType: 'sli_ratio', layer: 'L3', whatItTellsMe: 'Credit check returns valid score within 30 seconds', sloTarget: 85, timeWindow: '1h', whyThisTarget: 'Credit bureau connectivity issues expected; focus on rapid recovery', impactCategory: '', impactUnit: '', queryNumerator: "status='SUCCESS' AND score BETWEEN 300 AND 850 AND response_time_ms<30000", queryDenominator: "request_type='CREDIT_CHECK'", technicalOwner: 'platform-engineering-team', alertThreshold: 80, pageThreshold: 75, thresholdOperator: '', thresholdUnit: '', dataSource: 'Splunk', dataSourceDetails: 'index=app_events', alertSeverity: 'warning', pageSeverity: 'critical', verifies: ['ctx-svc002-001', 'ctx-svc002-002'], quantifies: [] },
+      { id: 'sig-svc002-002', name: 'Customers Blocked', signalType: 'business_impact', layer: 'L4', whatItTellsMe: 'Loan applicants unable to proceed due to missing credit scores', sloTarget: null, timeWindow: '', whyThisTarget: '', impactCategory: 'customer_experience', impactUnit: 'customers', queryNumerator: 'COUNT(DISTINCT applicant_id) WHERE credit_score IS NULL', queryDenominator: '', technicalOwner: 'platform-engineering-team', alertThreshold: null, pageThreshold: null, thresholdOperator: '', thresholdUnit: '', dataSource: 'Splunk', dataSourceDetails: 'index=app_events', alertSeverity: 'warning', pageSeverity: 'critical', quantifies: ['ctx-svc002-001'], verifies: [] },
+      { id: 'sig-svc002-003', name: 'Loan Revenue at Risk', signalType: 'business_impact', layer: 'L4', whatItTellsMe: 'Loan origination revenue opportunity lost to failed credit checks', sloTarget: null, timeWindow: '', whyThisTarget: '', impactCategory: 'financial', impactUnit: 'dollars', queryNumerator: "SUM(loan_amount) WHERE credit_check_status='FAILED'", queryDenominator: '', technicalOwner: 'platform-engineering-team', alertThreshold: null, pageThreshold: null, thresholdOperator: '', thresholdUnit: '', dataSource: 'Splunk', dataSourceDetails: 'index=app_events', alertSeverity: 'warning', pageSeverity: 'critical', quantifies: ['ctx-svc002-002'], verifies: [] },
+      { id: 'sig-svc002-004', name: 'FCRA Timing Violations', signalType: 'business_impact', layer: 'L4', whatItTellsMe: 'Credit checks exceeding 30-day FCRA requirement', sloTarget: null, timeWindow: '', whyThisTarget: '', impactCategory: 'legal_risk', impactUnit: 'violations', queryNumerator: 'COUNT(*) WHERE response_time_days > 30', queryDenominator: '', technicalOwner: 'platform-engineering-team', alertThreshold: null, pageThreshold: null, thresholdOperator: '', thresholdUnit: '', dataSource: 'Splunk', dataSourceDetails: 'index=app_events', alertSeverity: 'warning', pageSeverity: 'critical', quantifies: ['ctx-svc002-003'], verifies: [] },
+      { id: 'sig-svc002-005', name: 'Manual Interventions Required', signalType: 'business_impact', layer: 'L4', whatItTellsMe: 'Credit check failures requiring manual processor intervention', sloTarget: null, timeWindow: '', whyThisTarget: '', impactCategory: 'operational', impactUnit: 'interventions', queryNumerator: "COUNT(*) WHERE requires_manual_review='TRUE'", queryDenominator: '', technicalOwner: 'platform-engineering-team', alertThreshold: null, pageThreshold: null, thresholdOperator: '', thresholdUnit: '', dataSource: 'Splunk', dataSourceDetails: 'index=app_events', alertSeverity: 'warning', pageSeverity: 'critical', quantifies: ['ctx-svc002-004'], verifies: [] },
+      { id: 'sig-svc002-006', name: 'Credit Score Retrieval %', signalType: 'sli_ratio', layer: 'L3', whatItTellsMe: 'Credit scores successfully retrieved from bureau', sloTarget: 99.5, timeWindow: '1h', whyThisTarget: 'Credit score retrieval success rate', impactCategory: '', impactUnit: '', queryNumerator: "status='SUCCESS' AND score IS NOT NULL", queryDenominator: "request_type='CREDIT_CHECK'", technicalOwner: 'platform-engineering-team', alertThreshold: 97, pageThreshold: 95, thresholdOperator: '', thresholdUnit: '', dataSource: 'Splunk', dataSourceDetails: 'index=app_events', alertSeverity: 'warning', pageSeverity: 'critical', verifies: ['ctx-svc002-001'], quantifies: [] },
+      { id: 'sig-svc002-007', name: 'Valid Score Return Rate', signalType: 'sli_ratio', layer: 'L3', whatItTellsMe: 'Credit bureau returns valid scorable response', sloTarget: 99.8, timeWindow: '1h', whyThisTarget: 'Valid score return ensures accurate lending decisions', impactCategory: '', impactUnit: '', queryNumerator: "score_valid=true AND score_range='300-850'", queryDenominator: "request_status='COMPLETE'", technicalOwner: 'platform-engineering-team', alertThreshold: 99, pageThreshold: 98, thresholdOperator: '', thresholdUnit: '', dataSource: 'Splunk', dataSourceDetails: 'index=app_events', alertSeverity: 'warning', pageSeverity: 'critical', verifies: ['ctx-svc002-001'], quantifies: [] },
+      { id: 'sig-svc002-008', name: 'Credit Check Response Time', signalType: 'sli_threshold', layer: 'L2', whatItTellsMe: 'End-to-end credit check request completes within acceptable time for applicant experience', sloTarget: 5, timeWindow: '1h', whyThisTarget: 'Loan applicants expect near-instant decisioning; 5-second threshold balances bureau response variability with applicant experience', impactCategory: '', impactUnit: '', queryNumerator: 'response_time_seconds', queryDenominator: '', technicalOwner: 'platform-engineering-team', alertThreshold: 7, pageThreshold: 10, thresholdOperator: 'lt', thresholdUnit: 'seconds', dataSource: 'Splunk', dataSourceDetails: 'index=app_events', alertSeverity: 'warning', pageSeverity: 'critical', verifies: ['ctx-svc002-001'], quantifies: [] },
       { id: 'sig-svc002-009', name: 'Bureau Connection Health', signalType: 'sli_threshold', layer: 'L1', whatItTellsMe: 'Credit bureau API connections succeed at rate sufficient to support credit check processing', sloTarget: 95, timeWindow: '1h', whyThisTarget: 'Bureau connection failures directly cause credit check failures; 95% accounts for routine network variability while catching sustained outages', impactCategory: '', impactUnit: '', queryNumerator: 'SELECT AVG(connection_success) FROM bureau_health', queryDenominator: '', technicalOwner: 'platform-engineering-team', alertThreshold: 90, pageThreshold: 85, thresholdOperator: 'gte', thresholdUnit: 'percent', dataSource: 'AppDynamics', dataSourceDetails: 'credit-bureau-api health check', alertSeverity: 'warning', pageSeverity: 'critical', verifies: ['ctx-svc002-002', 'ctx-svc002-004'], quantifies: [] },
     ],
     operational: {
@@ -1290,9 +1460,9 @@ var SEED_DATA = {
       { id: 'ctx-svc003-004', stakeholder: 'Banking Customers', expectationStatement: 'Regulatory compliance maintained so loan processing continues uninterrupted', impactDescription: 'Customer Impact: Enforcement could restrict originations — worst case 48-72hr freeze affecting ~2,400 pending applications', impactCategory: 'customer_experience', priority: 'HIGH' },
     ],
     signals: [
-      { id: 'sig-svc003-001', name: 'Job Started On Schedule', signalType: 'sli_threshold', layer: 'L1', whatItTellsMe: 'Batch job initiated within 15 minutes of scheduled 2:00 AM EST start time', sloTarget: 15, timeWindow: '30d', whyThisTarget: 'T1 batch jobs must start within 15 minutes of schedule; late start compresses processing window before 6 AM SLA', impactCategory: '', impactUnit: '', queryNumerator: "ABS(job_start_time - scheduled_time) FROM autosys_event_log WHERE job='GL_EOD_RECON_001'", queryDenominator: '', technicalOwner: 'sre-data-platform', alertThreshold: 20, pageThreshold: 30, thresholdOperator: 'lte', thresholdUnit: 'minutes', dataSource: 'Splunk', dataSourceDetails: 'index=autosys_events sourcetype=job_start', alertSeverity: 'warning', pageSeverity: 'critical', verifies: ['ctx-svc003-002'], quantifies: [] },
-      { id: 'sig-svc003-002', name: 'Job Success Rate', signalType: 'sli_ratio', layer: 'L2', whatItTellsMe: 'Percentage of job executions completing successfully — 99% allows ~3 failures per year', sloTarget: 99, timeWindow: '30d', whyThisTarget: 'T1 regulatory jobs require 99% success rate; each failure triggers manual recovery and potential SLA miss', impactCategory: '', impactUnit: '', queryNumerator: "COUNT(job_runs WHERE status='SUCCESS')", queryDenominator: 'COUNT(job_runs)', technicalOwner: 'sre-data-platform', alertThreshold: 98.5, pageThreshold: 97, thresholdOperator: '', thresholdUnit: '', dataSource: 'Splunk', dataSourceDetails: 'index=autosys_job_history sourcetype=job_completion', alertSeverity: 'warning', pageSeverity: 'critical', verifies: ['ctx-svc003-002'], quantifies: [] },
-      { id: 'sig-svc003-003', name: 'Job Duration Within Limit', signalType: 'sli_threshold', layer: 'L2', whatItTellsMe: 'Job completes within 60-minute maximum allowed runtime (typical runtime: 45 minutes)', sloTarget: 60, timeWindow: '30d', whyThisTarget: 'Must complete in 60 min to allow buffer before 6 AM SLA; normal runtime is 45 min', impactCategory: '', impactUnit: '', queryNumerator: "job_end_time - job_start_time FROM autosys_job_history WHERE job='GL_EOD_RECON_001'", queryDenominator: '', technicalOwner: 'sre-data-platform', alertThreshold: 75, pageThreshold: 90, thresholdOperator: 'lte', thresholdUnit: 'minutes', dataSource: 'Splunk', dataSourceDetails: 'index=autosys_job_history sourcetype=job_completion', alertSeverity: 'warning', pageSeverity: 'critical', verifies: ['ctx-svc003-002'], quantifies: [] },
+      { id: 'sig-svc003-001', name: 'Job Started On Schedule', signalType: 'sli_threshold', layer: 'L1', whatItTellsMe: 'Batch job initiated within 15 minutes of scheduled 2:00 AM EST start time', sloTarget: 15, timeWindow: '30d', whyThisTarget: 'T1 batch jobs must start within 15 minutes of schedule; late start compresses processing window before 6 AM SLA', impactCategory: '', impactUnit: '', queryNumerator: "ABS(job_start_time - scheduled_time) FROM scheduler_event_log WHERE job='GL_EOD_RECON_001'", queryDenominator: '', technicalOwner: 'sre-data-platform', alertThreshold: 20, pageThreshold: 30, thresholdOperator: 'lte', thresholdUnit: 'minutes', dataSource: 'Splunk', dataSourceDetails: 'index=scheduler_events sourcetype=job_start', alertSeverity: 'warning', pageSeverity: 'critical', verifies: ['ctx-svc003-002'], quantifies: [] },
+      { id: 'sig-svc003-002', name: 'Job Success Rate', signalType: 'sli_ratio', layer: 'L2', whatItTellsMe: 'Percentage of job executions completing successfully — 99% allows ~3 failures per year', sloTarget: 99, timeWindow: '30d', whyThisTarget: 'T1 regulatory jobs require 99% success rate; each failure triggers manual recovery and potential SLA miss', impactCategory: '', impactUnit: '', queryNumerator: "COUNT(job_runs WHERE status='SUCCESS')", queryDenominator: 'COUNT(job_runs)', technicalOwner: 'sre-data-platform', alertThreshold: 98.5, pageThreshold: 97, thresholdOperator: '', thresholdUnit: '', dataSource: 'Splunk', dataSourceDetails: 'index=scheduler_job_history sourcetype=job_completion', alertSeverity: 'warning', pageSeverity: 'critical', verifies: ['ctx-svc003-002'], quantifies: [] },
+      { id: 'sig-svc003-003', name: 'Job Duration Within Limit', signalType: 'sli_threshold', layer: 'L2', whatItTellsMe: 'Job completes within 60-minute maximum allowed runtime (typical runtime: 45 minutes)', sloTarget: 60, timeWindow: '30d', whyThisTarget: 'Must complete in 60 min to allow buffer before 6 AM SLA; normal runtime is 45 min', impactCategory: '', impactUnit: '', queryNumerator: "job_end_time - job_start_time FROM scheduler_job_history WHERE job='GL_EOD_RECON_001'", queryDenominator: '', technicalOwner: 'sre-data-platform', alertThreshold: 75, pageThreshold: 90, thresholdOperator: 'lte', thresholdUnit: 'minutes', dataSource: 'Splunk', dataSourceDetails: 'index=scheduler_job_history sourcetype=job_completion', alertSeverity: 'warning', pageSeverity: 'critical', verifies: ['ctx-svc003-002'], quantifies: [] },
       { id: 'sig-svc003-004', name: 'Report Available by SLA', signalType: 'sli_ratio', layer: 'L3', whatItTellsMe: 'GL reconciliation report arrives at regulatory SFTP gateway before 6:00 AM EST deadline', sloTarget: 99.5, timeWindow: '365d', whyThisTarget: 'Fed Reg D allows 1-2 late submissions per year before triggering formal regulatory review', impactCategory: '', impactUnit: '', queryNumerator: "COUNT(days WHERE file_arrival_time <= '06:00 EST')", queryDenominator: 'COUNT(business_days)', technicalOwner: 'sre-data-platform', alertThreshold: 99, pageThreshold: 98, thresholdOperator: '', thresholdUnit: '', dataSource: 'Splunk', dataSourceDetails: 'index=sftp_gateway sourcetype=file_receipt gl_recon_*.csv', alertSeverity: 'warning', pageSeverity: 'critical', verifies: ['ctx-svc003-001'], quantifies: [] },
       { id: 'sig-svc003-005', name: 'Reconciliation Accuracy', signalType: 'sli_ratio', layer: 'L3', whatItTellsMe: 'GL report totals reconcile with core banking source data within $0.01 tolerance', sloTarget: 99.9, timeWindow: '30d', whyThisTarget: 'Financial accuracy is non-negotiable; reconciliation gaps trigger SOX control remediation', impactCategory: '', impactUnit: '', queryNumerator: 'COUNT(days WHERE ABS(report_total - source_total) <= 0.01)', queryDenominator: 'COUNT(days)', technicalOwner: 'sre-data-platform', alertThreshold: 99.5, pageThreshold: 99, thresholdOperator: '', thresholdUnit: '', dataSource: 'Custom', dataSourceDetails: 'Snowflake query: ABS(report_total - source_total) vs $0.01 tolerance', alertSeverity: 'warning', pageSeverity: 'critical', verifies: ['ctx-svc003-001', 'ctx-svc003-003'], quantifies: [] },
       { id: 'sig-svc003-006', name: 'Regulatory Penalty Exposure', signalType: 'business_impact', layer: 'L4', whatItTellsMe: 'Potential Fed Reg D penalties when SLA breached — $10K first, $25K second, $50K+ third with formal review', sloTarget: null, timeWindow: '', whyThisTarget: '', impactCategory: 'legal_risk', impactUnit: 'USD', queryNumerator: 'penalty_matrix_lookup(breach_count_rolling_12m)', queryDenominator: '', technicalOwner: 'sre-data-platform', alertThreshold: null, pageThreshold: null, thresholdOperator: '', thresholdUnit: '', dataSource: 'Custom', dataSourceDetails: 'Calculated: Fed Reg D penalty schedule x breach history in rolling 12-month window', alertSeverity: 'warning', pageSeverity: 'critical', verifies: [], quantifies: ['ctx-svc003-001'] },
@@ -1330,7 +1500,7 @@ var SEED_DATA = {
       { id: 'ctx-svc004-004', stakeholder: 'Compliance Team', expectationStatement: 'Application data exchanged with vendor platform meets data governance and privacy requirements', impactDescription: 'Compliance Risk: Data handling violations in third-party data exchange', impactCategory: 'legal_risk', priority: 'MEDIUM' },
     ],
     signals: [
-      { id: 'sig-svc004-001', name: 'Outbound Event Success Rate', signalType: 'sli_ratio', layer: 'L3', whatItTellsMe: 'Outbound workflow events from origination to vendor platform complete successfully — covers document delivery, package distribution, and application progression events', sloTarget: 99.5, timeWindow: '1h', whyThisTarget: 'vendor lending integration is the primary mortgage application path; failures directly block applicants', impactCategory: '', impactUnit: '', queryNumerator: "eventStatus='COMPLETE' WHERE direction='OUTBOUND' (OUTBOUND_DOCUMENT, PACKAGE_DISTRIBUTION, PRESUBMIT_* events)", queryDenominator: "all outbound events WHERE app_id='core'", technicalOwner: 'integration-platform-team', alertThreshold: 98, pageThreshold: 95, thresholdOperator: '', thresholdUnit: '', dataSource: 'Splunk', dataSourceDetails: 'index=core, app_id=core, ElasticEvent JSON parsed via rex+spath', alertSeverity: 'warning', pageSeverity: 'critical', verifies: ['ctx-svc004-001', 'ctx-svc004-003'], quantifies: [] },
+      { id: 'sig-svc004-001', name: 'Outbound Event Success Rate', signalType: 'sli_ratio', layer: 'L3', whatItTellsMe: 'Outbound workflow events from origination to vendor platform complete successfully — covers document delivery, package distribution, and application progression events', sloTarget: 99.5, timeWindow: '1h', whyThisTarget: 'Vendor integration is the primary mortgage application path; failures directly block applicants', impactCategory: '', impactUnit: '', queryNumerator: "eventStatus='COMPLETE' WHERE direction='OUTBOUND' (OUTBOUND_DOCUMENT, PACKAGE_DISTRIBUTION, PRESUBMIT_* events)", queryDenominator: "all outbound events WHERE app_id='core'", technicalOwner: 'integration-platform-team', alertThreshold: 98, pageThreshold: 95, thresholdOperator: '', thresholdUnit: '', dataSource: 'Splunk', dataSourceDetails: 'index=core, app_id=core, ElasticEvent JSON parsed via rex+spath', alertSeverity: 'warning', pageSeverity: 'critical', verifies: ['ctx-svc004-001', 'ctx-svc004-003'], quantifies: [] },
       { id: 'sig-svc004-002', name: 'Inbound Document Processing Rate', signalType: 'sli_ratio', layer: 'L3', whatItTellsMe: 'Inbound documents from vendor platform processed successfully — covers 4506T tax forms, compliance reports, customer uploads, and e-signed documents', sloTarget: 99.5, timeWindow: '1h', whyThisTarget: 'Failed inbound processing means origination system has stale application state, causing processing delays for loan officers', impactCategory: '', impactUnit: '', queryNumerator: "eventStatus='COMPLETE' WHERE eventName LIKE 'INBOUND_DOCUMENT_%'", queryDenominator: "all INBOUND_DOCUMENT_* events WHERE app_id='core'", technicalOwner: 'integration-platform-team', alertThreshold: 98, pageThreshold: 95, thresholdOperator: '', thresholdUnit: '', dataSource: 'Splunk', dataSourceDetails: 'index=core, app_id=core, ElasticEvent JSON parsed via rex+spath', alertSeverity: 'warning', pageSeverity: 'critical', verifies: ['ctx-svc004-002'], quantifies: [] },
       { id: 'sig-svc004-003', name: 'Applications Blocked', signalType: 'business_impact', layer: 'L4', whatItTellsMe: 'Loan applications unable to proceed due to vendor lending integration failures', sloTarget: null, timeWindow: '', whyThisTarget: '', impactCategory: 'customer_experience', impactUnit: 'applications', queryNumerator: "COUNT(DISTINCT application_id) WHERE vendor_status='ERROR' AND retry_exhausted=true", queryDenominator: '', technicalOwner: 'integration-platform-team', alertThreshold: null, pageThreshold: null, thresholdOperator: '', thresholdUnit: '', dataSource: 'Splunk', dataSourceDetails: 'index=core (requires join to application records — not in event dashboard)', alertSeverity: 'warning', pageSeverity: 'critical', verifies: [], quantifies: ['ctx-svc004-001'] },
       { id: 'sig-svc004-004', name: 'Pipeline Revenue at Risk', signalType: 'business_impact', layer: 'L4', whatItTellsMe: 'Loan origination revenue delayed or at risk due to integration throughput issues', sloTarget: null, timeWindow: '', whyThisTarget: '', impactCategory: 'financial', impactUnit: 'dollars', queryNumerator: "SUM(estimated_loan_value) WHERE application_status='VENDOR_BLOCKED'", queryDenominator: '', technicalOwner: 'integration-platform-team', alertThreshold: null, pageThreshold: null, thresholdOperator: '', thresholdUnit: '', dataSource: 'Custom', dataSourceDetails: 'Requires loan value data from origination system — not in event stream', alertSeverity: 'warning', pageSeverity: 'critical', verifies: [], quantifies: ['ctx-svc004-003'] },
@@ -1371,7 +1541,7 @@ var EXAMPLE_CATALOG = [
     key: 'eod-batch',
     name: 'GL Reconciliation EOD Report',
     archetype: 'Batch Processing',
-    description: 'Autosys-scheduled nightly GL reconciliation for regulatory compliance — Fed Reg D reporting with SLA deadlines and data accuracy monitoring.',
+    description: 'Scheduled nightly GL reconciliation for regulatory compliance — Fed Reg D reporting with SLA deadlines and data accuracy monitoring.',
     domain: 'Wholesale Banking'
   }
 ];
@@ -1412,6 +1582,7 @@ function schedulePersist() {
     localStorage.setItem('bos-story-sets', JSON.stringify({
       services: store.services,
       meta: store.meta,
+      showGrounding: store.showGrounding,
     }));
     store.meta.changesSinceExport = (store.meta.changesSinceExport || 0) + 1;
   }, 300);
@@ -1425,6 +1596,7 @@ function loadFromStorage() {
       var store = Alpine.store('app');
       store.services = data.services || {};
       store.meta = data.meta || { lastExport: null, changesSinceExport: 0 };
+      store.showGrounding = data.showGrounding !== undefined ? data.showGrounding : true;
     } catch (e) {
       console.warn('Failed to load from localStorage:', e);
     }
@@ -1453,6 +1625,7 @@ function migrateSignals() {
     localStorage.setItem('bos-story-sets', JSON.stringify({
       services: store.services,
       meta: store.meta,
+      showGrounding: store.showGrounding,
     }));
   }
 }
@@ -1602,6 +1775,7 @@ function exportService(serviceId) {
   localStorage.setItem('bos-story-sets', JSON.stringify({
     services: store.services,
     meta: store.meta,
+    showGrounding: store.showGrounding,
   }));
 }
 
@@ -2107,6 +2281,7 @@ document.addEventListener('alpine:init', function() {
     activeServiceId: null,
     activeTab: 'po',
     guideExpanded: false,
+    showGrounding: true,
     services: {},
     meta: { lastExport: null, changesSinceExport: 0 },
   });
@@ -2143,11 +2318,95 @@ ${r?'Expression: "'+r+`"
     <div class="subtitle">Story Set Workspace</div>
   </div>
 
+  <!-- GROUNDING PAGE VIEW -->
+  <div class="grounding-view" x-show="$store.app.showGrounding && !$store.app.activeServiceId">
+
+    <div class="grounding-label">THE PROBLEM TODAY</div>
+    <div class="grounding-panel">
+      <p style="font-size:14px; color:var(--gray-700); line-height:1.6; margin:0 0 12px 0;">Your teams build and run hundreds of services. For each one, someone decided what to monitor — usually the engineer closest to production, based on what was easy to instrument. Nobody can tell you which services are monitored for the things that actually matter to the business, which ones have gaps, or whether the monitoring that exists traces back to a stakeholder who would care if it broke.</p>
+      <p style="font-size:14px; color:var(--gray-700); line-height:1.6; margin:0;">When something does break, the first 15 minutes of every incident are spent assembling context: who's affected, what's the business impact, who do we escalate to. That context should exist before the incident — it doesn't, because there's no structured place to define it.</p>
+    </div>
+
+    <div class="grounding-label">WHAT THIS TOOL DRIVES TOWARD</div>
+    <div class="objective-cards">
+
+      <div class="objective-card">
+        <h4>Structured Observability Requirements</h4>
+        <div class="objective-summary">Define what "healthy" means for each service — starting from who cares and what impacts them, not from what's easy to measure. Observability requirements captured with the same rigor as functional requirements, in the same backlog.</div>
+        <ul>
+          <li>Requirements start from stakeholder expectations and business impact categories — Customer Experience, Financial, Legal/Compliance, Operational</li>
+          <li>Observability is a requirement during sprint planning, not an afterthought post-deployment</li>
+          <li>Each signal is an ongoing automated check that the service meets its business obligations — not a one-time QA test</li>
+          <li>Every signal traces to a stakeholder expectation and a business impact — the chain from "who cares" to "what fires" is explicit and auditable</li>
+        </ul>
+        <div class="measures-label">MEASURES</div>
+        <div class="measure-item">Signal-to-stakeholder traceability — every health signal linked to specific stakeholder expectations</div>
+        <div class="measure-item">Risk dimension coverage — four impact categories per service; empty categories are visible gaps, not hidden ones</div>
+        <div class="measure-item">Requirements portability — structured export feeds Jira stories, dashboard generators, alert configuration</div>
+      </div>
+
+      <div class="objective-card">
+        <h4>Measurable Operational Readiness</h4>
+        <div class="objective-summary">Answer "is this service operationally ready?" with dimensional evidence instead of gut feel. The same question, across every service in the portfolio.</div>
+        <ul>
+          <li>PO defines what matters, Dev instruments how to measure it, Platform operationalizes the response — one artifact, zero handoff loss</li>
+          <li>Five dimensions evaluated per service: layer coverage, per-signal completeness, threshold definition, stakeholder traceability, operational metadata</li>
+          <li>Completeness scores across services answer: "Which Tier 1 services have gaps?" Management signal that doesn't exist today.</li>
+        </ul>
+        <div class="measures-label">MEASURES</div>
+        <div class="measure-item">5-dimension completeness score — per-service, on the Service Status tab</div>
+        <div class="measure-item">Per-signal progress tracking — PO Defined → Dev Implemented → Platform Operationalized</div>
+        <div class="measure-item">Gap identification — missing fields named explicitly, not just "incomplete"</div>
+      </div>
+
+      <div class="objective-card">
+        <h4>Incident Context Before the Incident</h4>
+        <div class="objective-summary">When something breaks, the diagnostic context — who's affected, what's the business impact, what related signals to check — already exists. Assembled during requirements, not during the 3 AM incident.</div>
+        <ul>
+          <li>Every alert traces to affected stakeholders and impact categories — no asking around during incidents to figure out who cares</li>
+          <li>Signal patterns across four layers provide a diagnostic decision tree for root cause direction</li>
+          <li>Rationale fields record WHY a signal exists and WHY a threshold was chosen — knowledge that survives personnel changes</li>
+        </ul>
+        <div class="measures-label">MEASURES</div>
+        <div class="measure-item">Alert-to-stakeholder mapping — every operationalized signal traces to stakeholder expectations</div>
+        <div class="measure-item">Diagnostic correlation patterns — 7 named patterns mapping signal states to root cause direction</div>
+        <div class="measure-item">Operational metadata completeness — alert targets, dashboard URLs, runbook URLs sourced from requirements</div>
+      </div>
+
+    </div>
+
+    <div class="grounding-label">WHERE THIS FITS IN YOUR SDLC</div>
+    <div class="grounding-panel">
+      <table class="sdlc-table">
+        <tr>
+          <td class="actor-cell po">Product Owner</td>
+          <td>Requirements grooming / backlog refinement — defines stakeholders, expectations, impact categories, health signals, and rationale. The "what matters" for this service. Maps to PO Story tab.</td>
+        </tr>
+        <tr>
+          <td class="actor-cell dev">Developer</td>
+          <td>Sprint implementation — instruments how to measure what PO defined: data source, query, metric path. The "how to observe it." Maps to Dev Story tab.</td>
+        </tr>
+        <tr>
+          <td class="actor-cell plat">Platform Engineer</td>
+          <td>Operational readiness gate — configures alert thresholds, severity, notification routing, dashboard, runbook. The "what to do about it." Maps to Platform Story tab.</td>
+        </tr>
+      </table>
+      <p style="font-size:13px; color:var(--gray-500); margin:8px 0 0 0; font-style:italic;">Same roles. Same backlog. Same sprint gates. New requirement type — operational health — with structured acceptance criteria for each role.</p>
+    </div>
+
+    <div class="grounding-cta">
+      <button class="btn-enter-workspace" @click="$store.app.showGrounding = false; schedulePersist()">Enter Workspace →</button>
+      <div class="secondary-text">Three built-in examples — a synchronous API, a batch job, a vendor integration — demonstrate these objectives with real service patterns.</div>
+    </div>
+
+  </div>
+
   <!-- SERVICE MANAGER VIEW -->
-  <div class="service-manager" x-show="!$store.app.activeServiceId">
+  <div class="service-manager" x-show="!$store.app.showGrounding && !$store.app.activeServiceId">
     <div class="empty-message" x-show="Object.keys($store.app.services).length === 0">
       Get started by loading an example below, or create a new service.
     </div>
+    <div class="about-link" @click="$store.app.showGrounding = true">(i) About This Tool</div>
     <div class="manager-actions">
       <button class="btn-new-service" @click="createService()">+ New Service</button>
       <button class="btn-import" @click="$refs.importInput.click()">Import</button>
@@ -2319,7 +2578,7 @@ ${r?'Expression: "'+r+`"
         </div>
         <div class="field-row">
           <span class="field-label">Business Domain</span>
-          <input type="text" class="field-input-prose" placeholder="e.g., Lending Operations"
+          <input type="text" class="field-input-prose" placeholder="e.g., Home Originations"
             x-model="service.identity.businessDomain" @input="schedulePersist()">
         </div>
           <div class="field-helper-text">
@@ -2456,10 +2715,19 @@ ${r?'Expression: "'+r+`"
         <template x-for="orphan in cov.orphans" :key="orphan">
           <div class="coverage-orphan" x-text="orphan + ' — orphan signal (verifies nothing)'"></div>
         </template>
-        <div class="coverage-summary" x-show="cov.total > 0">
-          <span :class="cov.covered === cov.total ? 'full' : 'gap'"
-            x-text="cov.covered + '/' + cov.total + ' expectations covered'"></span>
-          <span x-text="' | ' + cov.orphans.length + ' orphan signals | ' + cov.signalCount + ' health signals defined'"></span>
+        <div class="bridge-summary-metrics" x-show="cov.total > 0">
+          <div class="bridge-metric">
+            <span class="bridge-metric-value" x-text="cov.covered + '/' + cov.total"></span>
+            <span class="bridge-metric-label">Expectations Covered</span>
+          </div>
+          <div class="bridge-metric">
+            <span class="bridge-metric-value bridge-metric-zero" x-text="cov.orphans.length"></span>
+            <span class="bridge-metric-label">Orphan Signals</span>
+          </div>
+          <div class="bridge-metric">
+            <span class="bridge-metric-value bridge-metric-accent" x-text="cov.signalCount"></span>
+            <span class="bridge-metric-label">Health Signals Defined</span>
+          </div>
         </div>
       </div>
     </div>
@@ -2476,7 +2744,7 @@ ${r?'Expression: "'+r+`"
           <input type="text" class="card-name-input" placeholder="Signal name..."
             x-model="sig.name" @input="schedulePersist()">
 
-          <!-- Verifies checkboxes (trace links to stakeholders) -->
+          <!-- Verifies checkboxes (trace links to stakeholders) — CP4 -->
           <div class="field-row">
             <span class="field-label">Verifies</span>
             <div class="trace-checkbox-list">
@@ -2571,10 +2839,19 @@ ${r?'Expression: "'+r+`"
         <template x-for="orphan in cov.orphans" :key="orphan">
           <div class="coverage-orphan" x-text="orphan + ' — orphan signal (quantifies nothing)'"></div>
         </template>
-        <div class="coverage-summary" x-show="cov.total > 0">
-          <span :class="cov.covered === cov.total ? 'full' : 'gap'"
-            x-text="cov.covered + '/' + cov.total + ' impacts covered'"></span>
-          <span x-text="' | ' + cov.orphans.length + ' orphan signals | ' + cov.signalCount + ' impact signals defined'"></span>
+        <div class="bridge-summary-metrics" x-show="cov.total > 0">
+          <div class="bridge-metric">
+            <span class="bridge-metric-value" x-text="cov.covered + '/' + cov.total"></span>
+            <span class="bridge-metric-label">Impacts Covered</span>
+          </div>
+          <div class="bridge-metric">
+            <span class="bridge-metric-value bridge-metric-zero" x-text="cov.orphans.length"></span>
+            <span class="bridge-metric-label">Orphan Signals</span>
+          </div>
+          <div class="bridge-metric">
+            <span class="bridge-metric-value bridge-metric-accent" x-text="cov.signalCount"></span>
+            <span class="bridge-metric-label">Impact Signals Defined</span>
+          </div>
         </div>
       </div>
     </div>
@@ -2636,7 +2913,7 @@ ${r?'Expression: "'+r+`"
                 x-model="sig.impactUnit" @input="schedulePersist()">
             </div>
 
-            <!-- sloTarget, timeWindow, whyThisTarget: HIDDEN for business_impact -->
+            <!-- sloTarget, timeWindow, whyThisTarget: HIDDEN for business_impact (spec C.7) -->
           </div>
         </div>
       </template>
@@ -3221,7 +3498,7 @@ ${r?'Expression: "'+r+`"
       <div class="flow-step"><div class="flow-actor dev">Dev</div><div class="flow-content"><strong>Determines measurement type</strong> — sli_ratio (good/total) / Splunk <span class="flow-fields">signal_type, data_source</span></div></div>
       <div class="flow-arrow">↓</div>
 
-      <div class="flow-step"><div class="flow-actor dev">Dev</div><div class="flow-content"><strong>Writes queries</strong> — <code>search index=credit_checks status=success | stats count</code> / <code>search index=credit_checks | stats count</code> <span class="flow-fields">query_numerator, query_denominator</span></div></div>
+      <div class="flow-step"><div class="flow-actor dev">Dev</div><div class="flow-content"><strong>Writes queries</strong> — <code>search index=app_events status=success | stats count</code> / <code>search index=app_events | stats count</code> <span class="flow-fields">query_numerator, query_denominator</span></div></div>
       <div class="flow-arrow">↓</div>
 
       <div class="flow-step"><div class="flow-actor plat">Platform</div><div class="flow-content"><strong>Sets alert thresholds</strong> — Alert at 80%, Page at 70% <span class="flow-fields">alertingThreshold, pageThreshold</span></div></div>
@@ -3246,7 +3523,7 @@ ${r?'Expression: "'+r+`"
       <div class="flow-step"><div class="flow-actor po">PO</div><div class="flow-content"><strong>Categorizes the impact</strong> — customer_experience / customers <span class="flow-fields">impact_category, impact_unit</span></div></div>
       <div class="flow-arrow">↓</div>
 
-      <div class="flow-step"><div class="flow-actor dev">Dev</div><div class="flow-content"><strong>Writes quantification query</strong> — business_impact / <code>search index=credit_checks status=blocked | stats dc(customer_id)</code> / Splunk <span class="flow-fields">signal_type, query_numerator, data_source</span></div></div>
+      <div class="flow-step"><div class="flow-actor dev">Dev</div><div class="flow-content"><strong>Writes quantification query</strong> — business_impact / <code>search index=app_events status=blocked | stats dc(customer_id)</code> / Splunk <span class="flow-fields">signal_type, query_numerator, data_source</span></div></div>
       <div class="flow-arrow">↓</div>
 
       <div class="flow-step"><div class="flow-actor plat">Platform</div><div class="flow-content"><strong>Adds to impact dashboard</strong> — Customer count visualization</div></div>
@@ -3268,7 +3545,7 @@ ${r?'Expression: "'+r+`"
       <div class="flow-step"><div class="flow-actor dev">Dev</div><div class="flow-content"><strong>Determines measurement type</strong> — sli_threshold / &lt; / 3 / seconds <span class="flow-fields">signal_type, threshold_operator, threshold_value, threshold_unit</span></div></div>
       <div class="flow-arrow">↓</div>
 
-      <div class="flow-step"><div class="flow-actor dev">Dev</div><div class="flow-content"><strong>Writes measurement query</strong> — <code>search index=credit_checks | stats avg(response_time)</code> / Splunk <span class="flow-fields">query_numerator, data_source</span></div></div>
+      <div class="flow-step"><div class="flow-actor dev">Dev</div><div class="flow-content"><strong>Writes measurement query</strong> — <code>search index=app_events | stats avg(response_time)</code> / Splunk <span class="flow-fields">query_numerator, data_source</span></div></div>
       <div class="flow-arrow">↓</div>
 
       <div class="flow-step"><div class="flow-actor plat">Platform</div><div class="flow-content"><strong>Sets alert thresholds</strong> — Alert at 5 sec, Page at 10 sec <span class="flow-fields">alertingThreshold, pageThreshold</span></div></div>
