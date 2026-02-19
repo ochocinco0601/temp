@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Business Observability Requirements — Story Set Workspace</title>
+  <title>Business Observability Requirements: Story Set Workspace</title>
   <style>
 /* === Story Set Form — Data-Driven Application CSS === */
 /* Extracted from builder output, signal-type CSS data-attribute selectors removed (replaced by Alpine x-show) */
@@ -461,20 +461,6 @@ textarea.field-input-code {
 .category-container[data-category="legal_risk"] { border-left-color: #922B21; }
 .category-container[data-category="operational"] { border-left-color: var(--wf-gray-500); }
 
-.category-header {
-  font-size: 14px;
-  font-weight: bold;
-  text-transform: uppercase;
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.category-container[data-category="customer_experience"] .category-header { color: #1A5276; }
-.category-container[data-category="financial"] .category-header { color: #7D6608; }
-.category-container[data-category="legal_risk"] .category-header { color: #922B21; }
-.category-container[data-category="operational"] .category-header { color: var(--wf-gray-500); }
-
 .cat-dot {
   display: inline-block;
   width: 8px;
@@ -486,6 +472,133 @@ textarea.field-input-code {
 .category-container[data-category="financial"] .cat-dot { background: #7D6608; }
 .category-container[data-category="legal_risk"] .cat-dot { background: #922B21; }
 .category-container[data-category="operational"] .cat-dot { background: var(--wf-gray-500); }
+
+/* --- Collapsible Signal Cards --- */
+.signal-summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s ease;
+}
+.signal-summary:hover { background: var(--wf-gray-50); }
+
+.signal-chevron {
+  font-size: 12px;
+  color: var(--wf-gray-400);
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+  width: 16px;
+  text-align: center;
+}
+.signal-chevron.open { transform: rotate(90deg); }
+
+.signal-summary-name {
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--wf-gray-700);
+  flex: 1;
+}
+.signal-summary-name.empty {
+  color: var(--wf-gray-400);
+  font-style: italic;
+  font-weight: normal;
+}
+
+.signal-summary-badges {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-shrink: 0;
+}
+.summary-badge {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+.badge-coverage { background: #D4EFDF; color: #1E8449; }
+.badge-coverage.none { background: #FADBD8; color: #922B21; }
+.badge-target { background: #D6EAF8; color: #1A5276; }
+
+.signal-body {
+  position: relative;
+  padding: 0 16px 16px 16px;
+  border-top: 1px solid var(--wf-gray-100);
+}
+
+/* Override .card padding for collapsible signal cards (summary/body structure) */
+.po-card.signal-card { padding: 0; }
+.dev-card.signal-card { padding: 0; }
+.platform-card.signal-card { padding: 0; }
+
+/* --- Section Expand/Collapse Controls --- */
+.section-controls {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.section-control-btn {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  padding: 4px 10px;
+  border: 1px solid var(--wf-gray-200);
+  border-radius: 3px;
+  background: #FFFFFF;
+  color: var(--wf-gray-500);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.section-control-btn:hover {
+  border-color: var(--wf-gray-400);
+  color: var(--wf-gray-700);
+}
+
+/* --- Category Collapsible --- */
+.category-summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  user-select: none;
+  margin-bottom: 0;
+  transition: margin-bottom 0.15s ease;
+}
+.category-summary.has-content { margin-bottom: 12px; }
+.category-container[data-category="customer_experience"] .category-summary { color: #1A5276; }
+.category-container[data-category="financial"] .category-summary { color: #7D6608; }
+.category-container[data-category="legal_risk"] .category-summary { color: #922B21; }
+.category-container[data-category="operational"] .category-summary { color: var(--wf-gray-500); }
+
+.category-chevron {
+  font-size: 12px;
+  color: var(--wf-gray-400);
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+  width: 16px;
+  text-align: center;
+}
+.category-chevron.open { transform: rotate(90deg); }
+
+.category-count-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 7px;
+  border-radius: 10px;
+  background: var(--wf-gray-200);
+  color: var(--wf-gray-500);
+  margin-left: auto;
+}
 
 .chain-row {
   display: flex;
@@ -565,6 +678,11 @@ textarea.field-input-code {
   letter-spacing: 0.5px;
   color: #8E44AD;
   margin-bottom: 12px;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 .bridge-prompt {
   font-size: 13px;
@@ -573,6 +691,16 @@ textarea.field-input-code {
   line-height: 1.5;
 }
 .bridge-prompt strong { font-weight: bold; }
+/* --- Bridge Collapsible --- */
+.bridge-chevron {
+  font-size: 12px;
+  color: var(--wf-gray-400);
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+  width: 16px;
+  text-align: center;
+}
+.bridge-chevron.open { transform: rotate(90deg); }
 .coverage-category { margin-top: 10px; }
 .coverage-category-header {
   font-size: 11px;
@@ -1761,6 +1889,10 @@ function loadFromStorage() {
       store.services = data.services || {};
       store.meta = data.meta || { lastExport: null, changesSinceExport: 0 };
       store.showGrounding = data.showGrounding !== undefined ? data.showGrounding : true;
+      // Normalize expanded = false on all signals (collapsed by default)
+      Object.values(store.services).forEach(function(svc) {
+        (svc.signals || []).forEach(function(sig) { sig.expanded = false; });
+      });
     } catch (e) {
       console.warn('Failed to load from localStorage:', e);
     }
@@ -1891,6 +2023,8 @@ function loadExample(key) {
   var store = Alpine.store('app');
   var data = JSON.parse(JSON.stringify(SEED_DATA[key]));
   if (!data) return;
+  // Normalize expanded = false on loaded example signals (collapsed by default)
+  (data.signals || []).forEach(function(sig) { sig.expanded = false; });
   var existingId = null;
   Object.keys(store.services).forEach(function(id) {
     if (store.services[id].isExample && store.services[id].name === data.name) {
@@ -1921,10 +2055,13 @@ function exportService(serviceId) {
   var store = Alpine.store('app');
   var service = store.services[serviceId || store.activeServiceId];
   if (!service) return;
+  var serviceCopy = JSON.parse(JSON.stringify(service));
+  // Strip transient UI state from export
+  (serviceCopy.signals || []).forEach(function(sig) { delete sig.expanded; });
   var exportData = {
     version: '1.0',
     exportedAt: new Date().toISOString(),
-    service: JSON.parse(JSON.stringify(service)),
+    service: serviceCopy,
   };
   var blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
   var url = URL.createObjectURL(blob);
@@ -1951,6 +2088,8 @@ function importService(file) {
       if (data.version && data.service) {
         var store = Alpine.store('app');
         var service = data.service;
+        // Normalize expanded = false on imported signals (collapsed by default)
+        (service.signals || []).forEach(function(sig) { sig.expanded = false; });
         if (store.services[service.id]) {
           var existingName = store.services[service.id].identity.serviceName || store.services[service.id].name || 'Untitled';
           if (confirm('A service with this ID already exists (' + existingName + '). Replace it with the imported data?')) {
@@ -2204,6 +2343,7 @@ function addSignal(layer) {
     name: '',
     signalType: signalType,
     layer: layer,
+    expanded: true,
     verifies: [],
     quantifies: [],
     whatItTellsMe: '',
@@ -2248,6 +2388,47 @@ function toggleTrace(sig, field, stakeholderId) {
   }
   sig[field] = sig[field].slice();
   schedulePersist();
+}
+
+// ── Collapsible signal controls ──
+function toggleSignalExpand(sig) {
+  sig.expanded = !sig.expanded;
+}
+function expandAllSignals(layer) {
+  var service = getActiveService();
+  if (!service) return;
+  service.signals.forEach(function(sig) {
+    if (sig.layer === layer) sig.expanded = true;
+  });
+}
+function collapseAllSignals(layer) {
+  var service = getActiveService();
+  if (!service) return;
+  service.signals.forEach(function(sig) {
+    if (sig.layer === layer) sig.expanded = false;
+  });
+}
+
+// ── Collapsible category controls ──
+function toggleCategoryExpand(cat) {
+  var ce = Alpine.store('app').categoryExpanded;
+  ce[cat] = !ce[cat];
+}
+function expandAllCategories() {
+  var ce = Alpine.store('app').categoryExpanded;
+  CATEGORY_ORDER.forEach(function(cat) { ce[cat] = true; });
+}
+function collapseAllCategories() {
+  var ce = Alpine.store('app').categoryExpanded;
+  CATEGORY_ORDER.forEach(function(cat) { ce[cat] = false; });
+}
+function isCategoryExpanded(cat) {
+  return Alpine.store('app').categoryExpanded[cat];
+}
+function categoryStakeholderCount(cat) {
+  var service = getActiveService();
+  if (!service) return 0;
+  return service.stakeholders.filter(function(s) { return s.impactCategory === cat; }).length;
 }
 
 // ── Bridge coverage computation ──
@@ -2453,6 +2634,9 @@ document.addEventListener('alpine:init', function() {
     activeServiceId: null,
     activeTab: 'po',
     guideExpanded: false,
+    healthBridgeExpanded: false,
+    impactBridgeExpanded: false,
+    categoryExpanded: { customer_experience: false, financial: false, legal_risk: false, operational: false },
     showGrounding: true,
     services: {},
     meta: { lastExport: null, changesSinceExport: 0 },
@@ -2816,111 +3000,126 @@ ${r?'Expression: "'+r+`"
       <div class="ac-label po">AC 1.2 — STAKEHOLDER EXPECTATIONS</div>
       <div class="ac-desc">Define stakeholders, their expectations, and the business impact when those expectations are not met. Each category container groups stakeholders by impact type.</div>
 
+      <div class="section-controls">
+        <button class="section-control-btn" @click="expandAllCategories()">Expand All</button>
+        <button class="section-control-btn" @click="collapseAllCategories()">Collapse All</button>
+      </div>
+
       <!-- Category containers: 4 fixed containers, stakeholders filtered by impactCategory -->
       <template x-for="cat in CATEGORY_ORDER" :key="cat">
         <div class="category-container" :data-category="cat">
-          <div class="category-header">
+          <div class="category-summary" @click="toggleCategoryExpand(cat)"
+               :class="{ 'has-content': isCategoryExpanded(cat) }">
+            <span class="category-chevron" :class="{ open: isCategoryExpanded(cat) }">&#9654;</span>
             <span class="cat-dot"></span>
             <span x-text="categoryName(cat)"></span>
+            <span class="category-count-badge" x-text="categoryStakeholderCount(cat)"></span>
           </div>
 
-          <!-- Chain rows for stakeholders in this category -->
-          <template x-for="stk in service.stakeholders.filter(function(s) { return s.impactCategory === cat; })" :key="stk.id">
-            <div class="chain-row">
-              <!-- Segment 1: Stakeholder + Priority -->
-              <div class="chain-segment seg-stakeholder">
-                <div class="chain-segment-label">Stakeholder</div>
-                <input type="text" class="card-name-input" placeholder="Stakeholder name..."
-                  x-model="stk.stakeholder" @input="schedulePersist()">
-                <select class="meta-select" x-model="stk.priority" @change="schedulePersist()">
-                  <option value="">Priority...</option>
-                  <template x-for="opt in DROPDOWN_OPTS.priority" :key="opt.value">
-                    <option :value="opt.value" x-text="opt.label"></option>
-                  </template>
-                </select>
+          <div class="category-body" x-show="isCategoryExpanded(cat)" x-transition.opacity>
+            <!-- Chain rows for stakeholders in this category -->
+            <template x-for="stk in service.stakeholders.filter(function(s) { return s.impactCategory === cat; })" :key="stk.id">
+              <div class="chain-row">
+                <!-- Segment 1: Stakeholder + Priority -->
+                <div class="chain-segment seg-stakeholder">
+                  <div class="chain-segment-label">Stakeholder</div>
+                  <input type="text" class="card-name-input" placeholder="Stakeholder name..."
+                    x-model="stk.stakeholder" @input="schedulePersist()">
+                  <select class="meta-select" x-model="stk.priority" @change="schedulePersist()">
+                    <option value="">Priority...</option>
+                    <template x-for="opt in DROPDOWN_OPTS.priority" :key="opt.value">
+                      <option :value="opt.value" x-text="opt.label"></option>
+                    </template>
+                  </select>
+                </div>
+
+                <!-- Arrow -->
+                <span class="chain-arrow">&#8594;</span>
+
+                <!-- Segment 2: Expectation -->
+                <div class="chain-segment seg-expectation">
+                  <div class="chain-segment-label">I expect...</div>
+                  <textarea class="field-input-prose" placeholder="What does this stakeholder expect from the service?"
+                    x-model="stk.expectationStatement" @input="schedulePersist()"></textarea>
+                </div>
+
+                <!-- Arrow -->
+                <span class="chain-arrow">&#8594;</span>
+
+                <!-- Segment 3: Impact -->
+                <div class="chain-segment seg-impact">
+                  <div class="chain-segment-label">If it fails...</div>
+                  <textarea class="field-input-prose" placeholder="What happens when the expectation is not met?"
+                    x-model="stk.impactDescription" @input="schedulePersist()"></textarea>
+                </div>
+
+                <!-- Remove button -->
+                <button class="remove-chain-btn" @click="removeStakeholder(stk)" title="Remove stakeholder">&times;</button>
               </div>
+            </template>
 
-              <!-- Arrow -->
-              <span class="chain-arrow">&#8594;</span>
-
-              <!-- Segment 2: Expectation -->
-              <div class="chain-segment seg-expectation">
-                <div class="chain-segment-label">I expect...</div>
-                <textarea class="field-input-prose" placeholder="What does this stakeholder expect from the service?"
-                  x-model="stk.expectationStatement" @input="schedulePersist()"></textarea>
-              </div>
-
-              <!-- Arrow -->
-              <span class="chain-arrow">&#8594;</span>
-
-              <!-- Segment 3: Impact -->
-              <div class="chain-segment seg-impact">
-                <div class="chain-segment-label">If it fails...</div>
-                <textarea class="field-input-prose" placeholder="What happens when the expectation is not met?"
-                  x-model="stk.impactDescription" @input="schedulePersist()"></textarea>
-              </div>
-
-              <!-- Remove button -->
-              <button class="remove-chain-btn" @click="removeStakeholder(stk)" title="Remove stakeholder">&times;</button>
+            <!-- Empty state per container -->
+            <div class="category-empty" x-show="service.stakeholders.filter(function(s) { return s.impactCategory === cat; }).length === 0">
+              No stakeholders in this category yet.
             </div>
-          </template>
 
-          <!-- Empty state per container -->
-          <div class="category-empty" x-show="service.stakeholders.filter(function(s) { return s.impactCategory === cat; }).length === 0">
-            No stakeholders in this category yet.
+            <!-- Add button per container -->
+            <button class="add-btn" @click="addStakeholder(cat)">+ Add Stakeholder</button>
           </div>
-
-          <!-- Add button per container -->
-          <button class="add-btn" @click="addStakeholder(cat)">+ Add Stakeholder</button>
         </div>
       </template>
     </div>
 
     <!-- Health Bridge -->
-    <div class="bridge-element" id="health-bridge">
-      <div class="bridge-header">SIGNAL COVERAGE: Health</div>
-      <div class="bridge-prompt">
-        For each stakeholder expectation above, <strong>what would you measure</strong> to know if that expectation is being met?
-        Each health signal below should verify at least one expectation.
+    <div class="bridge-element" id="health-bridge" x-data="{ get cov() { return computeCoverage('health') } }">
+      <div class="bridge-header" @click="$store.app.healthBridgeExpanded = !$store.app.healthBridgeExpanded">
+        <span class="bridge-chevron" :class="{ open: $store.app.healthBridgeExpanded }">&#9654;</span>
+        <span>SIGNAL COVERAGE: Health</span>
       </div>
-      <div class="coverage-matrix" id="health-coverage" x-data="{ get cov() { return computeCoverage('health') } }">
-        <template x-for="cat in cov.categories" :key="cat.code">
-          <div class="coverage-category">
-            <div class="coverage-category-header">
-              <span class="cat-dot" :style="'background:' + (CATEGORY_COLORS_BADGE[cat.code] || {}).text"></span>
-              <span x-text="categoryName(cat.code)"></span>
-            </div>
-            <template x-for="exp in cat.expectations" :key="exp.stakeholder">
-              <div>
-                <div class="coverage-expectation">
-                  <span x-text="exp.label || '(no expectation)'"></span>
-                  <span class="coverage-stakeholder" x-text="'(' + (exp.stakeholder || 'unnamed') + ')'"></span>
-                </div>
-                <div class="coverage-signals" x-show="exp.signals.length > 0">
-                  <span class="arrow">&#8594;</span>
-                  <span x-text="exp.signals.join(', ')"></span>
-                </div>
-                <div class="coverage-gap" x-show="exp.signals.length === 0">No signals verify this expectation</div>
+      <div class="bridge-body" x-show="$store.app.healthBridgeExpanded" x-transition.opacity x-cloak>
+        <div class="bridge-prompt">
+          For each stakeholder expectation above, <strong>what would you measure</strong> to know if that expectation is being met?
+          Each health signal below should verify at least one expectation.
+        </div>
+        <div class="coverage-matrix" id="health-coverage">
+          <template x-for="cat in cov.categories" :key="cat.code">
+            <div class="coverage-category">
+              <div class="coverage-category-header">
+                <span class="cat-dot" :style="'background:' + (CATEGORY_COLORS_BADGE[cat.code] || {}).text"></span>
+                <span x-text="categoryName(cat.code)"></span>
               </div>
-            </template>
-          </div>
-        </template>
-        <template x-for="orphan in cov.orphans" :key="orphan">
-          <div class="coverage-orphan" x-text="orphan + ': unlinked signal (verifies no expectation)'"></div>
-        </template>
-        <div class="bridge-summary-metrics" x-show="cov.total > 0">
-          <div class="bridge-metric">
-            <span class="bridge-metric-value" x-text="cov.covered + '/' + cov.total"></span>
-            <span class="bridge-metric-label">Expectations Covered</span>
-          </div>
-          <div class="bridge-metric">
-            <span class="bridge-metric-value bridge-metric-zero" x-text="cov.orphans.length"></span>
-            <span class="bridge-metric-label">Orphan Signals</span>
-          </div>
-          <div class="bridge-metric">
-            <span class="bridge-metric-value bridge-metric-accent" x-text="cov.signalCount"></span>
-            <span class="bridge-metric-label">Health Signals Defined</span>
-          </div>
+              <template x-for="exp in cat.expectations" :key="exp.stakeholder">
+                <div>
+                  <div class="coverage-expectation">
+                    <span x-text="exp.label || '(no expectation)'"></span>
+                    <span class="coverage-stakeholder" x-text="'(' + (exp.stakeholder || 'unnamed') + ')'"></span>
+                  </div>
+                  <div class="coverage-signals" x-show="exp.signals.length > 0">
+                    <span class="arrow">&#8594;</span>
+                    <span x-text="exp.signals.join(', ')"></span>
+                  </div>
+                  <div class="coverage-gap" x-show="exp.signals.length === 0">No signals verify this expectation</div>
+                </div>
+              </template>
+            </div>
+          </template>
+          <template x-for="orphan in cov.orphans" :key="orphan">
+            <div class="coverage-orphan" x-text="orphan + ': unlinked signal (verifies no expectation)'"></div>
+          </template>
+        </div>
+      </div>
+      <div class="bridge-summary-metrics" x-show="cov.total > 0">
+        <div class="bridge-metric">
+          <span class="bridge-metric-value" x-text="cov.covered + '/' + cov.total"></span>
+          <span class="bridge-metric-label">Expectations Covered</span>
+        </div>
+        <div class="bridge-metric">
+          <span class="bridge-metric-value bridge-metric-zero" x-text="cov.orphans.length"></span>
+          <span class="bridge-metric-label">Unlinked Signals</span>
+        </div>
+        <div class="bridge-metric">
+          <span class="bridge-metric-value bridge-metric-accent" x-text="cov.signalCount"></span>
+          <span class="bridge-metric-label">Health Signals Defined</span>
         </div>
       </div>
     </div>
@@ -2930,65 +3129,86 @@ ${r?'Expression: "'+r+`"
       <div class="ac-label po">AC 1.3 — BUSINESS HEALTH SIGNALS</div>
       <div class="ac-desc">Define the signals that measure whether stakeholder expectations are being met. Each signal should verify at least one stakeholder expectation.</div>
 
+      <div class="section-controls" x-show="service.signals.filter(function(s) { return s.layer === 'L3'; }).length > 0">
+        <button class="section-control-btn" @click="expandAllSignals('L3')">Expand All</button>
+        <button class="section-control-btn" @click="collapseAllSignals('L3')">Collapse All</button>
+      </div>
+
       <!-- Signal cards -->
       <template x-for="sig in service.signals.filter(function(s) { return s.layer === 'L3'; })" :key="sig.id">
         <div class="card po-card signal-card">
-          <button class="remove-btn" @click="removeSignal(sig)" title="Remove signal">&times;</button>
-          <input type="text" class="card-name-input" placeholder="Signal name..."
-            x-model="sig.name" @input="schedulePersist()">
-
-          <!-- Verifies checkboxes (trace links to stakeholders) — CP4 -->
-          <div class="field-row">
-            <span class="field-label">Verifies</span>
-            <div class="trace-checkbox-list">
-              <template x-for="stk in service.stakeholders" :key="stk.id">
-                <label class="trace-checkbox">
-                  <input type="checkbox"
-                    :checked="sig.verifies.includes(stk.id)"
-                    @change="toggleTrace(sig, 'verifies', stk.id)">
-                  <span class="trace-badge" :style="categoryStyle(stk.impactCategory)"
-                    x-text="categoryName(stk.impactCategory)"></span>
-                  <span x-text="stk.expectationStatement || '(no expectation)'"></span>
-                  <span class="stakeholder-name" x-text="'(' + (stk.stakeholder || 'unnamed') + ')'"></span>
-                </label>
-              </template>
-              <span class="empty-state" x-show="service.stakeholders.length === 0" style="padding:4px 0;text-align:left">No stakeholders defined yet</span>
+          <!-- Summary row (always visible) -->
+          <div class="signal-summary" @click="toggleSignalExpand(sig)">
+            <span class="signal-chevron" :class="{ open: sig.expanded }">&#9654;</span>
+            <span class="signal-summary-name" :class="{ empty: !sig.name }"
+              x-text="sig.name || '(unnamed signal)'"></span>
+            <div class="signal-summary-badges">
+              <span class="summary-badge badge-coverage"
+                :class="{ none: sig.verifies.length === 0 }"
+                x-text="sig.verifies.length > 0 ? 'Verifies ' + sig.verifies.length : 'No links'"></span>
+              <span class="summary-badge badge-target" x-show="sig.sloTarget"
+                x-text="'SLO: ' + sig.sloTarget"></span>
             </div>
           </div>
+          <!-- Expanded body -->
+          <div class="signal-body" x-show="sig.expanded" x-transition.opacity>
+            <button class="remove-btn" @click="removeSignal(sig)" title="Remove signal">&times;</button>
+            <input type="text" class="card-name-input" placeholder="Signal name..."
+              x-model="sig.name" @input="schedulePersist()">
 
-          <!-- Description -->
-          <div class="field-list">
+            <!-- Verifies checkboxes (trace links to stakeholders) -->
             <div class="field-row">
-              <span class="field-label">What it tells me</span>
-              <textarea class="field-input-prose" placeholder="What does this signal measure?"
-                x-model="sig.whatItTellsMe" @input="schedulePersist()"></textarea>
+              <span class="field-label">Verifies</span>
+              <div class="trace-checkbox-list">
+                <template x-for="stk in service.stakeholders" :key="stk.id">
+                  <label class="trace-checkbox">
+                    <input type="checkbox"
+                      :checked="sig.verifies.includes(stk.id)"
+                      @change="toggleTrace(sig, 'verifies', stk.id)">
+                    <span class="trace-badge" :style="categoryStyle(stk.impactCategory)"
+                      x-text="categoryName(stk.impactCategory)"></span>
+                    <span x-text="stk.expectationStatement || '(no expectation)'"></span>
+                    <span class="stakeholder-name" x-text="'(' + (stk.stakeholder || 'unnamed') + ')'"></span>
+                  </label>
+                </template>
+                <span class="empty-state" x-show="service.stakeholders.length === 0" style="padding:4px 0;text-align:left">No stakeholders defined yet</span>
+              </div>
             </div>
 
-            <!-- Signal type (read-only — Dev selects type in Section 2.1) -->
-            <div class="field-row">
-              <span class="field-label">Signal type</span>
-              <span style="color:var(--wf-gray-500);font-style:italic;" x-text="sig.signalType ? signalTypeLabel(sig.signalType) : 'Not yet selected'"></span>
-            </div>
+            <!-- Description -->
+            <div class="field-list">
+              <div class="field-row">
+                <span class="field-label">What it tells me</span>
+                <textarea class="field-input-prose" placeholder="What does this signal measure?"
+                  x-model="sig.whatItTellsMe" @input="schedulePersist()"></textarea>
+              </div>
 
-            <!-- Target -->
-            <div class="field-row">
-              <span class="field-label">SLO Target</span>
-              <input type="text" class="field-input-prose" placeholder="e.g., 85%"
-                x-model="sig.sloTarget" @input="schedulePersist()">
-            </div>
+              <!-- Signal type (read-only — Dev selects type in Section 2.1) -->
+              <div class="field-row">
+                <span class="field-label">Signal type</span>
+                <span style="color:var(--wf-gray-500);font-style:italic;" x-text="sig.signalType ? signalTypeLabel(sig.signalType) : 'Not yet selected'"></span>
+              </div>
 
-            <!-- Time window -->
-            <div class="field-row">
-              <span class="field-label">Time window</span>
-              <input type="text" class="field-input-prose" placeholder="e.g., 7 days"
-                x-model="sig.timeWindow" @input="schedulePersist()">
-            </div>
+              <!-- Target -->
+              <div class="field-row">
+                <span class="field-label">SLO Target</span>
+                <input type="text" class="field-input-prose" placeholder="e.g., 85%"
+                  x-model="sig.sloTarget" @input="schedulePersist()">
+              </div>
 
-            <!-- Rationale -->
-            <div class="field-row">
-              <span class="field-label">Why this target</span>
-              <textarea class="field-input-prose" placeholder="Business rationale for the target..."
-                x-model="sig.whyThisTarget" @input="schedulePersist()"></textarea>
+              <!-- Time window -->
+              <div class="field-row">
+                <span class="field-label">Time window</span>
+                <input type="text" class="field-input-prose" placeholder="e.g., 7 days"
+                  x-model="sig.timeWindow" @input="schedulePersist()">
+              </div>
+
+              <!-- Rationale -->
+              <div class="field-row">
+                <span class="field-label">Why this target</span>
+                <textarea class="field-input-prose" placeholder="Business rationale for the target..."
+                  x-model="sig.whyThisTarget" @input="schedulePersist()"></textarea>
+              </div>
             </div>
           </div>
         </div>
@@ -3002,49 +3222,54 @@ ${r?'Expression: "'+r+`"
     </div>
 
     <!-- Impact Bridge -->
-    <div class="bridge-element" id="impact-bridge">
-      <div class="bridge-header">SIGNAL COVERAGE: Impact</div>
-      <div class="bridge-prompt">
-        For each stakeholder impact description above, <strong>how would you quantify the business impact</strong> when expectations are not met?
+    <div class="bridge-element" id="impact-bridge" x-data="{ get cov() { return computeCoverage('impact') } }">
+      <div class="bridge-header" @click="$store.app.impactBridgeExpanded = !$store.app.impactBridgeExpanded">
+        <span class="bridge-chevron" :class="{ open: $store.app.impactBridgeExpanded }">&#9654;</span>
+        <span>SIGNAL COVERAGE: Impact</span>
       </div>
-      <div class="coverage-matrix" id="impact-coverage" x-data="{ get cov() { return computeCoverage('impact') } }">
-        <template x-for="cat in cov.categories" :key="cat.code">
-          <div class="coverage-category">
-            <div class="coverage-category-header">
-              <span class="cat-dot" :style="'background:' + (CATEGORY_COLORS_BADGE[cat.code] || {}).text"></span>
-              <span x-text="categoryName(cat.code)"></span>
-            </div>
-            <template x-for="exp in cat.expectations" :key="exp.stakeholder">
-              <div>
-                <div class="coverage-expectation">
-                  <span x-text="exp.label || '(no impact description)'"></span>
-                  <span class="coverage-stakeholder" x-text="'(' + (exp.stakeholder || 'unnamed') + ')'"></span>
-                </div>
-                <div class="coverage-signals" x-show="exp.signals.length > 0">
-                  <span class="arrow">&#8594;</span>
-                  <span x-text="exp.signals.join(', ')"></span>
-                </div>
-                <div class="coverage-gap" x-show="exp.signals.length === 0">No signals quantify this impact</div>
+      <div class="bridge-body" x-show="$store.app.impactBridgeExpanded" x-transition.opacity x-cloak>
+        <div class="bridge-prompt">
+          For each stakeholder impact description above, <strong>how would you quantify the business impact</strong> when expectations are not met?
+        </div>
+        <div class="coverage-matrix" id="impact-coverage">
+          <template x-for="cat in cov.categories" :key="cat.code">
+            <div class="coverage-category">
+              <div class="coverage-category-header">
+                <span class="cat-dot" :style="'background:' + (CATEGORY_COLORS_BADGE[cat.code] || {}).text"></span>
+                <span x-text="categoryName(cat.code)"></span>
               </div>
-            </template>
-          </div>
-        </template>
-        <template x-for="orphan in cov.orphans" :key="orphan">
-          <div class="coverage-orphan" x-text="orphan + ': unlinked signal (quantifies no impact)'"></div>
-        </template>
-        <div class="bridge-summary-metrics" x-show="cov.total > 0">
-          <div class="bridge-metric">
-            <span class="bridge-metric-value" x-text="cov.covered + '/' + cov.total"></span>
-            <span class="bridge-metric-label">Impacts Covered</span>
-          </div>
-          <div class="bridge-metric">
-            <span class="bridge-metric-value bridge-metric-zero" x-text="cov.orphans.length"></span>
-            <span class="bridge-metric-label">Orphan Signals</span>
-          </div>
-          <div class="bridge-metric">
-            <span class="bridge-metric-value bridge-metric-accent" x-text="cov.signalCount"></span>
-            <span class="bridge-metric-label">Impact Signals Defined</span>
-          </div>
+              <template x-for="exp in cat.expectations" :key="exp.stakeholder">
+                <div>
+                  <div class="coverage-expectation">
+                    <span x-text="exp.label || '(no impact description)'"></span>
+                    <span class="coverage-stakeholder" x-text="'(' + (exp.stakeholder || 'unnamed') + ')'"></span>
+                  </div>
+                  <div class="coverage-signals" x-show="exp.signals.length > 0">
+                    <span class="arrow">&#8594;</span>
+                    <span x-text="exp.signals.join(', ')"></span>
+                  </div>
+                  <div class="coverage-gap" x-show="exp.signals.length === 0">No signals quantify this impact</div>
+                </div>
+              </template>
+            </div>
+          </template>
+          <template x-for="orphan in cov.orphans" :key="orphan">
+            <div class="coverage-orphan" x-text="orphan + ': unlinked signal (quantifies no impact)'"></div>
+          </template>
+        </div>
+      </div>
+      <div class="bridge-summary-metrics" x-show="cov.total > 0">
+        <div class="bridge-metric">
+          <span class="bridge-metric-value" x-text="cov.covered + '/' + cov.total"></span>
+          <span class="bridge-metric-label">Impacts Covered</span>
+        </div>
+        <div class="bridge-metric">
+          <span class="bridge-metric-value bridge-metric-zero" x-text="cov.orphans.length"></span>
+          <span class="bridge-metric-label">Unlinked Signals</span>
+        </div>
+        <div class="bridge-metric">
+          <span class="bridge-metric-value bridge-metric-accent" x-text="cov.signalCount"></span>
+          <span class="bridge-metric-label">Impact Signals Defined</span>
         </div>
       </div>
     </div>
@@ -3054,59 +3279,80 @@ ${r?'Expression: "'+r+`"
       <div class="ac-label po">AC 1.4 — BUSINESS IMPACT SIGNALS</div>
       <div class="ac-desc">Define signals that quantify business impact when health signals indicate problems. Each impact signal should quantify at least one stakeholder impact description.</div>
 
+      <div class="section-controls" x-show="service.signals.filter(function(s) { return s.layer === 'L4'; }).length > 0">
+        <button class="section-control-btn" @click="expandAllSignals('L4')">Expand All</button>
+        <button class="section-control-btn" @click="collapseAllSignals('L4')">Collapse All</button>
+      </div>
+
       <!-- Signal cards -->
       <template x-for="sig in service.signals.filter(function(s) { return s.layer === 'L4'; })" :key="sig.id">
         <div class="card po-card signal-card">
-          <button class="remove-btn" @click="removeSignal(sig)" title="Remove signal">&times;</button>
-          <input type="text" class="card-name-input" placeholder="Impact signal name..."
-            x-model="sig.name" @input="schedulePersist()">
-
-          <!-- Quantifies checkboxes (trace links to stakeholders) -->
-          <div class="field-row">
-            <span class="field-label">Quantifies</span>
-            <div class="trace-checkbox-list">
-              <template x-for="stk in service.stakeholders" :key="stk.id">
-                <label class="trace-checkbox">
-                  <input type="checkbox"
-                    :checked="sig.quantifies.includes(stk.id)"
-                    @change="toggleTrace(sig, 'quantifies', stk.id)">
-                  <span class="trace-badge" :style="categoryStyle(stk.impactCategory)"
-                    x-text="categoryName(stk.impactCategory)"></span>
-                  <span x-text="stk.impactDescription || '(no impact description)'"></span>
-                  <span class="stakeholder-name" x-text="'(' + (stk.stakeholder || 'unnamed') + ')'"></span>
-                </label>
-              </template>
-              <span class="empty-state" x-show="service.stakeholders.length === 0" style="padding:4px 0;text-align:left">No stakeholders defined yet</span>
+          <!-- Summary row (always visible) -->
+          <div class="signal-summary" @click="toggleSignalExpand(sig)">
+            <span class="signal-chevron" :class="{ open: sig.expanded }">&#9654;</span>
+            <span class="signal-summary-name" :class="{ empty: !sig.name }"
+              x-text="sig.name || '(unnamed signal)'"></span>
+            <div class="signal-summary-badges">
+              <span class="summary-badge badge-coverage"
+                :class="{ none: sig.quantifies.length === 0 }"
+                x-text="sig.quantifies.length > 0 ? 'Quantifies ' + sig.quantifies.length : 'No links'"></span>
+              <span class="summary-badge badge-target" x-show="sig.impactUnit"
+                x-text="sig.impactUnit"></span>
             </div>
           </div>
+          <!-- Expanded body -->
+          <div class="signal-body" x-show="sig.expanded" x-transition.opacity>
+            <button class="remove-btn" @click="removeSignal(sig)" title="Remove signal">&times;</button>
+            <input type="text" class="card-name-input" placeholder="Impact signal name..."
+              x-model="sig.name" @input="schedulePersist()">
 
-          <!-- Description -->
-          <div class="field-list">
+            <!-- Quantifies checkboxes (trace links to stakeholders) -->
             <div class="field-row">
-              <span class="field-label">What it tells me</span>
-              <textarea class="field-input-prose" placeholder="What business impact does this signal quantify?"
-                x-model="sig.whatItTellsMe" @input="schedulePersist()"></textarea>
-            </div>
-
-            <!-- Impact category -->
-            <div class="field-row">
-              <span class="field-label">Impact category</span>
-              <select class="meta-select" x-model="sig.impactCategory" @change="schedulePersist()">
-                <option value="">Select category...</option>
-                <template x-for="opt in DROPDOWN_OPTS.impactCategory" :key="opt.value">
-                  <option :value="opt.value" x-text="opt.label"></option>
+              <span class="field-label">Quantifies</span>
+              <div class="trace-checkbox-list">
+                <template x-for="stk in service.stakeholders" :key="stk.id">
+                  <label class="trace-checkbox">
+                    <input type="checkbox"
+                      :checked="sig.quantifies.includes(stk.id)"
+                      @change="toggleTrace(sig, 'quantifies', stk.id)">
+                    <span class="trace-badge" :style="categoryStyle(stk.impactCategory)"
+                      x-text="categoryName(stk.impactCategory)"></span>
+                    <span x-text="stk.impactDescription || '(no impact description)'"></span>
+                    <span class="stakeholder-name" x-text="'(' + (stk.stakeholder || 'unnamed') + ')'"></span>
+                  </label>
                 </template>
-              </select>
+                <span class="empty-state" x-show="service.stakeholders.length === 0" style="padding:4px 0;text-align:left">No stakeholders defined yet</span>
+              </div>
             </div>
 
-            <!-- Impact unit -->
-            <div class="field-row">
-              <span class="field-label">Impact unit</span>
-              <input type="text" class="field-input-prose" placeholder="e.g., customers, dollars, violations..."
-                x-model="sig.impactUnit" @input="schedulePersist()">
-            </div>
+            <!-- Description -->
+            <div class="field-list">
+              <div class="field-row">
+                <span class="field-label">What it tells me</span>
+                <textarea class="field-input-prose" placeholder="What business impact does this signal quantify?"
+                  x-model="sig.whatItTellsMe" @input="schedulePersist()"></textarea>
+              </div>
 
-            <!-- sloTarget, timeWindow, whyThisTarget: HIDDEN for business_impact (spec C.7) -->
+              <!-- Impact category -->
+              <div class="field-row">
+                <span class="field-label">Impact category</span>
+                <select class="meta-select" x-model="sig.impactCategory" @change="schedulePersist()">
+                  <option value="">Select category...</option>
+                  <template x-for="opt in DROPDOWN_OPTS.impactCategory" :key="opt.value">
+                    <option :value="opt.value" x-text="opt.label"></option>
+                  </template>
+                </select>
+              </div>
+
+              <!-- Impact unit -->
+              <div class="field-row">
+                <span class="field-label">Impact unit</span>
+                <input type="text" class="field-input-prose" placeholder="e.g., customers, dollars, violations..."
+                  x-model="sig.impactUnit" @input="schedulePersist()">
+              </div>
+
+              <!-- sloTarget, timeWindow, whyThisTarget: HIDDEN for business_impact (spec C.7) -->
+            </div>
           </div>
         </div>
       </template>
@@ -3136,103 +3382,120 @@ ${r?'Expression: "'+r+`"
       <div class="ac-desc">Implement queries for health signals defined by the Product Owner. Signal names are set in the PO Story tab.</div>
       <div class="mirror-note">Mirror of Section 1.3. Signal names are set in the PO Story tab. Add or remove health signals there.</div>
 
+      <div class="section-controls" x-show="service.signals.filter(function(s) { return s.layer === 'L3'; }).length > 0">
+        <button class="section-control-btn" @click="expandAllSignals('L3')">Expand All</button>
+        <button class="section-control-btn" @click="collapseAllSignals('L3')">Collapse All</button>
+      </div>
+
       <template x-for="sig in service.signals.filter(function(s) { return s.layer === 'L3'; })" :key="sig.id">
-        <div class="card dev-card">
-          <div class="card-name-input" style="border:none;cursor:default;background:transparent;font-weight:bold;color:var(--wf-gray-700);"
-            x-text="sig.name || '(unnamed signal)'"></div>
+        <div class="card dev-card signal-card">
+          <!-- Summary row (always visible) -->
+          <div class="signal-summary" @click="toggleSignalExpand(sig)">
+            <span class="signal-chevron" :class="{ open: sig.expanded }">&#9654;</span>
+            <span class="signal-summary-name" :class="{ empty: !sig.name }"
+              x-text="sig.name || '(unnamed signal)'"></span>
+            <div class="signal-summary-badges">
+              <span class="summary-badge badge-target" x-show="sig.signalType"
+                x-text="signalTypeLabel(sig.signalType)"></span>
+              <span class="summary-badge badge-target" x-show="sig.dataSource"
+                x-text="sig.dataSource"></span>
+            </div>
+          </div>
+          <!-- Expanded body -->
+          <div class="signal-body" x-show="sig.expanded" x-transition.opacity>
+            <div class="field-list">
+              <!-- Signal type (editable — Dev owns signal type selection for L3) -->
+              <div class="field-row">
+                <span class="field-label">Signal type</span>
+                <select class="meta-select" x-model="sig.signalType" @change="schedulePersist()">
+                  <option value="">Select type...</option>
+                  <template x-for="opt in DROPDOWN_OPTS.signalTypeL3" :key="opt.value">
+                    <option :value="opt.value" x-text="opt.label"></option>
+                  </template>
+                </select>
+              </div>
 
-          <div class="field-list">
-            <!-- Signal type (editable — Dev owns signal type selection for L3) -->
-            <div class="field-row">
-              <span class="field-label">Signal type</span>
-              <select class="meta-select" x-model="sig.signalType" @change="schedulePersist()">
-                <option value="">Select type...</option>
-                <template x-for="opt in DROPDOWN_OPTS.signalTypeL3" :key="opt.value">
-                  <option :value="opt.value" x-text="opt.label"></option>
-                </template>
-              </select>
-            </div>
+              <!-- PO context fields (read-only — shows what PO has defined) -->
+              <div class="field-row">
+                <span class="field-label">What it tells me</span>
+                <span style="color:var(--wf-gray-500);font-style:italic;" x-text="sig.whatItTellsMe || '(not yet defined by PO)'"></span>
+              </div>
+              <div class="field-row">
+                <span class="field-label">SLO Target</span>
+                <span style="color:var(--wf-gray-500);font-style:italic;" x-text="sig.sloTarget || '(not yet defined by PO)'"></span>
+              </div>
+              <div class="field-row">
+                <span class="field-label">Time window</span>
+                <span style="color:var(--wf-gray-500);font-style:italic;" x-text="sig.timeWindow || '(not yet defined by PO)'"></span>
+              </div>
+              <div class="field-row">
+                <span class="field-label">Why this target</span>
+                <span style="color:var(--wf-gray-500);font-style:italic;" x-text="sig.whyThisTarget || '(not yet defined by PO)'"></span>
+              </div>
 
-            <!-- PO context fields (read-only — shows what PO has defined) -->
-            <div class="field-row">
-              <span class="field-label">What it tells me</span>
-              <span style="color:var(--wf-gray-500);font-style:italic;" x-text="sig.whatItTellsMe || '(not yet defined by PO)'"></span>
-            </div>
-            <div class="field-row">
-              <span class="field-label">SLO Target</span>
-              <span style="color:var(--wf-gray-500);font-style:italic;" x-text="sig.sloTarget || '(not yet defined by PO)'"></span>
-            </div>
-            <div class="field-row">
-              <span class="field-label">Time window</span>
-              <span style="color:var(--wf-gray-500);font-style:italic;" x-text="sig.timeWindow || '(not yet defined by PO)'"></span>
-            </div>
-            <div class="field-row">
-              <span class="field-label">Why this target</span>
-              <span style="color:var(--wf-gray-500);font-style:italic;" x-text="sig.whyThisTarget || '(not yet defined by PO)'"></span>
-            </div>
+              <!-- Ratio-specific fields -->
+              <div class="field-row" x-show="sig.signalType === 'sli_ratio'">
+                <span class="field-label">Good events query</span>
+                <textarea class="field-input-code" placeholder="Numerator query..."
+                  x-model="sig.queryNumerator" @input="schedulePersist()"></textarea>
+              </div>
+              <div class="field-row" x-show="sig.signalType === 'sli_ratio'">
+                <span class="field-label">Total events query</span>
+                <textarea class="field-input-code" placeholder="Denominator query..."
+                  x-model="sig.queryDenominator" @input="schedulePersist()"></textarea>
+              </div>
 
-            <!-- Ratio-specific fields -->
-            <div class="field-row" x-show="sig.signalType === 'sli_ratio'">
-              <span class="field-label">Good events query</span>
-              <textarea class="field-input-code" placeholder="Numerator query..."
-                x-model="sig.queryNumerator" @input="schedulePersist()"></textarea>
-            </div>
-            <div class="field-row" x-show="sig.signalType === 'sli_ratio'">
-              <span class="field-label">Total events query</span>
-              <textarea class="field-input-code" placeholder="Denominator query..."
-                x-model="sig.queryDenominator" @input="schedulePersist()"></textarea>
-            </div>
+              <!-- Threshold-specific fields -->
+              <div class="field-row" x-show="sig.signalType === 'sli_threshold'">
+                <span class="field-label">Measurement query</span>
+                <textarea class="field-input-code" placeholder="Measurement query..."
+                  x-model="sig.queryNumerator" @input="schedulePersist()"></textarea>
+              </div>
+              <div class="field-row" x-show="sig.signalType === 'sli_threshold'">
+                <span class="field-label">Operator</span>
+                <select class="meta-select" x-model="sig.thresholdOperator" @change="schedulePersist()">
+                  <option value="">Select operator...</option>
+                  <template x-for="opt in DROPDOWN_OPTS.thresholdOperator" :key="opt.value">
+                    <option :value="opt.value" x-text="opt.label"></option>
+                  </template>
+                </select>
+              </div>
+              <div class="field-row" x-show="sig.signalType === 'sli_threshold'">
+                <span class="field-label">Unit</span>
+                <select class="meta-select" x-model="sig.thresholdUnit" @change="schedulePersist()">
+                  <option value="">Select unit...</option>
+                  <template x-for="opt in DROPDOWN_OPTS.thresholdUnit" :key="opt.value">
+                    <option :value="opt.value" x-text="opt.label"></option>
+                  </template>
+                </select>
+              </div>
 
-            <!-- Threshold-specific fields -->
-            <div class="field-row" x-show="sig.signalType === 'sli_threshold'">
-              <span class="field-label">Measurement query</span>
-              <textarea class="field-input-code" placeholder="Measurement query..."
-                x-model="sig.queryNumerator" @input="schedulePersist()"></textarea>
-            </div>
-            <div class="field-row" x-show="sig.signalType === 'sli_threshold'">
-              <span class="field-label">Operator</span>
-              <select class="meta-select" x-model="sig.thresholdOperator" @change="schedulePersist()">
-                <option value="">Select operator...</option>
-                <template x-for="opt in DROPDOWN_OPTS.thresholdOperator" :key="opt.value">
-                  <option :value="opt.value" x-text="opt.label"></option>
-                </template>
-              </select>
-            </div>
-            <div class="field-row" x-show="sig.signalType === 'sli_threshold'">
-              <span class="field-label">Unit</span>
-              <select class="meta-select" x-model="sig.thresholdUnit" @change="schedulePersist()">
-                <option value="">Select unit...</option>
-                <template x-for="opt in DROPDOWN_OPTS.thresholdUnit" :key="opt.value">
-                  <option :value="opt.value" x-text="opt.label"></option>
-                </template>
-              </select>
-            </div>
+              <!-- Not yet selected message -->
+              <div class="field-row" x-show="!sig.signalType">
+                <span class="field-label" style="color:#E74C3C;font-style:italic;">Select signal type to show implementation fields</span>
+              </div>
 
-            <!-- Not yet selected message -->
-            <div class="field-row" x-show="!sig.signalType">
-              <span class="field-label" style="color:#E74C3C;font-style:italic;">Select signal type to show implementation fields</span>
-            </div>
+              <div class="field-row">
+                <span class="field-label">Data Source</span>
+                <select class="meta-select" x-model="sig.dataSource" @change="schedulePersist()">
+                  <option value="">Select data source</option>
+                  <template x-for="opt in DROPDOWN_OPTS.dataSource" :key="opt.value">
+                    <option :value="opt.value" x-text="opt.label"></option>
+                  </template>
+                </select>
+              </div>
+              <div class="field-row">
+                <span class="field-label">Data Source Details</span>
+                <input type="text" class="field-input-prose"
+                  placeholder="e.g., index=app_events, or prometheus.internal:9090"
+                  x-model="sig.dataSourceDetails" @input="schedulePersist()">
+              </div>
 
-            <div class="field-row">
-              <span class="field-label">Data Source</span>
-              <select class="meta-select" x-model="sig.dataSource" @change="schedulePersist()">
-                <option value="">Select data source</option>
-                <template x-for="opt in DROPDOWN_OPTS.dataSource" :key="opt.value">
-                  <option :value="opt.value" x-text="opt.label"></option>
-                </template>
-              </select>
-            </div>
-            <div class="field-row">
-              <span class="field-label">Data Source Details</span>
-              <input type="text" class="field-input-prose"
-                placeholder="e.g., index=app_events, or prometheus.internal:9090"
-                x-model="sig.dataSourceDetails" @input="schedulePersist()">
-            </div>
-
-            <div class="field-row">
-              <span class="field-label">Technical Owner</span>
-              <input type="text" class="field-input-prose" placeholder="Team or person maintaining this signal..."
-                x-model="sig.technicalOwner" @input="schedulePersist()">
+              <div class="field-row">
+                <span class="field-label">Technical Owner</span>
+                <input type="text" class="field-input-prose" placeholder="Team or person maintaining this signal..."
+                  x-model="sig.technicalOwner" @input="schedulePersist()">
+              </div>
             </div>
           </div>
         </div>
@@ -3248,107 +3511,127 @@ ${r?'Expression: "'+r+`"
       <div class="ac-label dev">AC 2.2 — PROCESS SIGNALS</div>
       <div class="ac-desc">Define process-level signals that measure technical workflow health: build times, deployment frequency, queue depths, error rates. These signals are owned and defined by the Developer.</div>
 
+      <div class="section-controls" x-show="service.signals.filter(function(s) { return s.layer === 'L2'; }).length > 0">
+        <button class="section-control-btn" @click="expandAllSignals('L2')">Expand All</button>
+        <button class="section-control-btn" @click="collapseAllSignals('L2')">Collapse All</button>
+      </div>
+
       <template x-for="sig in service.signals.filter(function(s) { return s.layer === 'L2'; })" :key="sig.id">
         <div class="card dev-card signal-card">
-          <button class="remove-btn" @click="removeSignal(sig)" title="Remove signal">&times;</button>
-          <input type="text" class="card-name-input" placeholder="Process signal name..."
-            x-model="sig.name" @input="schedulePersist()">
+          <!-- Summary row (always visible) -->
+          <div class="signal-summary" @click="toggleSignalExpand(sig)">
+            <span class="signal-chevron" :class="{ open: sig.expanded }">&#9654;</span>
+            <span class="signal-summary-name" :class="{ empty: !sig.name }"
+              x-text="sig.name || '(unnamed signal)'"></span>
+            <div class="signal-summary-badges">
+              <span class="summary-badge badge-target" x-show="sig.signalType"
+                x-text="signalTypeLabel(sig.signalType)"></span>
+              <span class="summary-badge badge-target" x-show="sig.sloTarget"
+                x-text="'SLO: ' + sig.sloTarget"></span>
+            </div>
+          </div>
+          <!-- Expanded body -->
+          <div class="signal-body" x-show="sig.expanded" x-transition.opacity>
+            <button class="remove-btn" @click="removeSignal(sig)" title="Remove signal">&times;</button>
+            <input type="text" class="card-name-input" placeholder="Process signal name..."
+              x-model="sig.name" @input="schedulePersist()">
 
-          <div class="field-list">
-            <div class="field-row">
-              <span class="field-label">Signal type</span>
-              <select class="meta-select" x-model="sig.signalType" @change="schedulePersist()">
-                <option value="">Select type...</option>
-                <template x-for="opt in DROPDOWN_OPTS.signalTypeL2" :key="opt.value">
-                  <option :value="opt.value" x-text="opt.label"></option>
-                </template>
-              </select>
-            </div>
+            <div class="field-list">
+              <div class="field-row">
+                <span class="field-label">Signal type</span>
+                <select class="meta-select" x-model="sig.signalType" @change="schedulePersist()">
+                  <option value="">Select type...</option>
+                  <template x-for="opt in DROPDOWN_OPTS.signalTypeL2" :key="opt.value">
+                    <option :value="opt.value" x-text="opt.label"></option>
+                  </template>
+                </select>
+              </div>
 
-            <div class="field-row">
-              <span class="field-label">What it tells me</span>
-              <textarea class="field-input-prose" placeholder="What does this process signal measure?"
-                x-model="sig.whatItTellsMe" @input="schedulePersist()"></textarea>
-            </div>
+              <div class="field-row">
+                <span class="field-label">What it tells me</span>
+                <textarea class="field-input-prose" placeholder="What does this process signal measure?"
+                  x-model="sig.whatItTellsMe" @input="schedulePersist()"></textarea>
+              </div>
 
-            <div class="field-row">
-              <span class="field-label">SLO Target</span>
-              <input type="text" class="field-input-prose" placeholder="e.g., < 500ms p95"
-                x-model="sig.sloTarget" @input="schedulePersist()">
-            </div>
+              <div class="field-row">
+                <span class="field-label">SLO Target</span>
+                <input type="text" class="field-input-prose" placeholder="e.g., < 500ms p95"
+                  x-model="sig.sloTarget" @input="schedulePersist()">
+              </div>
 
-            <div class="field-row">
-              <span class="field-label">Time window</span>
-              <input type="text" class="field-input-prose" placeholder="e.g., 24 hours"
-                x-model="sig.timeWindow" @input="schedulePersist()">
-            </div>
+              <div class="field-row">
+                <span class="field-label">Time window</span>
+                <input type="text" class="field-input-prose" placeholder="e.g., 24 hours"
+                  x-model="sig.timeWindow" @input="schedulePersist()">
+              </div>
 
-            <div class="field-row">
-              <span class="field-label">Why this target</span>
-              <textarea class="field-input-prose" placeholder="Technical rationale for the target..."
-                x-model="sig.whyThisTarget" @input="schedulePersist()"></textarea>
-            </div>
+              <div class="field-row">
+                <span class="field-label">Why this target</span>
+                <textarea class="field-input-prose" placeholder="Technical rationale for the target..."
+                  x-model="sig.whyThisTarget" @input="schedulePersist()"></textarea>
+              </div>
 
-            <div class="field-row" x-show="sig.signalType === 'sli_ratio'">
-              <span class="field-label">Good events query</span>
-              <textarea class="field-input-code" placeholder="Numerator query..."
-                x-model="sig.queryNumerator" @input="schedulePersist()"></textarea>
-            </div>
-            <div class="field-row" x-show="sig.signalType === 'sli_ratio'">
-              <span class="field-label">Total events query</span>
-              <textarea class="field-input-code" placeholder="Denominator query..."
-                x-model="sig.queryDenominator" @input="schedulePersist()"></textarea>
-            </div>
+              <div class="field-row" x-show="sig.signalType === 'sli_ratio'">
+                <span class="field-label">Good events query</span>
+                <textarea class="field-input-code" placeholder="Numerator query..."
+                  x-model="sig.queryNumerator" @input="schedulePersist()"></textarea>
+              </div>
+              <div class="field-row" x-show="sig.signalType === 'sli_ratio'">
+                <span class="field-label">Total events query</span>
+                <textarea class="field-input-code" placeholder="Denominator query..."
+                  x-model="sig.queryDenominator" @input="schedulePersist()"></textarea>
+              </div>
 
-            <div class="field-row" x-show="sig.signalType === 'sli_threshold'">
-              <span class="field-label">Measurement query</span>
-              <textarea class="field-input-code" placeholder="Measurement query..."
-                x-model="sig.queryNumerator" @input="schedulePersist()"></textarea>
-            </div>
-            <div class="field-row" x-show="sig.signalType === 'sli_threshold'">
-              <span class="field-label">Operator</span>
-              <select class="meta-select" x-model="sig.thresholdOperator" @change="schedulePersist()">
-                <option value="">Select operator...</option>
-                <template x-for="opt in DROPDOWN_OPTS.thresholdOperator" :key="opt.value">
-                  <option :value="opt.value" x-text="opt.label"></option>
-                </template>
-              </select>
-            </div>
-            <div class="field-row" x-show="sig.signalType === 'sli_threshold'">
-              <span class="field-label">Unit</span>
-              <select class="meta-select" x-model="sig.thresholdUnit" @change="schedulePersist()">
-                <option value="">Select unit...</option>
-                <template x-for="opt in DROPDOWN_OPTS.thresholdUnit" :key="opt.value">
-                  <option :value="opt.value" x-text="opt.label"></option>
-                </template>
-              </select>
-            </div>
+              <div class="field-row" x-show="sig.signalType === 'sli_threshold'">
+                <span class="field-label">Measurement query</span>
+                <textarea class="field-input-code" placeholder="Measurement query..."
+                  x-model="sig.queryNumerator" @input="schedulePersist()"></textarea>
+              </div>
+              <div class="field-row" x-show="sig.signalType === 'sli_threshold'">
+                <span class="field-label">Operator</span>
+                <select class="meta-select" x-model="sig.thresholdOperator" @change="schedulePersist()">
+                  <option value="">Select operator...</option>
+                  <template x-for="opt in DROPDOWN_OPTS.thresholdOperator" :key="opt.value">
+                    <option :value="opt.value" x-text="opt.label"></option>
+                  </template>
+                </select>
+              </div>
+              <div class="field-row" x-show="sig.signalType === 'sli_threshold'">
+                <span class="field-label">Unit</span>
+                <select class="meta-select" x-model="sig.thresholdUnit" @change="schedulePersist()">
+                  <option value="">Select unit...</option>
+                  <template x-for="opt in DROPDOWN_OPTS.thresholdUnit" :key="opt.value">
+                    <option :value="opt.value" x-text="opt.label"></option>
+                  </template>
+                </select>
+              </div>
 
-            <!-- Not yet selected message -->
-            <div class="field-row" x-show="!sig.signalType">
-              <span class="field-label" style="color:#E74C3C;font-style:italic;">Select signal type to show query fields</span>
-            </div>
+              <!-- Not yet selected message -->
+              <div class="field-row" x-show="!sig.signalType">
+                <span class="field-label" style="color:#E74C3C;font-style:italic;">Select signal type to show query fields</span>
+              </div>
 
-            <div class="field-row">
-              <span class="field-label">Data Source</span>
-              <select class="meta-select" x-model="sig.dataSource" @change="schedulePersist()">
-                <option value="">Select data source</option>
-                <template x-for="opt in DROPDOWN_OPTS.dataSource" :key="opt.value">
-                  <option :value="opt.value" x-text="opt.label"></option>
-                </template>
-              </select>
-            </div>
-            <div class="field-row">
-              <span class="field-label">Data Source Details</span>
-              <input type="text" class="field-input-prose"
-                placeholder="e.g., index=app_events, or prometheus.internal:9090"
-                x-model="sig.dataSourceDetails" @input="schedulePersist()">
-            </div>
+              <div class="field-row">
+                <span class="field-label">Data Source</span>
+                <select class="meta-select" x-model="sig.dataSource" @change="schedulePersist()">
+                  <option value="">Select data source</option>
+                  <template x-for="opt in DROPDOWN_OPTS.dataSource" :key="opt.value">
+                    <option :value="opt.value" x-text="opt.label"></option>
+                  </template>
+                </select>
+              </div>
+              <div class="field-row">
+                <span class="field-label">Data Source Details</span>
+                <input type="text" class="field-input-prose"
+                  placeholder="e.g., index=app_events, or prometheus.internal:9090"
+                  x-model="sig.dataSourceDetails" @input="schedulePersist()">
+              </div>
 
-            <div class="field-row">
-              <span class="field-label">Technical Owner</span>
-              <input type="text" class="field-input-prose" placeholder="Team or person maintaining this signal..."
-                x-model="sig.technicalOwner" @input="schedulePersist()">
+              <div class="field-row">
+                <span class="field-label">Technical Owner</span>
+                <input type="text" class="field-input-prose" placeholder="Team or person maintaining this signal..."
+                  x-model="sig.technicalOwner" @input="schedulePersist()">
+              </div>
             </div>
           </div>
         </div>
@@ -3367,37 +3650,55 @@ ${r?'Expression: "'+r+`"
       <div class="ac-desc">Implement queries to quantify business impact signals defined by the Product Owner.</div>
       <div class="mirror-note">Mirror of Section 1.4. Signal names are set in the PO Story tab. Add or remove impact signals there.</div>
 
+      <div class="section-controls" x-show="service.signals.filter(function(s) { return s.layer === 'L4'; }).length > 0">
+        <button class="section-control-btn" @click="expandAllSignals('L4')">Expand All</button>
+        <button class="section-control-btn" @click="collapseAllSignals('L4')">Collapse All</button>
+      </div>
+
       <template x-for="sig in service.signals.filter(function(s) { return s.layer === 'L4'; })" :key="sig.id">
-        <div class="card dev-card">
-          <div class="card-name-input" style="border:none;cursor:default;background:transparent;font-weight:bold;color:var(--wf-gray-700);"
-            x-text="sig.name || '(unnamed signal)'"></div>
+        <div class="card dev-card signal-card">
+          <!-- Summary row (always visible) -->
+          <div class="signal-summary" @click="toggleSignalExpand(sig)">
+            <span class="signal-chevron" :class="{ open: sig.expanded }">&#9654;</span>
+            <span class="signal-summary-name" :class="{ empty: !sig.name }"
+              x-text="sig.name || '(unnamed signal)'"></span>
+            <div class="signal-summary-badges">
+              <span class="summary-badge badge-coverage"
+                :class="{ none: !sig.queryNumerator }"
+                x-text="sig.queryNumerator ? 'Has query' : 'No query'"></span>
+              <span class="summary-badge badge-target" x-show="sig.dataSource"
+                x-text="sig.dataSource"></span>
+            </div>
+          </div>
+          <!-- Expanded body -->
+          <div class="signal-body" x-show="sig.expanded" x-transition.opacity>
+            <div class="field-list">
+              <div class="field-row">
+                <span class="field-label">Impact query</span>
+                <textarea class="field-input-code" placeholder="Query to quantify impact..."
+                  x-model="sig.queryNumerator" @input="schedulePersist()"></textarea>
+              </div>
+              <div class="field-row">
+                <span class="field-label">Data Source</span>
+                <select class="meta-select" x-model="sig.dataSource" @change="schedulePersist()">
+                  <option value="">Select data source</option>
+                  <template x-for="opt in DROPDOWN_OPTS.dataSource" :key="opt.value">
+                    <option :value="opt.value" x-text="opt.label"></option>
+                  </template>
+                </select>
+              </div>
+              <div class="field-row">
+                <span class="field-label">Data Source Details</span>
+                <input type="text" class="field-input-prose"
+                  placeholder="e.g., index=app_events, or prometheus.internal:9090"
+                  x-model="sig.dataSourceDetails" @input="schedulePersist()">
+              </div>
 
-          <div class="field-list">
-            <div class="field-row">
-              <span class="field-label">Impact query</span>
-              <textarea class="field-input-code" placeholder="Query to quantify impact..."
-                x-model="sig.queryNumerator" @input="schedulePersist()"></textarea>
-            </div>
-            <div class="field-row">
-              <span class="field-label">Data Source</span>
-              <select class="meta-select" x-model="sig.dataSource" @change="schedulePersist()">
-                <option value="">Select data source</option>
-                <template x-for="opt in DROPDOWN_OPTS.dataSource" :key="opt.value">
-                  <option :value="opt.value" x-text="opt.label"></option>
-                </template>
-              </select>
-            </div>
-            <div class="field-row">
-              <span class="field-label">Data Source Details</span>
-              <input type="text" class="field-input-prose"
-                placeholder="e.g., index=app_events, or prometheus.internal:9090"
-                x-model="sig.dataSourceDetails" @input="schedulePersist()">
-            </div>
-
-            <div class="field-row">
-              <span class="field-label">Technical Owner</span>
-              <input type="text" class="field-input-prose" placeholder="Team or person maintaining this signal..."
-                x-model="sig.technicalOwner" @input="schedulePersist()">
+              <div class="field-row">
+                <span class="field-label">Technical Owner</span>
+                <input type="text" class="field-input-prose" placeholder="Team or person maintaining this signal..."
+                  x-model="sig.technicalOwner" @input="schedulePersist()">
+              </div>
             </div>
           </div>
         </div>
@@ -3425,95 +3726,115 @@ ${r?'Expression: "'+r+`"
       <div class="ac-label plat">AC 3.1 — SYSTEM SIGNALS</div>
       <div class="ac-desc">Define infrastructure-level signals: CPU, memory, disk, network, container health. These signals are owned and defined by the Platform team.</div>
 
+      <div class="section-controls" x-show="service.signals.filter(function(s) { return s.layer === 'L1'; }).length > 0">
+        <button class="section-control-btn" @click="expandAllSignals('L1')">Expand All</button>
+        <button class="section-control-btn" @click="collapseAllSignals('L1')">Collapse All</button>
+      </div>
+
       <template x-for="sig in service.signals.filter(function(s) { return s.layer === 'L1'; })" :key="sig.id">
         <div class="card platform-card signal-card">
-          <button class="remove-btn" @click="removeSignal(sig)" title="Remove signal">&times;</button>
-          <input type="text" class="card-name-input" placeholder="System signal name..."
-            x-model="sig.name" @input="schedulePersist()">
+          <!-- Summary row (always visible) -->
+          <div class="signal-summary" @click="toggleSignalExpand(sig)">
+            <span class="signal-chevron" :class="{ open: sig.expanded }">&#9654;</span>
+            <span class="signal-summary-name" :class="{ empty: !sig.name }"
+              x-text="sig.name || '(unnamed signal)'"></span>
+            <div class="signal-summary-badges">
+              <span class="summary-badge badge-target" x-show="sig.sloTarget"
+                x-text="'SLO: ' + sig.sloTarget"></span>
+              <span class="summary-badge badge-target" x-show="sig.signalType"
+                x-text="signalTypeLabel(sig.signalType)"></span>
+            </div>
+          </div>
+          <!-- Expanded body -->
+          <div class="signal-body" x-show="sig.expanded" x-transition.opacity>
+            <button class="remove-btn" @click="removeSignal(sig)" title="Remove signal">&times;</button>
+            <input type="text" class="card-name-input" placeholder="System signal name..."
+              x-model="sig.name" @input="schedulePersist()">
 
-          <div class="field-list">
-            <div class="field-row">
-              <span class="field-label">What it tells me</span>
-              <textarea class="field-input-prose" placeholder="What does this system signal measure?"
-                x-model="sig.whatItTellsMe" @input="schedulePersist()"></textarea>
-            </div>
-            <div class="field-row">
-              <span class="field-label">SLO Target</span>
-              <input type="text" class="field-input-prose" placeholder="e.g., 95"
-                x-model="sig.sloTarget" @input="schedulePersist()">
-            </div>
-            <div class="field-row">
-              <span class="field-label">Time window</span>
-              <input type="text" class="field-input-prose" placeholder="e.g., 1h"
-                x-model="sig.timeWindow" @input="schedulePersist()">
-            </div>
-            <div class="field-row">
-              <span class="field-label">Why this target</span>
-              <textarea class="field-input-prose" placeholder="Business rationale for the target..."
-                x-model="sig.whyThisTarget" @input="schedulePersist()"></textarea>
-            </div>
-            <div class="field-row">
-              <span class="field-label">Signal type</span>
-              <select class="meta-select" x-model="sig.signalType" @change="schedulePersist()">
-                <option value="">Select type...</option>
-                <template x-for="opt in DROPDOWN_OPTS.signalTypeL1" :key="opt.value">
-                  <option :value="opt.value" x-text="opt.label"></option>
-                </template>
-              </select>
-            </div>
-            <!-- Ratio-specific -->
-            <div class="field-row" x-show="sig.signalType === 'sli_ratio'">
-              <span class="field-label">Good events query</span>
-              <textarea class="field-input-code" placeholder="Numerator query..."
-                x-model="sig.queryNumerator" @input="schedulePersist()"></textarea>
-            </div>
-            <div class="field-row" x-show="sig.signalType === 'sli_ratio'">
-              <span class="field-label">Total events query</span>
-              <textarea class="field-input-code" placeholder="Denominator query..."
-                x-model="sig.queryDenominator" @input="schedulePersist()"></textarea>
-            </div>
-            <!-- Threshold-specific -->
-            <div class="field-row" x-show="sig.signalType === 'sli_threshold'">
-              <span class="field-label">Measurement query</span>
-              <textarea class="field-input-code" placeholder="Measurement query..."
-                x-model="sig.queryNumerator" @input="schedulePersist()"></textarea>
-            </div>
-            <div class="field-row" x-show="sig.signalType === 'sli_threshold'">
-              <span class="field-label">Operator</span>
-              <select class="meta-select" x-model="sig.thresholdOperator" @change="schedulePersist()">
-                <option value="">Select operator...</option>
-                <template x-for="opt in DROPDOWN_OPTS.thresholdOperator" :key="opt.value">
-                  <option :value="opt.value" x-text="opt.label"></option>
-                </template>
-              </select>
-            </div>
-            <div class="field-row" x-show="sig.signalType === 'sli_threshold'">
-              <span class="field-label">Unit</span>
-              <select class="meta-select" x-model="sig.thresholdUnit" @change="schedulePersist()">
-                <option value="">Select unit...</option>
-                <template x-for="opt in DROPDOWN_OPTS.thresholdUnit" :key="opt.value">
-                  <option :value="opt.value" x-text="opt.label"></option>
-                </template>
-              </select>
-            </div>
-            <!-- Not yet selected message -->
-            <div class="field-row" x-show="!sig.signalType">
-              <span class="field-label" style="color:#E74C3C;font-style:italic;">Select signal type to show measurement fields</span>
-            </div>
-            <div class="field-row">
-              <span class="field-label">Technical Owner</span>
-              <input type="text" class="field-input-prose" placeholder="Team or person maintaining this signal..."
-                x-model="sig.technicalOwner" @input="schedulePersist()">
-            </div>
-            <div class="field-row">
-              <span class="field-label">Alert Threshold</span>
-              <input type="text" class="field-input-prose" placeholder="e.g., 80"
-                x-model="sig.alertThreshold" @input="schedulePersist()">
-            </div>
-            <div class="field-row">
-              <span class="field-label">Page Threshold</span>
-              <input type="text" class="field-input-prose" placeholder="e.g., 95"
-                x-model="sig.pageThreshold" @input="schedulePersist()">
+            <div class="field-list">
+              <div class="field-row">
+                <span class="field-label">What it tells me</span>
+                <textarea class="field-input-prose" placeholder="What does this system signal measure?"
+                  x-model="sig.whatItTellsMe" @input="schedulePersist()"></textarea>
+              </div>
+              <div class="field-row">
+                <span class="field-label">SLO Target</span>
+                <input type="text" class="field-input-prose" placeholder="e.g., 95"
+                  x-model="sig.sloTarget" @input="schedulePersist()">
+              </div>
+              <div class="field-row">
+                <span class="field-label">Time window</span>
+                <input type="text" class="field-input-prose" placeholder="e.g., 1h"
+                  x-model="sig.timeWindow" @input="schedulePersist()">
+              </div>
+              <div class="field-row">
+                <span class="field-label">Why this target</span>
+                <textarea class="field-input-prose" placeholder="Business rationale for the target..."
+                  x-model="sig.whyThisTarget" @input="schedulePersist()"></textarea>
+              </div>
+              <div class="field-row">
+                <span class="field-label">Signal type</span>
+                <select class="meta-select" x-model="sig.signalType" @change="schedulePersist()">
+                  <option value="">Select type...</option>
+                  <template x-for="opt in DROPDOWN_OPTS.signalTypeL1" :key="opt.value">
+                    <option :value="opt.value" x-text="opt.label"></option>
+                  </template>
+                </select>
+              </div>
+              <!-- Ratio-specific -->
+              <div class="field-row" x-show="sig.signalType === 'sli_ratio'">
+                <span class="field-label">Good events query</span>
+                <textarea class="field-input-code" placeholder="Numerator query..."
+                  x-model="sig.queryNumerator" @input="schedulePersist()"></textarea>
+              </div>
+              <div class="field-row" x-show="sig.signalType === 'sli_ratio'">
+                <span class="field-label">Total events query</span>
+                <textarea class="field-input-code" placeholder="Denominator query..."
+                  x-model="sig.queryDenominator" @input="schedulePersist()"></textarea>
+              </div>
+              <!-- Threshold-specific -->
+              <div class="field-row" x-show="sig.signalType === 'sli_threshold'">
+                <span class="field-label">Measurement query</span>
+                <textarea class="field-input-code" placeholder="Measurement query..."
+                  x-model="sig.queryNumerator" @input="schedulePersist()"></textarea>
+              </div>
+              <div class="field-row" x-show="sig.signalType === 'sli_threshold'">
+                <span class="field-label">Operator</span>
+                <select class="meta-select" x-model="sig.thresholdOperator" @change="schedulePersist()">
+                  <option value="">Select operator...</option>
+                  <template x-for="opt in DROPDOWN_OPTS.thresholdOperator" :key="opt.value">
+                    <option :value="opt.value" x-text="opt.label"></option>
+                  </template>
+                </select>
+              </div>
+              <div class="field-row" x-show="sig.signalType === 'sli_threshold'">
+                <span class="field-label">Unit</span>
+                <select class="meta-select" x-model="sig.thresholdUnit" @change="schedulePersist()">
+                  <option value="">Select unit...</option>
+                  <template x-for="opt in DROPDOWN_OPTS.thresholdUnit" :key="opt.value">
+                    <option :value="opt.value" x-text="opt.label"></option>
+                  </template>
+                </select>
+              </div>
+              <!-- Not yet selected message -->
+              <div class="field-row" x-show="!sig.signalType">
+                <span class="field-label" style="color:#E74C3C;font-style:italic;">Select signal type to show measurement fields</span>
+              </div>
+              <div class="field-row">
+                <span class="field-label">Technical Owner</span>
+                <input type="text" class="field-input-prose" placeholder="Team or person maintaining this signal..."
+                  x-model="sig.technicalOwner" @input="schedulePersist()">
+              </div>
+              <div class="field-row">
+                <span class="field-label">Alert Threshold</span>
+                <input type="text" class="field-input-prose" placeholder="e.g., 80"
+                  x-model="sig.alertThreshold" @input="schedulePersist()">
+              </div>
+              <div class="field-row">
+                <span class="field-label">Page Threshold</span>
+                <input type="text" class="field-input-prose" placeholder="e.g., 95"
+                  x-model="sig.pageThreshold" @input="schedulePersist()">
+              </div>
             </div>
           </div>
         </div>
@@ -3532,60 +3853,77 @@ ${r?'Expression: "'+r+`"
       <div class="ac-desc">Configure alert and page thresholds for all health-type signals (System, Process, Business Health). Business Impact signals do not have thresholds.</div>
       <div class="mirror-note">Mirror of Sections 1.3, 2.2, and 3.1. Signal names are set in their source tabs. Configure alert and page thresholds for each signal.</div>
 
-      <template x-for="sig in service.signals.filter(function(s) { return s.layer !== 'L4'; })" :key="sig.id">
-        <div class="card platform-card">
-          <div class="card-name-input" style="border:none;cursor:default;background:transparent;font-weight:bold;color:var(--wf-gray-700);"
-            x-text="(sig.name || '(unnamed)') + ' (' + layerDisplayName(sig.layer) + ')'"></div>
+      <div class="section-controls" x-show="service.signals.filter(function(s) { return s.layer !== 'L4'; }).length > 0">
+        <button class="section-control-btn" @click="expandAllSignals('L1'); expandAllSignals('L2'); expandAllSignals('L3')">Expand All</button>
+        <button class="section-control-btn" @click="collapseAllSignals('L1'); collapseAllSignals('L2'); collapseAllSignals('L3')">Collapse All</button>
+      </div>
 
-          <div class="field-list">
-            <div class="field-row">
-              <span class="field-label">Data Source</span>
-              <span style="color:var(--wf-gray-500);font-style:italic;"
-                x-text="sig.dataSource || '(not yet defined, set on Dev tab)'"></span>
+      <template x-for="sig in service.signals.filter(function(s) { return s.layer !== 'L4'; })" :key="sig.id">
+        <div class="card platform-card signal-card">
+          <!-- Summary row (always visible) -->
+          <div class="signal-summary" @click="toggleSignalExpand(sig)">
+            <span class="signal-chevron" :class="{ open: sig.expanded }">&#9654;</span>
+            <span class="signal-summary-name" :class="{ empty: !sig.name }"
+              x-text="sig.name || '(unnamed signal)'"></span>
+            <div class="signal-summary-badges">
+              <span class="summary-badge badge-target"
+                x-text="layerDisplayName(sig.layer)"></span>
+              <span class="summary-badge badge-target" x-show="sig.alertThreshold"
+                x-text="'Alert: ' + sig.alertThreshold"></span>
             </div>
-            <div class="field-row">
-              <span class="field-label">Alert Threshold</span>
-              <input type="text" class="field-input-prose" placeholder="e.g., 80"
-                x-model="sig.alertThreshold" @input="schedulePersist()">
-            </div>
-            <div class="field-row">
-              <span class="field-label">Alert Severity</span>
-              <select class="meta-select" x-model="sig.alertSeverity" @change="schedulePersist()">
-                <template x-for="opt in DROPDOWN_OPTS.severity" :key="opt.value">
-                  <option :value="opt.value" x-text="opt.label"></option>
-                </template>
-              </select>
-            </div>
-            <div class="field-row">
-              <span class="field-label">Page Threshold</span>
-              <input type="text" class="field-input-prose" placeholder="e.g., 95"
-                x-model="sig.pageThreshold" @input="schedulePersist()">
-            </div>
-            <div class="field-row">
-              <span class="field-label">Page Severity</span>
-              <select class="meta-select" x-model="sig.pageSeverity" @change="schedulePersist()">
-                <template x-for="opt in DROPDOWN_OPTS.severity" :key="opt.value">
-                  <option :value="opt.value" x-text="opt.label"></option>
-                </template>
-              </select>
-            </div>
-            <div class="field-row">
-              <span class="field-label">Operator</span>
-              <select class="meta-select" x-model="sig.thresholdOperator" @change="schedulePersist()">
-                <option value="">Select operator...</option>
-                <template x-for="opt in DROPDOWN_OPTS.thresholdOperator" :key="opt.value">
-                  <option :value="opt.value" x-text="opt.label"></option>
-                </template>
-              </select>
-            </div>
-            <div class="field-row">
-              <span class="field-label">Unit</span>
-              <select class="meta-select" x-model="sig.thresholdUnit" @change="schedulePersist()">
-                <option value="">Select unit...</option>
-                <template x-for="opt in DROPDOWN_OPTS.thresholdUnit" :key="opt.value">
-                  <option :value="opt.value" x-text="opt.label"></option>
-                </template>
-              </select>
+          </div>
+          <!-- Expanded body -->
+          <div class="signal-body" x-show="sig.expanded" x-transition.opacity>
+            <div class="field-list">
+              <div class="field-row">
+                <span class="field-label">Data Source</span>
+                <span style="color:var(--wf-gray-500);font-style:italic;"
+                  x-text="sig.dataSource || '(not yet defined, set on Dev tab)'"></span>
+              </div>
+              <div class="field-row">
+                <span class="field-label">Alert Threshold</span>
+                <input type="text" class="field-input-prose" placeholder="e.g., 80"
+                  x-model="sig.alertThreshold" @input="schedulePersist()">
+              </div>
+              <div class="field-row">
+                <span class="field-label">Alert Severity</span>
+                <select class="meta-select" x-model="sig.alertSeverity" @change="schedulePersist()">
+                  <template x-for="opt in DROPDOWN_OPTS.severity" :key="opt.value">
+                    <option :value="opt.value" x-text="opt.label"></option>
+                  </template>
+                </select>
+              </div>
+              <div class="field-row">
+                <span class="field-label">Page Threshold</span>
+                <input type="text" class="field-input-prose" placeholder="e.g., 95"
+                  x-model="sig.pageThreshold" @input="schedulePersist()">
+              </div>
+              <div class="field-row">
+                <span class="field-label">Page Severity</span>
+                <select class="meta-select" x-model="sig.pageSeverity" @change="schedulePersist()">
+                  <template x-for="opt in DROPDOWN_OPTS.severity" :key="opt.value">
+                    <option :value="opt.value" x-text="opt.label"></option>
+                  </template>
+                </select>
+              </div>
+              <div class="field-row">
+                <span class="field-label">Operator</span>
+                <select class="meta-select" x-model="sig.thresholdOperator" @change="schedulePersist()">
+                  <option value="">Select operator...</option>
+                  <template x-for="opt in DROPDOWN_OPTS.thresholdOperator" :key="opt.value">
+                    <option :value="opt.value" x-text="opt.label"></option>
+                  </template>
+                </select>
+              </div>
+              <div class="field-row">
+                <span class="field-label">Unit</span>
+                <select class="meta-select" x-model="sig.thresholdUnit" @change="schedulePersist()">
+                  <option value="">Select unit...</option>
+                  <template x-for="opt in DROPDOWN_OPTS.thresholdUnit" :key="opt.value">
+                    <option :value="opt.value" x-text="opt.label"></option>
+                  </template>
+                </select>
+              </div>
             </div>
           </div>
         </div>
