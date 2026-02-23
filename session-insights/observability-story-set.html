@@ -344,6 +344,21 @@ body {
   line-height: 1.4;
 }
 
+/* ── field grid layout (2-column) ── */
+.field-grid-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 20px;
+}
+.field-grid-layout .field-row-full,
+.field-grid-layout .field-sub-header,
+.field-grid-layout .field-helper-text {
+  grid-column: 1 / -1;
+}
+.field-grid-layout .field-label {
+  flex: 0 0 160px;
+}
+
 /* --- Field input: prose --- */
 .field-input-prose {
   flex: 1;
@@ -589,6 +604,20 @@ textarea.field-input-code {
   text-align: center;
 }
 .category-chevron.open { transform: rotate(90deg); }
+
+.service-context-summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+  margin-bottom: 8px;
+}
+.service-context-summary-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--wf-gray-700);
+}
 
 .category-count-badge {
   font-size: 10px;
@@ -2636,6 +2665,7 @@ document.addEventListener('alpine:init', function() {
     guideExpanded: false,
     healthBridgeExpanded: false,
     impactBridgeExpanded: false,
+    serviceContextExpanded: false,
     categoryExpanded: { customer_experience: false, financial: false, legal_risk: false, operational: false },
     showGrounding: true,
     services: {},
@@ -2922,75 +2952,94 @@ ${r?'Expression: "'+r+`"
       </div>
 
       <div class="card po-card">
-        <div class="field-sub-header">Identity</div>
-        <div class="field-row">
-          <span class="field-label">Service Name</span>
-          <input type="text" class="field-input-prose" placeholder="Name of the service..."
-            x-model="service.identity.serviceName" @input="schedulePersist()">
+        <div class="service-context-summary"
+             @click="$store.app.serviceContextExpanded = !$store.app.serviceContextExpanded">
+          <span class="category-chevron" :class="{ open: $store.app.serviceContextExpanded }">&#9654;</span>
+          <span class="service-context-summary-text"
+                x-text="(function() {
+                  var svc = getActiveService();
+                  if (!svc) return '(no service name)';
+                  var name = svc.identity.serviceName || '';
+                  var id = svc.identity.serviceId || '';
+                  if (!name && !id) return '(no service name)';
+                  if (name && id) return name + ' \u2014 ' + id;
+                  return name || id;
+                })()">
+          </span>
         </div>
-        <div class="field-row">
-          <span class="field-label">Service ID</span>
-          <input type="text" class="field-input-prose" placeholder="e.g., SVC002"
-            x-model="service.identity.serviceId" @input="schedulePersist()">
-        </div>
-        <div class="field-row">
-          <span class="field-label">Description</span>
-          <textarea class="field-input-prose" placeholder="What business function does this service perform?"
-            x-model="service.identity.description" @input="schedulePersist()"></textarea>
-        </div>
-        <div class="field-sub-header">Classification</div>
-        <div class="field-row">
-          <span class="field-label">Tier</span>
-          <select class="meta-select" x-model="service.identity.tier" @change="schedulePersist()">
-            <option value="">Select tier...</option>
-            <template x-for="opt in DROPDOWN_OPTS.tier" :key="opt.value">
-              <option :value="opt.value" x-text="opt.label"></option>
-            </template>
-          </select>
-        </div>
-        <div class="field-row">
-          <span class="field-label">Product Line</span>
-          <input type="text" class="field-input-prose" placeholder="e.g., Consumer Lending"
-            x-model="service.identity.productLine" @input="schedulePersist()">
-        </div>
-        <div class="field-row">
-          <span class="field-label">Business Domain</span>
-          <input type="text" class="field-input-prose" placeholder="e.g., Home Originations"
-            x-model="service.identity.businessDomain" @input="schedulePersist()">
-        </div>
+        <div class="service-context-body field-grid-layout"
+             x-show="$store.app.serviceContextExpanded"
+             x-transition.opacity>
+          <div class="field-sub-header">Identity</div>
+          <div class="field-row">
+            <span class="field-label">Service Name</span>
+            <input type="text" class="field-input-prose" placeholder="Name of the service..."
+              x-model="service.identity.serviceName" @input="schedulePersist()">
+          </div>
+          <div class="field-row">
+            <span class="field-label">Service ID</span>
+            <input type="text" class="field-input-prose" placeholder="e.g., SVC002"
+              x-model="service.identity.serviceId" @input="schedulePersist()">
+          </div>
+          <div class="field-row field-row-full">
+            <span class="field-label">Description</span>
+            <textarea class="field-input-prose" placeholder="What business function does this service perform?"
+              x-model="service.identity.description" @input="schedulePersist()"></textarea>
+          </div>
+          <div class="field-sub-header">Classification</div>
+          <div class="field-row">
+            <span class="field-label">Tier</span>
+            <select class="meta-select" x-model="service.identity.tier" @change="schedulePersist()">
+              <option value="">Select tier...</option>
+              <template x-for="opt in DROPDOWN_OPTS.tier" :key="opt.value">
+                <option :value="opt.value" x-text="opt.label"></option>
+              </template>
+            </select>
+          </div>
+          <div class="field-row">
+            <span class="field-label">Product Line</span>
+            <input type="text" class="field-input-prose" placeholder="e.g., Consumer Lending"
+              x-model="service.identity.productLine" @input="schedulePersist()">
+          </div>
+          <div class="field-row">
+            <span class="field-label">Business Domain</span>
+            <input type="text" class="field-input-prose" placeholder="e.g., Home Originations"
+              x-model="service.identity.businessDomain" @input="schedulePersist()">
+          </div>
+          <div class="field-row">
+            <span class="field-label">Functional Category</span>
+            <input type="text" class="field-input-prose" list="functional-categories-list"
+              placeholder="e.g., Credit Assessment, Payments Processing, Collateral Management"
+              x-model="service.identity.functionalCategory" @input="schedulePersist()">
+            <datalist id="functional-categories-list">
+              <template x-for="cat in FUNCTIONAL_CATEGORIES" :key="cat">
+                <option :value="cat"></option>
+              </template>
+            </datalist>
+          </div>
           <div class="field-helper-text">
             Business Domain is the organizational home in the product hierarchy. Functional Category is what the service does. Two services in the same domain can serve different functions.
           </div>
-        <div class="field-row">
-          <span class="field-label">Functional Category</span>
-          <input type="text" class="field-input-prose" list="functional-categories-list"
-            placeholder="e.g., Credit Assessment, Payments Processing, Collateral Management"
-            x-model="service.identity.functionalCategory" @input="schedulePersist()">
-          <datalist id="functional-categories-list">
-            <template x-for="cat in FUNCTIONAL_CATEGORIES" :key="cat">
-              <option :value="cat"></option>
-            </template>
-          </datalist>
-        </div>
-        <div class="field-sub-header">Ownership</div>
-        <div class="field-row">
-          <span class="field-label">Org Product</span>
-          <input type="text" class="field-input-prose" placeholder="e.g., Loan Origination System"
-            x-model="service.identity.orgProduct" @input="schedulePersist()">
-        </div>
-        <div class="field-row">
-          <span class="field-label">Technical Owner</span>
-          <input type="text" class="field-input-prose" placeholder="CMDB technical owner..."
-            x-model="service.identity.technicalOwner" @input="schedulePersist()">
-        </div>
-        <div class="field-row">
-          <span class="field-label">Status</span>
-          <select class="meta-select" x-model="service.identity.status" @change="schedulePersist()">
-            <option value="">Select status...</option>
-            <template x-for="opt in DROPDOWN_OPTS.status" :key="opt.value">
-              <option :value="opt.value" x-text="opt.label"></option>
-            </template>
-          </select>
+          <div class="field-sub-header">Ownership</div>
+          <div class="field-row">
+            <span class="field-label">Org Product</span>
+            <input type="text" class="field-input-prose" placeholder="e.g., Loan Origination System"
+              x-model="service.identity.orgProduct" @input="schedulePersist()">
+          </div>
+          <div class="field-row">
+            <span class="field-label">Technical Owner</span>
+            <input type="text" class="field-input-prose" placeholder="CMDB technical owner..."
+              x-model="service.identity.technicalOwner" @input="schedulePersist()">
+          </div>
+          <div class="field-row field-row-full">
+            <span class="field-label">Status</span>
+            <select class="meta-select" x-model="service.identity.status" @change="schedulePersist()">
+              <option value="">Select status...</option>
+              <template x-for="opt in DROPDOWN_OPTS.status" :key="opt.value">
+                <option :value="opt.value" x-text="opt.label"></option>
+              </template>
+            </select>
+          </div>
         </div>
       </div>
     </div>
