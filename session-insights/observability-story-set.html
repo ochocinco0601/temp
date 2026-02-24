@@ -211,7 +211,7 @@ body {
   background: #FFFFFF;
   border: 1px solid var(--wf-gray-200);
   border-radius: var(--card-radius);
-  padding: 20px;
+  padding: 16px 18px;
   margin-bottom: 12px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }
@@ -611,7 +611,7 @@ textarea.field-input-code {
   gap: 8px;
   cursor: pointer;
   user-select: none;
-  margin-bottom: 8px;
+  margin-bottom: 0;
 }
 .service-context-summary-text {
   font-size: 14px;
@@ -1232,10 +1232,10 @@ textarea.field-input-code {
 .service-guide-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 8px;
   padding: 10px 14px;
   background: var(--wf-gray-100);
-  border-left: 3px solid var(--wf-gray-400);
+  border-left: 3px solid var(--po-accent);
   border-radius: 6px;
   cursor: pointer;
   font-size: 13px;
@@ -1247,8 +1247,12 @@ textarea.field-input-code {
   background: var(--wf-gray-200);
 }
 .service-guide-indicator {
-  font-size: 12px;
-  transition: transform 0.2s;
+  font-size: 16px;
+  color: var(--po-accent);
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+  width: 16px;
+  text-align: center;
 }
 .service-guide-body {
   padding: 14px;
@@ -2914,9 +2918,9 @@ ${r?'Expression: "'+r+`"
       <div class="service-guide">
         <div class="service-guide-header"
              @click="$store.app.guideExpanded = !$store.app.guideExpanded">
-          <span>(i) What counts as a service?</span>
           <span class="service-guide-indicator"
-                :style="$store.app.guideExpanded ? 'transform: rotate(90deg)' : ''">&#9656;</span>
+                :style="$store.app.guideExpanded ? 'transform: rotate(90deg)' : ''">&#9654;</span>
+          <span>(i) What counts as a service?</span>
         </div>
         <div class="service-guide-body" x-show="$store.app.guideExpanded" x-cloak>
           <p style="margin-bottom: 12px;">A BOS service is whatever unit you can define business health for. It's not dictated by the CMDB entry, the org chart, or an architecture framework. It's defined by the ability to answer: "What does healthy look like for this thing, and who cares when it's not healthy?"</p>
